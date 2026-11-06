@@ -1,5 +1,5 @@
 /* Il «motore» dell'app installata: apre subito, riceve le notifiche, prepara gli aggiornamenti. */
-const VERSIONE='29bc49122c93',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
+const VERSIONE='26f395470d41',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
 const ESTERNI_OK=/^https:\/\/(cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net)\//;
 self.addEventListener('install',()=>self.skipWaiting());   /* la nuova versione entra da sola */
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(l=>Promise.all(l.filter(k=>k.indexOf('coro-')===0&&k!==CACHE&&k!==ESTERNI).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
