@@ -279,6 +279,15 @@ h2{font-size:var(--t2);}
 /* colonne: i pulsanti non si allargano troppo sugli schermi grandi */
 @media (min-width:768px){#pagina>.colonna{max-width:560px;}#pagina.largo>.colonna{max-width:560px;}}
 @media (min-width:1200px){#pagina.largo>.colonna{max-width:980px;}#pagina>.colonna{max-width:560px;}}
+
+/* la risposta scelta è piena, le altre restano tenui: toccandone un'altra si cambia subito */
+.scelta.sc{font-weight:700;}
+.scelta.verde.sc{background:var(--verde-t);color:#fff;}.scelta.rosso.sc{background:var(--rosso-t);color:#fff;}.scelta.blu.sc{background:var(--blu-t);color:#fff;}.scelta.sc .ic{color:inherit;display:inline-block!important;}
+[data-tema="scuro"] .scelta.sc{color:#15120F;}
+.scelta:not(.sc){font-weight:600;}
+#avviso{left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);bottom:calc(var(--menu-h) + 12px + env(safe-area-inset-bottom));padding:8px 14px;border-radius:999px;font-size:13px;}
+@media (min-width:768px){#avviso{left:calc(50% + 42px);bottom:20px;}}
+@media (min-width:1200px){#avviso{left:calc(50% + 112px);}}
 </style>
 </head>
 <body class="senza-menu">
@@ -463,7 +472,7 @@ function errore(f,t){var e=f.querySelector('.err');if(!e){e=document.createEleme
 function bottoniRisposta(it,tranne){
   return '<div class="scelte'+(it.tipo==='prova'?' scelte-in-fila':'')+'">'+risposte(it).filter(function(v){return v!==tranne;}).map(function(v){
     var t=tono(v);
-    return '<button type="button" class="pu scelta '+t[0]+'" data-az="rispondi" data-a="'+it.id+'" data-b="'+h(v)+'">'+ic(t[1])+h(v)+'</button>';
+    return '<button type="button" class="pu scelta '+t[0]+(it.risp===v?' sc':'')+'" aria-pressed="'+(it.risp===v)+'" data-az="rispondi" data-a="'+it.id+'" data-b="'+h(v)+'">'+ic(it.risp===v?'si':t[1])+h(v)+'</button>';
   }).join('')+'</div>';
 }
 function fraseDopo(it,v){
@@ -507,7 +516,7 @@ function eroe(){
     +'<p class="linea-info">'+ic('ora')+'<span><span class="b">'+dataLunga(it.data)+', ore '+it.ora+'</span></span></p>'
     +'<a class="linea-info mappa" href="'+h(mappa(it))+'" target="_blank" rel="noopener">'+ic('pin')+'<span>'+h(luogo(it))+' · <u>apri la mappa</u></span></a>'
     +(it.risp==='Da Meet'?'<a class="pu prim" style="margin-top:14px" href="https://meet.google.com/" target="_blank" rel="noopener">'+ic('meet')+'Collegati da casa</a>':'')
-    +(it.risp?'<button type="button" class="pu" style="margin-top:14px" data-vai="cambia/'+it.id+'">Cambia risposta</button>':'<p class="dom">Ci sei?</p>'+bottoniRisposta(it))
+    +'<p class="dom">Ci sei?</p>'+bottoniRisposta(it)
     +'<button type="button" class="collegamento" data-vai="imp/'+it.id+'">Indirizzo completo e brani</button>'
     +'</section>';
 }
@@ -549,14 +558,12 @@ P.imp=function(id){
   var dom=it.tipo==='prova'?'Ci sei?':it.sond.domanda;
   html+='<section class="scheda" style="margin-top:14px">';
   if(it.sond&&it.sond.chi)html+='<p class="pic">'+h(it.sond.chi)+'</p>';
-  if(!it.risp&&aperta(it)){
+  if(aperta(it)){
     html+='<p class="dom" style="margin-top:0">'+h(dom)+'</p>'+bottoniRisposta(it);
-    if(it.sond)html+='<p class="pic" style="margin-top:10px">Puoi rispondere fino a '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>';
-  } else if(aperta(it)){
-    html+='<p class="b">La tua risposta</p><p style="margin:6px 0 12px">'+stato(it.risp)+'</p>'
-      +(it.nota2?'<p class="pic" style="margin-bottom:10px">La tua nota: '+h(it.nota2)+'</p>':'')
-      +(it.risp==='Da Meet'?'<a class="pu prim" href="https://meet.google.com/" target="_blank" rel="noopener">'+ic('meet')+'Collegati da casa</a>':'')
-      +'<button type="button" class="pu" data-vai="cambia/'+it.id+'">Cambia risposta</button>';
+    if(it.sond)html+='<p class="pic" style="margin-top:10px">Puoi cambiare idea fino a '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>';
+    if(it.nota2)html+='<p class="pic" style="margin-top:10px">La tua nota: '+h(it.nota2)+'</p>';
+    if(it.risp==='Da Meet')html+='<a class="pu prim" style="margin-top:10px" href="https://meet.google.com/" target="_blank" rel="noopener">'+ic('meet')+'Collegati da casa</a>';
+    if(it.sond&&it.risp&&!/^Non ci sono/.test(it.risp))html+='<button type="button" class="collegamento" data-vai="nota/'+it.id+'">Scrivi una nota</button>';
   } else {
     html+='<p class="b">La tua risposta</p><p style="margin:6px 0 8px">'+stato(it.risp||'Chiuso')+'</p><p class="pic" style="margin-bottom:12px">Le risposte sono chiuse dal '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>'
       +(it.richiesta?'<p>Hai chiesto di cambiare in «'+h(it.richiesta)+'».</p><p style="margin-top:6px">'+stato('In attesa')+'</p>'
@@ -883,10 +890,9 @@ function mini(nascondi){
 /* ═══ TOCCHI ═══ */
 var A={
   rispondi:function(id,v){
-    var it=trova(id), era=it.risp; it.risp=v;
-    var alt=[['cambia/'+id,'Ho sbagliato, cambia']];
-    if(it.sond&&!/^Non ci sono/.test(v))alt.push(['nota/'+id,'Scrivi una nota']);
-    conferma({tono:tono(v)[0],ico:tono(v)[1],titolo:era?'Risposta cambiata':'Risposta inviata',prima:era?'Ora hai detto':'Hai detto',stato:v,cosa:titolo(it)+'. '+dataLunga(it.data)+', ore '+it.ora+'.',frase:fraseDopo(it,v),altre:alt});
+    /* si resta sulla pagina: il pulsante scelto si colora e compare un piccolo avviso */
+    var it=trova(id), era=it.risp; if(era===v)return; it.risp=v;
+    render(true); avvisa((era?'Risposta cambiata: ':'Risposta salvata: ')+v+'.');
   },
   suona:function(id,v){suona(id,v);},
   pausa:function(){pl.on=!pl.on;if(pl.t>=brano(pl.b).dur)pl.t=0;aggiornaPl();},
