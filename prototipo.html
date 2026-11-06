@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="it" data-tema="chiaro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F6F3EE">
+<title>La Cordata · Portale del corista (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── COLORI CON NOME (vedi LINGUAGGIO.md) ── */
+:root{
+  --fondo:#F6F3EE; --scheda:#FFFFFF; --inchiostro:#211C19; --grigio:#5C544E; --linea:#CFC8BF;
+  --bordeaux:#8E2E35; --su-bordeaux:#FFFFFF; --bordeaux-testo:#8E2E35;
+  --evento-fondo:#211C19; --su-evento:#FFFFFF;
+  --verde-f:#DDF1E3; --verde-t:#14532D;
+  --rosso-f:#FADFDD; --rosso-t:#8A1C16;
+  --blu-f:#DCE9F7;   --blu-t:#174A7C;
+  --ambra-f:#FFEFC2; --ambra-t:#664400;
+  --grigio-f:#E8E4DE;--grigio-t:#47403A;
+  --t1:28px; --t2:18px; --t3:15px;
+  --menu-h:76px;
+}
+[data-tema="scuro"]{
+  --fondo:#15120F; --scheda:#231F1B; --inchiostro:#F4EFE9; --grigio:#BDB4AA; --linea:#4C453F;
+  --bordeaux:#8E2E35; --su-bordeaux:#FFFFFF; --bordeaux-testo:#F2AEB3;
+  --evento-fondo:#F4EFE9; --su-evento:#15120F;
+  --verde-f:#17392A; --verde-t:#A9E5C0;
+  --rosso-f:#4A1E1C; --rosso-t:#F8BDB8;
+  --blu-f:#17324F;   --blu-t:#B5D5F7;
+  --ambra-f:#43320D; --ambra-t:#FBDD93;
+  --grigio-f:#38322D;--grigio-t:#D9D1C8;
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--fondo);color:var(--inchiostro);font:400 var(--t2)/1.4 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-wrap:anywhere;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;text-align:left;cursor:pointer}
+a{color:var(--bordeaux-testo)}
+[hidden]{display:none!important}
+.ic{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:3px solid var(--bordeaux-testo);outline-offset:2px}
+h1:focus{outline:0}
+
+/* ── TESTO: solo tre grandezze ── */
+.t1{font:700 var(--t1)/1.15 "Bricolage Grotesque",Figtree,system-ui,sans-serif;letter-spacing:-.01em}
+h2{font-size:var(--t2);font-weight:700;margin:24px 0 8px}
+.pic{font-size:var(--t3);color:var(--grigio)}
+.b{font-weight:700}
+p+p{margin-top:4px}
+
+/* ── PAGINA E MENU ── */
+#pagina{padding:12px 16px calc(var(--menu-h) + 28px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto}
+body.con-mini #pagina{padding-bottom:calc(var(--menu-h) + 96px + env(safe-area-inset-bottom))}
+#menu{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--scheda);border-top:1px solid var(--linea);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}
+.mv{min-height:var(--menu-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:var(--t3);font-weight:600;color:var(--grigio);border-top:4px solid transparent;width:100%}
+.mv[aria-current="page"]{color:var(--bordeaux-testo);border-top-color:var(--bordeaux-testo);font-weight:700}
+.mv .ic{width:26px;height:26px}
+#menu .marchio{display:none}
+body.senza-menu #menu,body.senza-menu #mini{display:none}
+body.senza-menu #pagina{padding-bottom:32px}
+.logo{display:block;width:48px;height:48px;border-radius:50%;background:#fff;flex:none}
+.testa{display:flex;align-items:center;gap:12px;min-height:56px;margin-bottom:12px}
+
+/* ── SCHEDA: una sola forma ── */
+.scheda{background:var(--scheda);border:1px solid var(--linea);border-radius:14px;padding:16px;margin-bottom:12px}
+.scheda.righe{padding:0;overflow:hidden}
+.riga{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:10px 16px;color:inherit;text-decoration:none}
+.riga+.riga,.scheda.righe>*+.riga{border-top:1px solid var(--linea)}
+.riga .cresce{flex:1;min-width:0}
+.riga .tit{display:block;font-weight:600}
+.riga .sot{display:block;font-size:var(--t3);color:var(--grigio)}
+.riga .ic.fr{color:var(--grigio);width:20px;height:20px}
+.riga:disabled{cursor:default}
+button.riga:not(:disabled):active,a.riga:active{background:var(--fondo)}
+.riga.fissa{cursor:default}
+
+/* ── PULSANTE: una sola forma, due pesi ── */
+.pu{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;padding:10px 16px;border-radius:12px;font-weight:700;text-align:center;line-height:1.2;text-decoration:none;border:2px solid var(--inchiostro);background:var(--scheda);color:var(--inchiostro)}
+.pu.prim{background:var(--bordeaux);border-color:var(--bordeaux);color:var(--su-bordeaux)}
+.pu:active{transform:translateY(1px)}
+.pu+.pu{margin-top:8px}
+.fila{display:flex;gap:8px;margin-top:16px}
+.fila .pu{margin:0;flex:1 1 0;min-width:0}
+.fila .pu.stretto{flex:0 0 auto;width:auto}
+.scelta{justify-content:flex-start}
+.scelta .ic{width:26px;height:26px}
+.scelte-in-fila{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.scelte-in-fila .pu{margin:0;justify-content:center;gap:8px;padding:10px 8px}
+.scelte-in-fila .pu:first-child,.scelte-in-fila .pu:nth-child(2):last-child{grid-column:1/-1}
+.scelta.verde .ic{color:var(--verde-t)} .scelta.rosso .ic{color:var(--rosso-t)} .scelta.blu .ic{color:var(--blu-t)}
+
+/* ── STATO: sempre icona + parola ── */
+.st{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 10px;border-radius:8px;font-size:var(--t3);font-weight:700;line-height:1.15;width:fit-content}
+.st .ic{width:18px;height:18px;stroke-width:2.5}
+.st.verde{background:var(--verde-f);color:var(--verde-t)} .st.rosso{background:var(--rosso-f);color:var(--rosso-t)}
+.st.blu{background:var(--blu-f);color:var(--blu-t)} .st.ambra{background:var(--ambra-f);color:var(--ambra-t)}
+.st.grigio{background:var(--grigio-f);color:var(--grigio-t)}
+.st.nuovo{background:var(--bordeaux);color:var(--su-bordeaux)}
+
+/* ── PROVA / EVENTO: contorno contro pieno, come il logo ── */
+.tipo{display:inline-flex;align-items:center;min-height:32px;padding:4px 10px;border-radius:8px;font-size:var(--t3);font-weight:700;border:2px solid var(--inchiostro);line-height:1.15}
+.tipo.ev{background:var(--evento-fondo);border-color:var(--evento-fondo);color:var(--su-evento)}
+.dt{width:62px;flex:none;border:2px solid var(--inchiostro);border-radius:10px;text-align:center;padding:4px 0 5px;font-size:var(--t3);line-height:1.1;font-weight:600}
+.dt b{display:block;font:700 var(--t1)/1.05 "Bricolage Grotesque",Figtree,system-ui,sans-serif}
+.dt.ev{background:var(--evento-fondo);border-color:var(--evento-fondo);color:var(--su-evento)}
+.dt.ann{border-style:dashed;color:var(--grigio);border-color:var(--grigio)}
+.su{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.dom{font-weight:700;margin:14px 0 8px}
+.linea-info{display:flex;gap:10px;align-items:flex-start;margin-top:6px}
+.linea-info .ic{margin-top:1px;color:var(--grigio)}
+.linea-info.mappa{align-items:center;min-height:48px;margin-top:0;color:inherit;text-decoration:none}
+.linea-info.mappa u{color:var(--bordeaux-testo);font-weight:600}
+
+/* ── INDIETRO ── */
+.ind{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 12px 0 0;font-weight:600;color:var(--bordeaux-testo);margin-bottom:4px}
+
+/* ── MODULI ── */
+label.et{display:block;font-weight:600;margin:14px 0 4px}
+.cm{display:block;width:100%;min-height:56px;padding:12px 14px;border:2px solid var(--grigio);border-radius:12px;background:var(--scheda)}
+textarea.cm{min-height:112px;resize:vertical}
+.cm:focus{border-color:var(--bordeaux-testo)}
+.spunta{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 0;font-weight:600;cursor:pointer}
+.spunta input{width:26px;height:26px;flex:none;accent-color:var(--bordeaux)}
+.spunta.alta{align-items:flex-start;font-weight:400}
+.err{background:var(--rosso-f);color:var(--rosso-t);padding:10px 12px;border-radius:8px;margin-top:12px;font-weight:600;font-size:var(--t3)}
+.file-pu{position:relative;overflow:hidden;cursor:pointer}
+.file-pu input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.passo{font-size:var(--t3);font-weight:600;color:var(--grigio);margin-bottom:4px}
+
+/* ── CONFERMA ── */
+.conf{text-align:center;padding:32px 4px 8px}
+.conf .tondo{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.conf .tondo .ic{width:48px;height:48px;stroke-width:2.5}
+.tondo.verde{background:var(--verde-f);color:var(--verde-t)} .tondo.rosso{background:var(--rosso-f);color:var(--rosso-t)}
+.tondo.blu{background:var(--blu-f);color:var(--blu-t)} .tondo.ambra{background:var(--ambra-f);color:var(--ambra-t)} .tondo.grigio{background:var(--grigio-f);color:var(--grigio-t)}
+.conf .st{margin:12px auto}
+.conf p{margin-top:8px}
+
+/* ── ACCESSO ── */
+.accesso{padding-top:24px}
+.accesso .logo{width:128px;height:128px;margin:0 auto 12px}
+.accesso h1{text-align:center}
+.accesso>.pic{text-align:center;margin-top:4px}
+.collegamento{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;font-weight:600;color:var(--bordeaux-testo);text-align:center;text-decoration:underline;margin-top:8px}
+
+/* ── TESSERA ── */
+.tes{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.tes .logo{width:72px;height:72px;border:1px solid var(--linea)}
+.tondino{width:56px;height:56px;border-radius:50%;background:var(--bordeaux);color:var(--su-bordeaux);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.dl{display:grid;gap:10px}
+.dl dt{font-size:var(--t3);color:var(--grigio)}
+.dl dd{margin:0;font-weight:600}
+
+/* ── PLAYER ── */
+.tempo{display:flex;justify-content:space-between;font-size:var(--t3);font-weight:600;color:var(--grigio)}
+input[type=range]{width:100%;height:48px;accent-color:var(--bordeaux);margin:0;display:block}
+#mini{position:fixed;left:8px;right:8px;bottom:calc(var(--menu-h) + 6px + env(safe-area-inset-bottom));z-index:4;background:var(--scheda);border:1px solid var(--linea);border-radius:14px;display:flex;align-items:center;gap:4px;padding:4px 4px 4px 12px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+#mini .ap{flex:1;min-width:0;min-height:48px;display:flex;flex-direction:column;justify-content:center}
+#mini .ap span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+#mini .pu{width:auto;min-height:48px;margin:0;flex:none;padding:6px 12px}
+
+/* ── FOTO ── */
+.griglia-foto{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.miniatura{display:block;width:100%;aspect-ratio:1;border-radius:8px;min-height:48px}
+.foto-grande{display:block;width:100%;aspect-ratio:4/3;border-radius:14px;margin-bottom:12px}
+.sp{color:var(--inchiostro)}
+
+/* ── AVVISO IN BASSO ── */
+#avviso{position:fixed;left:16px;right:16px;bottom:calc(var(--menu-h) + 72px + env(safe-area-inset-bottom));z-index:9;background:var(--inchiostro);color:var(--fondo);padding:12px 14px;border-radius:12px;font-size:var(--t3);font-weight:600;text-align:center}
+
+/* ── SOLO PER LA PROVA DEL PROGETTO ── */
+.prototipo{border:2px dashed var(--grigio);border-radius:14px;padding:14px;margin-top:24px}
+.prototipo .pu{min-height:48px}
+
+/* ══ TABLET E PC: il menu passa a sinistra, sempre con le parole ══ */
+@media (min-width:768px){
+  #menu{top:0;right:auto;width:216px;bottom:0;display:flex;flex-direction:column;gap:4px;padding:16px 10px;border-top:0;border-right:1px solid var(--linea)}
+  #menu .marchio{display:flex;align-items:center;gap:10px;padding:0 6px 16px;font-weight:700}
+  .mv{flex-direction:row;justify-content:flex-start;gap:12px;min-height:56px;padding:0 12px;border-top:0;border-left:4px solid transparent;font-size:var(--t2);border-radius:0 10px 10px 0}
+  .mv[aria-current="page"]{border-left-color:var(--bordeaux-testo);background:var(--fondo)}
+  #pagina,body.con-mini #pagina,body.senza-menu #pagina{margin-left:216px;margin-right:0;max-width:none;padding:24px 32px 96px}
+  #pagina>.colonna{max-width:640px;margin:0 auto}
+  #pagina.largo>.colonna{max-width:1000px}
+  body.senza-menu #pagina{margin-left:0}
+  #mini{left:232px;right:16px;bottom:16px;max-width:640px}
+  #avviso{left:232px;right:16px;bottom:88px;max-width:640px}
+  .testa .logo{display:none}
+  .griglia-foto{grid-template-columns:repeat(4,1fr)}
+  .scelte-in-fila{grid-template-columns:repeat(3,1fr)}
+  .scelte-in-fila .pu:first-child{grid-column:auto}
+}
+/* PC largo: due colonne dove aiuta (Home, Agenda, Studio, Io) */
+@media (min-width:1100px){
+  .due{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;align-items:start}
+  .due>div>h2:first-child{margin-top:0}
+  .due .scelte-in-fila{grid-template-columns:1fr 1fr}
+  .due .scelte-in-fila .pu:first-child{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body class="senza-menu">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-6h4v6"/></symbol>
+<symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-studio" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></symbol>
+<symbol id="i-io" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6.5 8-6.5s7 2 8 6.5"/></symbol>
+<symbol id="i-si" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+<symbol id="i-no" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-meet" viewBox="0 0 24 24"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10.5l6-3.5v10l-6-3.5"/></symbol>
+<symbol id="i-dom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.3c-.8.4-1.1 1-1.1 1.7M12 17h.01"/></symbol>
+<symbol id="i-ann" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.8 5.8l12.4 12.4"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+<symbol id="i-ora" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-fr" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+<symbol id="i-ind" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+<symbol id="i-pausa" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+<symbol id="i-nota" viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></symbol>
+<symbol id="i-bacheca" viewBox="0 0 24 24"><path d="M4 10v4l3 .5L18 19V5L7 9.5z"/><path d="M8 15l1 5h3l-1-4M21 10v4"/></symbol>
+<symbol id="i-camp" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+<symbol id="i-chiave" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.5"/><path d="M11.5 11.5L20 3M16 7l3 3"/></symbol>
+<symbol id="i-esci" viewBox="0 0 24 24"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></symbol>
+<symbol id="i-ric" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+<symbol id="i-tes" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M5.5 16c.5-1.5 5.5-1.5 6 0M14 10h4M14 14h4"/></symbol>
+<symbol id="i-euro" viewBox="0 0 24 24"><path d="M17 6.5a6.5 6.5 0 1 0 0 11M4 10.5h9M4 13.5h9"/></symbol>
+<symbol id="i-lista" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 1.5-2M4 12l1 1 1.5-2M4 18l1 1 1.5-2"/></symbol>
+<symbol id="i-gruppo" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5M16 5a3.5 3.5 0 0 1 0 6.5M18 14.8c1.7.6 2.8 2.4 3 5.2"/></symbol>
+<symbol id="i-luna" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+<symbol id="i-foto" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M4 17l5-4 4 3 3-2 4 3"/></symbol>
+<symbol id="i-stella" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-3-5.3 3 1.1-6-4.4-4.2 6-.8z"/></symbol>
+<symbol id="i-scudo" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></symbol>
+<symbol id="i-att" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></symbol>
+<symbol id="i-scarica" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+<symbol id="i-busta" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 7 9-7"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h4l2-3h4l2 3h4v12H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="i-dacapo" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.5-5.8L4 8.5M4 4v4.5h4.5"/></symbol>
+</defs></svg>
+
+<nav id="menu" aria-label="Menu principale">
+  <div class="marchio"><img class="logo" src="data:image/png;base64,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" alt="Logo del coro La Cordata"><span>La Cordata</span></div>
+  <button type="button" class="mv" data-vai="home" data-m="home"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Home</button>
+  <button type="button" class="mv" data-vai="agenda" data-m="agenda"><svg class="ic" aria-hidden="true"><use href="#i-agenda"/></svg>Agenda</button>
+  <button type="button" class="mv" data-vai="studio" data-m="studio"><svg class="ic" aria-hidden="true"><use href="#i-studio"/></svg>Studio</button>
+  <button type="button" class="mv" data-vai="io" data-m="io"><svg class="ic" aria-hidden="true"><use href="#i-io"/></svg>Io</button>
+</nav>
+<main id="pagina"></main>
+<div id="mini" hidden></div>
+<div id="avviso" role="status" hidden></div>
+
+<script>
+'use strict';
+var LOGO='data:image/png;base64,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';
+
+/* ═══ DATI DI ESEMPIO (nomi e numeri inventati) ═══ */
+var OGGI=new Date(2026,10,6);
+var MESI=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+var GIORNI=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+var VOCI={t1:'Tenore I',t2:'Tenore II',bar:'Baritono',bc:'Basso chiaro',bs:'Basso scuro',mix:'Tutte le voci insieme'};
+var RISP_PROVA=['Ci sono','Non ci sono','Da Meet'];
+var SALA={luogo:'Sala del coro',indirizzo:'Via Sisto V 12, Montalto delle Marche'};
+
+var me={dentro:false,nome:'Marco',cognome:'Ferretti',voce:'bar',socio:'2009',numero:'47',notifiche:true,
+  nascita:'12 marzo 1961, Ascoli Piceno',cf:'FRRMRC61C12A462X',indirizzo:'Via dei Tigli 8, 63068 Montalto delle Marche',telefono:'333 000 1122',email:'marco.ferretti@esempio.it',iban:'IT00 X000 0000 0000 0000 0000 000'};
+var scenario='stasera';
+
+var impegni=[
+ {id:'p1',tipo:'prova',data:'2026-11-06',ora:'21:00',fine:'23:00',meet:true,risp:null,brani:['b1','b3','b4'],nota:'Stasera lavoriamo sugli attacchi dei bassi. Portate lo spartito di Stelutis alpinis.',motivo:'La sala non è disponibile per un imprevisto.'},
+ {id:'p2',tipo:'prova',data:'2026-11-10',ora:'21:00',fine:'23:00',meet:true,risp:'Ci sono',brani:['b2','b5']},
+ {id:'p3',tipo:'prova',data:'2026-11-13',ora:'21:00',annullata:true,motivo:'Il direttore è in trasferta. Ci rivediamo martedì 17 novembre.',brani:[]},
+ {id:'p4',tipo:'prova',data:'2026-11-17',ora:'21:00',fine:'23:00',meet:true,risp:null,brani:['b1','b2','b3','b5']},
+ {id:'e1',tipo:'evento',genere:'Concerto',titolo:"Rassegna d'autunno",data:'2026-11-21',ora:'18:30',luogo:'Teatro Comunale',indirizzo:'Piazza Umberto I 1, Montalto delle Marche',ritrovo:'17:30, davanti al teatro',divisa:'Camicia bianca, giacca scura, cravatta del coro',portare:'Cartellina nera con gli spartiti',
+   programma:[['17:30','Ritrovo davanti al teatro'],['17:45','Prova di voce in sala'],['18:30','Inizio del concerto'],['20:00','Fine e foto di gruppo']],brani:['b1','b2','b3','b4','b5'],
+   sond:{domanda:'Ci sei al concerto?',chiude:'2026-11-14',aperto:true,chi:'Il direttore chiede chi viene'},risp:null},
+ {id:'e2',tipo:'evento',genere:'Trasferta',titolo:'Rassegna corale a Loreto',data:'2026-12-06',ora:'17:00',luogo:'Teatro di Loreto',indirizzo:'Corso Boccalini, Loreto',ritrovo:'14:00, pullman in piazza a Montalto',divisa:'Camicia bianca, giacca scura, cravatta del coro',portare:'Cartellina nera, documento',quota:{imp:'25,00 €',stato:'Da pagare',per:'pullman e cena'},
+   programma:[['14:00','Partenza in pullman'],['16:00','Arrivo e prova di voce'],['17:00','Concerto'],['19:30','Cena insieme'],['22:30','Rientro a Montalto']],brani:['b1','b5'],
+   sond:{domanda:'Vieni in trasferta?',chiude:'2026-11-02',aperto:false},risp:'Ci sono'},
+ {id:'e3',tipo:'evento',genere:'Cena',titolo:'Cena di fine anno',data:'2026-12-12',ora:'20:00',luogo:'Trattoria del Borgo',indirizzo:'Via Roma 3, Montalto delle Marche',brani:[],
+   sond:{domanda:'Vieni alla cena?',opzioni:['Ci sono, da solo','Ci sono, con accompagnatore','Non ci sono'],chiude:'2026-11-30',aperto:true,chi:'Il Direttivo chiede chi viene'},risp:null},
+ {id:'e4',tipo:'evento',genere:'Concerto',titolo:'Concerto di Natale',data:'2026-12-20',ora:'21:15',luogo:'Chiesa di San Francesco',indirizzo:'Piazza San Francesco, Montalto delle Marche',ritrovo:'20:15, sul sagrato',divisa:'Camicia bianca, giacca scura, cravatta del coro',portare:'Cartellina nera con gli spartiti',brani:['b6','b7','b8'],
+   sond:{domanda:'Ci sei al concerto?',chiude:'2026-12-10',aperto:true},risp:'Ci sono'}
+];
+var brani=[
+ {id:'b1',t:'Signore delle cime',a:'B. De Marzi',dur:195,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}},
+ {id:'b2',t:'La montanara',a:'T. Ortelli, L. Pigarelli',dur:210,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}},
+ {id:'b3',t:'Stelutis alpinis',a:'A. Zardini',dur:188,audio:{t1:1,t2:1,bar:1,bc:1,bs:0,mix:1}},
+ {id:'b4',t:'Sul cappello',a:'Canto tradizionale',dur:132,audio:{t1:1,t2:1,bar:0,bc:0,bs:0,mix:1}},
+ {id:'b5',t:'Il testamento del capitano',a:'Canto tradizionale',dur:224,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}},
+ {id:'b6',t:'Tu scendi dalle stelle',a:'A. M. de Liguori',dur:176,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}},
+ {id:'b7',t:'Adeste fideles',a:'Canto natalizio',dur:165,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}},
+ {id:'b8',t:'Ave Maria',a:'J. Arcadelt',dur:154,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}},
+ {id:'b9',t:'Era nato poveretto',a:'Canto tradizionale',dur:140,audio:{t1:1,t2:1,bar:1,bc:1,bs:1,mix:1}}
+];
+var preferiti={};
+var avvisi=[
+ {id:'a1',titolo:'Divisa per il concerto del 21 novembre',da:'Direttivo',data:'5 novembre',nuovo:true,testo:'Per la Rassegna d\'autunno serve la divisa completa: camicia bianca, giacca scura e cravatta del coro. Chi ha perso la cravatta lo dica a Luigi alla prossima prova.'},
+ {id:'a2',titolo:'Martedì si inizia con i bassi',da:'Direttore',data:'4 novembre',nuovo:true,testo:'Martedì 10 novembre i bassi sono attesi alle 20:45, un quarto d\'ora prima degli altri. Le altre voci arrivano alle 21:00 come sempre.'},
+ {id:'a3',titolo:'Assemblea dei soci',da:'Direttivo',data:'20 ottobre',nuovo:false,testo:'L\'assemblea dei soci è sabato 28 novembre alle 18:00 in Sala del coro. La convocazione è tra i documenti qui sotto.',allegato:'Convocazione assemblea'}
+];
+var documenti=['Statuto del coro','Regolamento interno','Convocazione assemblea','Informativa sulla privacy'];
+var quote=[
+ {voce:'Quota associativa 2026',imp:'120,00 €',stato:'Pagata',det:'Pagata il 12 febbraio 2026, con bonifico'},
+ {voce:'Trasferta a Loreto',imp:'25,00 €',stato:'Da pagare',det:'Entro il 30 novembre: pullman e cena'},
+ {voce:'Quota associativa 2025',imp:'120,00 €',stato:'Pagata',det:'Pagata il 3 marzo 2025, in contanti'}
+];
+var presMesi=[['Novembre',1,1],['Ottobre',7,8],['Settembre',5,6],['Luglio',1,2],['Giugno',3,4],['Maggio',6,6],['Aprile',3,4],['Marzo',5,5],['Febbraio',4,4],['Gennaio',3,4]];
+var presUltime=[['Martedì 3 novembre','Ci sono'],['Venerdì 30 ottobre','Da Meet'],['Martedì 27 ottobre','Non ci sono'],['Venerdì 23 ottobre','Ci sono']];
+var rimborsi=[
+ {id:'r1',cosa:'Cartelline per gli spartiti',imp:'18,50 €',data:'28 ottobre',stato:'In attesa',det:'Il Direttivo la sta guardando'},
+ {id:'r2',cosa:'Panini per la trasferta a Fermo',imp:'42,00 €',data:'14 settembre',stato:'Rimborsato',det:'Rimborsato il 2 ottobre, con bonifico'}
+];
+var accompagnatori=[
+ {nome:'Anna Ferretti',rel:'Moglie',stato:'Approvato'},
+ {nome:'Paolo Ferretti',rel:'Figlio',stato:'Approvato'}
+];
+var album=[
+ {id:'f1',tit:'Concerto a Fermo',data:'13 settembre',n:6},
+ {id:'f2',tit:'Festa d\'estate',data:'18 luglio',n:3}
+];
+
+/* ═══ AIUTI ═══ */
+function $(s){return document.querySelector(s);}
+function h(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function ic(n,c){return '<svg class="ic'+(c?' '+c:'')+'" aria-hidden="true"><use href="#i-'+n+'"/></svg>';}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function D(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function giorniDa(s){return Math.round((D(s)-OGGI)/864e5);}
+function dataLunga(s){var d=D(s);return cap(GIORNI[d.getDay()])+' '+d.getDate()+' '+MESI[d.getMonth()];}
+function sera(it){var g=giorniDa(it.data);return g===0?'stasera':g===1?'domani':dataLunga(it.data).toLowerCase();}
+function trova(id){return impegni.filter(function(x){return x.id===id;})[0];}
+function brano(id){return brani.filter(function(x){return x.id===id;})[0];}
+function lista(){return impegni.filter(function(x){return !(x.id==='p1'&&scenario==='niente');});}
+function annullata(it){return it.annullata||(it.id==='p1'&&scenario==='annullata');}
+function luogo(it){return it.luogo||SALA.luogo;}
+function indirizzo(it){return it.indirizzo||SALA.indirizzo;}
+function titolo(it){return it.tipo==='prova'?'Prova di '+sera(it):it.titolo;}
+function etichetta(it){return it.tipo==='prova'?'Prova':it.genere;}
+function nomeEv(it){return it.titolo.indexOf(it.genere)===0?it.titolo:it.genere+': '+it.titolo;}
+function risposte(it){return it.tipo==='prova'?RISP_PROVA:(it.sond.opzioni||['Ci sono','Non ci sono']);}
+function haDomanda(it){return !annullata(it)&&(it.tipo==='prova'||!!it.sond);}
+function aperta(it){return it.tipo==='prova'||it.sond.aperto;}
+
+function tono(p){
+  if(/^Non ci sono/.test(p))return ['rosso','no'];
+  if(/^Ci sono|^Pagata|^Approvato|^Rimborsato|^Accese/.test(p))return ['verde','si'];
+  if(p==='Da Meet')return ['blu','meet'];
+  if(p==='Annullata'||p==='Spente'||p==='Chiuso')return ['grigio','ann'];
+  if(p==='Da pagare')return ['ambra','att'];
+  if(p==='In attesa')return ['ambra','ora'];
+  if(p==='Da rispondere')return ['ambra','dom'];
+  return ['grigio','si'];
+}
+function stato(p){if(p==='Nuovo')return '<span class="st nuovo">Nuovo</span>';var t=tono(p);return '<span class="st '+t[0]+'">'+ic(t[1])+h(p)+'</span>';}
+function statoImp(it){
+  if(annullata(it))return stato('Annullata');
+  if(it.tipo==='prova'||it.sond)return stato(it.risp||(aperta(it)?'Da rispondere':'Chiuso'));
+  return '';
+}
+function tipoEt(it){return '<span class="tipo'+(it.tipo==='prova'?'':' ev')+'">'+h(etichetta(it))+'</span>';}
+function dataBlocco(it){
+  var d=D(it.data),cl=annullata(it)?' ann':(it.tipo==='prova'?'':' ev');
+  return '<span class="dt'+cl+'" aria-hidden="true">'+GIORNI[d.getDay()].slice(0,3)+'<b>'+d.getDate()+'</b>'+MESI[d.getMonth()].slice(0,3)+'</span>';
+}
+function indietro(v,testo){return '<button type="button" class="ind" data-vai="'+v+'">'+ic('ind')+h(testo||'Indietro')+'</button>';}
+function freccia(){return ic('fr','fr');}
+function riga(o){
+  var dentro=(o.ico?ic(o.ico):'')+'<span class="cresce"><span class="tit">'+h(o.tit)+'</span>'+(o.sot?'<span class="sot">'+h(o.sot)+'</span>':'')+(o.statoSotto?'<span style="display:block;margin-top:4px">'+o.statoSotto+'</span>':'')+'</span>'+(o.dx||'')+(o.vai||o.az?freccia():'');
+  if(o.href)return '<a class="riga" href="'+h(o.href)+'" target="_blank" rel="noopener">'+dentro+'</a>';
+  if(o.vai)return '<button type="button" class="riga" data-vai="'+h(o.vai)+'">'+dentro+'</button>';
+  if(o.az)return '<button type="button" class="riga" data-az="'+o.az+'"'+(o.arg?' data-a="'+h(o.arg)+'"':'')+'>'+dentro+'</button>';
+  return '<div class="riga fissa">'+dentro+'</div>';
+}
+function mappa(it){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(indirizzo(it));}
+function avvisa(t){var a=$('#avviso');a.textContent=t;a.hidden=false;clearTimeout(avvisa.t);avvisa.t=setTimeout(function(){a.hidden=true;},3200);}
+function vai(r){location.hash='#/'+r;}
+function errore(f,t){var e=f.querySelector('.err');if(!e){e=document.createElement('p');e.className='err';e.setAttribute('role','alert');var fi=f.querySelector('.fila')||f.lastElementChild;f.insertBefore(e,fi);}e.textContent=t;}
+
+/* ═══ RISPOSTE ═══ */
+function bottoniRisposta(it,tranne){
+  return '<div class="scelte'+(it.tipo==='prova'?' scelte-in-fila':'')+'">'+risposte(it).filter(function(v){return v!==tranne;}).map(function(v){
+    var t=tono(v);
+    return '<button type="button" class="pu scelta '+t[0]+'" data-az="rispondi" data-a="'+it.id+'" data-b="'+h(v)+'">'+ic(t[1])+h(v)+'</button>';
+  }).join('')+'</div>';
+}
+function fraseDopo(it,v){
+  if(it.tipo==='prova'){
+    if(v==='Ci sono')return 'Ti aspettiamo alle '+it.ora+' in '+luogo(it)+'.';
+    if(v==='Da Meet')return 'All\'ora della prova trovi il tasto «Collegati da casa» nella pagina della prova.';
+    return 'Il coro lo vede subito: non devi avvisare nessun altro.';
+  }
+  if(/^Non ci sono/.test(v))return 'Il coro lo vede subito: non devi avvisare nessun altro.';
+  return 'Il coro lo vede subito. Ti aspettiamo'+(it.ritrovo?': ritrovo alle '+it.ritrovo:' alle '+it.ora)+'.';
+}
+
+/* ═══ PAGINE ═══ */
+var P={}, origine='home', daBrano='studio';
+
+P.accesso=function(){return {senza:true,html:
+ '<div class="accesso"><img class="logo" src="'+LOGO+'" alt="Logo del coro La Cordata"><h1 class="t1" tabindex="-1">La Cordata</h1><p class="pic">La tua pagina di corista</p>'
+ +'<form data-form="accesso" novalidate><label class="et" for="em">La tua email</label><input class="cm" id="em" type="email" autocomplete="username" inputmode="email" value="'+h(me.email)+'">'
+ +'<label class="et" for="pw">La tua password</label><input class="cm" id="pw" type="password" autocomplete="current-password" value="prova1234">'
+ +'<label class="spunta"><input type="checkbox" data-mostra="pw">Mostra la password</label>'
+ +'<div class="fila"><button class="pu prim" type="submit">Entra</button></div></form>'
+ +'<button type="button" class="collegamento" data-vai="chiedi">Prima volta, o password dimenticata?</button>'
+ +'<p class="pic" style="text-align:center;margin-top:12px">Prototipo: i dati sono già scritti, tocca Entra.</p></div>'};};
+
+P.chiedi=function(){return {senza:true,html:
+ indietro('accesso')+'<h1 class="t1" tabindex="-1">Scegli una password</h1><p style="margin-top:8px">Scrivi la tua email: ti mandiamo un messaggio per scegliere la password.</p>'
+ +'<form data-form="chiedi" novalidate><label class="et" for="em2">La tua email</label><input class="cm" id="em2" type="email" inputmode="email" autocomplete="username">'
+ +'<div class="fila"><button type="button" class="pu stretto" data-vai="accesso">Annulla</button><button class="pu prim" type="submit">Manda</button></div></form>'};};
+
+function eroe(){
+  var pr=impegni[0], it, titoloG, nota='';
+  if(scenario==='annullata'){
+    var dopo=trova('p2');
+    return '<section class="scheda"><div class="su">'+tipoEt(pr)+stato('Annullata')+'</div><h1 class="t1" tabindex="-1">Stasera la prova è annullata</h1><p style="margin-top:8px">'+h(pr.motivo)+'</p></section>'
+      +'<div class="scheda righe"><button type="button" class="riga" data-vai="imp/p2">'+dataBlocco(dopo)+'<span class="cresce"><span class="tit">La prossima prova</span><span class="sot">'+dataLunga(dopo.data)+', ore '+dopo.ora+'</span><span style="display:block;margin-top:4px">'+statoImp(dopo)+'</span></span>'+freccia()+'</button></div>';
+  }
+  if(scenario==='niente'){ it=trova('p2'); titoloG='Stasera non c\'è prova'; nota='La prossima è:'; }
+  else { it=pr; titoloG='Stasera c\'è prova'; }
+  return '<section class="scheda"><div class="su">'+tipoEt(it)+statoImp(it)+'</div><h1 class="t1" tabindex="-1">'+titoloG+'</h1>'
+    +(nota?'<p class="pic" style="margin-top:6px">'+nota+'</p>':'')
+    +'<p class="linea-info">'+ic('ora')+'<span><span class="b">'+dataLunga(it.data)+', ore '+it.ora+'</span></span></p>'
+    +'<a class="linea-info mappa" href="'+h(mappa(it))+'" target="_blank" rel="noopener">'+ic('pin')+'<span>'+h(luogo(it))+' · <u>apri la mappa</u></span></a>'
+    +(it.risp==='Da Meet'?'<a class="pu prim" style="margin-top:14px" href="https://meet.google.com/" target="_blank" rel="noopener">'+ic('meet')+'Collegati da casa</a>':'')
+    +(it.risp?'<button type="button" class="pu" style="margin-top:14px" data-vai="cambia/'+it.id+'">Cambia risposta</button>':'<p class="dom">Ci sei?</p>'+bottoniRisposta(it))
+    +'<button type="button" class="collegamento" data-vai="imp/'+it.id+'">Indirizzo completo e brani</button>'
+    +'</section>';
+}
+
+P.home=function(){
+  var att=lista().filter(function(x){return x.sond&&x.sond.aperto&&!x.risp;});
+  var n=avvisi.filter(function(a){return a.nuovo;}).length;
+  var sin=eroe();
+  var des='<div class="scheda righe">'+riga({ico:'bacheca',tit:'Bacheca',sot:n?(n===1?'1 avviso nuovo':n+' avvisi nuovi'):'Nessun avviso nuovo',dx:n?'<span class="st nuovo">Nuovo</span>':'',vai:'bacheca'})+'</div>';
+  if(att.length){
+    des+='<h2 style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'+stato('Da rispondere')+'<span>'+(att.length===1?'1 domanda':att.length+' domande')+' per te</span></h2><div class="scheda righe">'
+      +att.map(function(x){return riga({tit:nomeEv(x),sot:'Rispondi entro '+dataLunga(x.sond.chiude).toLowerCase(),vai:'imp/'+x.id});}).join('')+'</div>';
+  }
+  des+='<div class="scheda righe">'+riga({ico:'foto',tit:'Foto e video',sot:'Delle nostre serate',vai:'foto'})+'</div>';
+  return {m:'home',largo:true,html:'<div class="testa"><img class="logo" src="'+LOGO+'" alt="Logo del coro La Cordata"><span class="b">Ciao '+h(me.nome)+'</span></div><div class="due"><div>'+sin+'</div><div>'+des+'</div></div>'};
+};
+
+P.agenda=function(){
+  var gruppi={}, ordine=[];
+  lista().forEach(function(it){var k=MESI[D(it.data).getMonth()]; if(!gruppi[k]){gruppi[k]=[];ordine.push(k);} gruppi[k].push(it);});
+  var righe=function(it){
+    var t=it.tipo==='prova'?(giorniDa(it.data)===0?'Prova di stasera':'Prova'):nomeEv(it);
+    return '<button type="button" class="riga" data-vai="imp/'+it.id+'">'+dataBlocco(it)+'<span class="cresce"><span class="tit">'+h(t)+'</span><span class="sot">'+dataLunga(it.data).split(' ')[0]+', ore '+it.ora+' · '+h(luogo(it))+'</span><span style="display:block;margin-top:4px">'+statoImp(it)+'</span></span>'+freccia()+'</button>';
+  };
+  return {m:'agenda',largo:true,html:'<h1 class="t1" tabindex="-1" style="margin:12px 0 4px">Agenda</h1><p class="pic">Riquadro col contorno: prova. Riquadro pieno: concerto, trasferta o altro evento.</p>'
+    +'<div class="due">'+ordine.map(function(k){return '<div><h2>'+cap(k)+'</h2><div class="scheda righe">'+gruppi[k].map(righe).join('')+'</div></div>';}).join('')+'</div>'};
+};
+
+P.imp=function(id){
+  var it=trova(id); if(!it)return P.home();
+  var torna=origine, sez=origine==='riepilogo'?'io':origine;
+  var html=indietro(torna)+'<div class="su" style="margin-top:4px">'+tipoEt(it)+statoImp(it)+'</div><h1 class="t1" tabindex="-1">'+h(titolo(it))+'</h1>'
+    +'<p class="b" style="margin-top:6px">'+dataLunga(it.data)+', ore '+it.ora+'</p>';
+  if(annullata(it)){
+    html+='<div class="scheda" style="margin-top:14px"><p class="b">Questa prova non si fa.</p><p style="margin-top:4px">'+h(it.motivo)+'</p></div>';
+    return {m:sez,html:html};
+  }
+  /* la domanda */
+  var dom=it.tipo==='prova'?'Ci sei?':it.sond.domanda;
+  html+='<section class="scheda" style="margin-top:14px">';
+  if(it.sond&&it.sond.chi)html+='<p class="pic">'+h(it.sond.chi)+'</p>';
+  if(!it.risp&&aperta(it)){
+    html+='<p class="dom" style="margin-top:0">'+h(dom)+'</p>'+bottoniRisposta(it);
+    if(it.sond)html+='<p class="pic" style="margin-top:10px">Puoi rispondere fino a '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>';
+  } else if(aperta(it)){
+    html+='<p class="b">La tua risposta</p><p style="margin:6px 0 12px">'+stato(it.risp)+'</p>'
+      +(it.nota2?'<p class="pic" style="margin-bottom:10px">La tua nota: '+h(it.nota2)+'</p>':'')
+      +(it.risp==='Da Meet'?'<a class="pu prim" href="https://meet.google.com/" target="_blank" rel="noopener">'+ic('meet')+'Collegati da casa</a>':'')
+      +'<button type="button" class="pu" data-vai="cambia/'+it.id+'">Cambia risposta</button>';
+  } else {
+    html+='<p class="b">La tua risposta</p><p style="margin:6px 0 8px">'+stato(it.risp||'Chiuso')+'</p><p class="pic" style="margin-bottom:12px">Le risposte sono chiuse dal '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>'
+      +(it.richiesta?'<p>Hai chiesto di cambiare in «'+h(it.richiesta)+'».</p><p style="margin-top:6px">'+stato('In attesa')+'</p>'
+        :'<button type="button" class="pu" data-vai="chiedicambio/'+it.id+'">Chiedi di cambiare</button>');
+  }
+  html+='</section>';
+  /* dove */
+  html+='<h2>Dove</h2><div class="scheda righe">'
+    +riga({ico:'pin',tit:luogo(it),sot:indirizzo(it),fissa:1})
+    +riga({ico:'pin',tit:'Apri la mappa',sot:'Le indicazioni per arrivare',href:mappa(it),dx:freccia()})
+    +(it.meet?riga({ico:'meet',tit:'Collegati da casa',sot:'Google Meet, per chi non può venire',href:'https://meet.google.com/',dx:freccia()}):'')+'</div>';
+  /* orari e cosa serve */
+  if(it.ritrovo||it.divisa||it.portare){
+    html+='<h2>Cosa serve sapere</h2><div class="scheda righe">'
+      +(it.ritrovo?riga({ico:'ora',tit:'Ritrovo',sot:it.ritrovo}):'')
+      +(it.divisa?riga({ico:'tes',tit:'Divisa',sot:it.divisa}):'')
+      +(it.portare?riga({ico:'doc',tit:'Da portare',sot:it.portare}):'')+'</div>';
+  }
+  if(it.quota)html+='<h2>La tua quota</h2><div class="scheda righe">'+riga({ico:'euro',tit:it.quota.imp+', '+it.quota.per,dx:stato(it.quota.stato),vai:'quote'})+'</div>';
+  if(it.programma)html+='<h2>Come va la giornata</h2><div class="scheda righe">'+it.programma.map(function(p){return riga({tit:p[0],sot:p[1]});}).join('')+'</div>';
+  if(it.brani.length)html+='<h2>'+(it.tipo==='prova'?'Si prova':'Si canta')+'</h2><div class="scheda righe">'+it.brani.map(function(b){var x=brano(b);return riga({ico:'nota',tit:x.t,sot:'Ascolta la tua parte',vai:'brano/'+b});}).join('')+'</div>';
+  if(it.nota)html+='<h2>Dal direttore</h2><div class="scheda"><p>'+h(it.nota)+'</p></div>';
+  return {m:sez,html:html};
+};
+
+P.cambia=function(id){
+  var it=trova(id); if(!it)return P.home();
+  return {m:'home',html:indietro('imp/'+id)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Cambia risposta</h1><p style="margin-top:6px">'+h(titolo(it))+'. '+dataLunga(it.data)+', ore '+it.ora+'.</p>'
+    +'<div class="scheda" style="margin-top:14px"><p class="b">Ora hai detto</p><p style="margin:6px 0 0">'+stato(it.risp)+'</p></div>'
+    +'<p class="dom">Tocca la risposta nuova</p>'+bottoniRisposta(it,it.risp)
+    +'<button type="button" class="pu" style="margin-top:20px" data-vai="imp/'+id+'">Annulla, lascio com\'è</button>'};
+};
+
+P.chiedicambio=function(id){
+  var it=trova(id); if(!it)return P.home();
+  return {m:'agenda',html:indietro('imp/'+id)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Chiedi di cambiare</h1><p style="margin-top:6px">Le risposte sono chiuse: decide il Direttivo e ti avvisa.</p>'
+    +'<form data-form="chiedicambio" data-id="'+id+'" novalidate><p class="dom">Vorresti dire</p>'
+    +risposte(it).filter(function(v){return v!==it.risp;}).map(function(v,i){return '<label class="spunta"><input type="radio" name="v" value="'+h(v)+'"'+(i===0?' checked':'')+'>'+h(v)+'</label>';}).join('')
+    +'<label class="et" for="mot">Perché (se vuoi)</label><textarea class="cm" id="mot"></textarea>'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="imp/'+id+'">Annulla</button><button class="pu prim" type="submit">Manda la richiesta</button></div></form>'};
+};
+
+P.nota=function(id){
+  var it=trova(id); if(!it)return P.home();
+  return {m:'home',html:indietro('imp/'+id)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Scrivi una nota</h1><p style="margin-top:6px">'+h(titolo(it))+'. La legge chi organizza.</p>'
+    +'<form data-form="nota" data-id="'+id+'" novalidate><label class="et" for="nt">La tua nota</label><textarea class="cm" id="nt">'+h(it.nota2||'')+'</textarea>'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="imp/'+id+'">Annulla</button><button class="pu prim" type="submit">Manda la nota</button></div></form>'};
+};
+
+var ult=null;
+P.conferma=function(){
+  if(!ult)return P.home();
+  var o=ult;
+  return {senza:true,html:'<div class="conf"><div class="tondo '+o.tono+'">'+ic(o.ico)+'</div><h1 class="t1" tabindex="-1">'+h(o.titolo)+'</h1>'
+    +(o.stato?'<p class="pic" style="margin-top:12px">'+h(o.prima||'Hai detto')+'</p>'+stato(o.stato):'')
+    +(o.cosa?'<p class="b">'+h(o.cosa)+'</p>':'')+(o.frase?'<p>'+h(o.frase)+'</p>':'')+'</div>'
+    +'<button type="button" class="pu prim" style="margin-top:16px" data-vai="'+(o.vai||'home')+'">'+h(o.torna||'Torna alla Home')+'</button>'
+    +(o.altre||[]).map(function(a){return '<button type="button" class="pu" data-vai="'+a[0]+'">'+h(a[1])+'</button>';}).join('')};
+};
+function conferma(o){ult=o;if(location.hash==='#/conferma')render();else location.replace('#/conferma');}
+
+/* ── STUDIO ── */
+function rigaBrano(b){return '<button type="button" class="riga br-riga" data-vai="brano/'+b.id+'" data-t="'+h((b.t+' '+b.a).toLowerCase())+'">'+ic('nota')+'<span class="cresce"><span class="tit">'+h(b.t)+'</span><span class="sot">'+h(b.a)+'</span></span>'+freccia()+'</button>';}
+P.studio=function(){
+  var visti={},sez=[];
+  var prendi=function(ids){return ids.map(brano).filter(function(b){if(visti[b.id])return false;visti[b.id]=1;return true;});};
+  var favs=brani.filter(function(b){return preferiti[b.id];});
+  var pr=lista().filter(function(x){return x.tipo==='prova'&&!annullata(x);})[0];
+  var con=lista().filter(function(x){return x.genere==='Concerto';})[0];
+  if(pr&&pr.brani.length)sez.push(['Per la prova di '+sera(pr),prendi(pr.brani)]);
+  if(con)sez.push(['Per il concerto del '+D(con.data).getDate()+' '+MESI[D(con.data).getMonth()],prendi(con.brani)]);
+  if(favs.length)sez.push(['I miei preferiti',prendi(favs.map(function(b){return b.id;}))]);
+  sez.push(['Tutti gli altri brani',prendi(brani.map(function(b){return b.id;}))]);
+  return {m:'studio',largo:true,html:'<h1 class="t1" tabindex="-1" style="margin:12px 0 4px">Studio</h1><p>La tua voce: <span class="b">'+VOCI[me.voce]+'</span></p>'
+    +'<label class="et" for="cerca">Cerca un brano</label><input class="cm" id="cerca" type="search" placeholder="Scrivi il titolo" autocomplete="off">'
+    +'<p class="pic" id="nessuno" hidden style="margin-top:12px">Nessun brano con questo nome.</p><div class="due" style="margin-top:4px">'
+    +sez.filter(function(s){return s[1].length;}).map(function(s){return '<div class="br-sez"><h2>'+h(s[0])+'</h2><div class="scheda righe">'+s[1].map(rigaBrano).join('')+'</div></div>';}).join('')+'</div>'};
+};
+
+var pl={b:null,v:null,t:0,on:false};
+function mm(s){return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+function suona(b,v){pl.b=b;pl.v=v;pl.t=0;pl.on=true;render(true);}
+setInterval(function(){
+  if(!pl.b||!pl.on)return; var dur=brano(pl.b).dur;
+  pl.t++; if(pl.t>=dur){pl.t=dur;pl.on=false;aggiornaPl();return;}
+  aggiornaTempo();
+},1000);
+function aggiornaPl(){if(location.hash.indexOf('#/brano/')===0)render(true);else mini(false);}
+function aggiornaTempo(){var t=$('#plT'),r=$('#plR');if(t)t.textContent=mm(pl.t);if(r)r.value=pl.t;}
+
+P.brano=function(id){
+  var b=brano(id); if(!b)return P.studio();
+  var mia=b.audio[me.voce], qui=pl.b===id, html=indietro(daBrano)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">'+h(b.t)+'</h1><p class="pic" style="margin-top:4px">'+h(b.a)+'</p>';
+  html+='<section class="scheda" style="margin-top:14px">';
+  if(qui){
+    html+='<p class="pic">Stai ascoltando</p><p class="b" style="margin-bottom:6px">'+VOCI[pl.v]+(pl.v===me.voce?' (la tua parte)':'')+'</p>'
+      +'<input id="plR" type="range" min="0" max="'+b.dur+'" value="'+pl.t+'" aria-label="Punto del brano"><div class="tempo"><span id="plT">'+mm(pl.t)+'</span><span>'+mm(b.dur)+'</span></div>'
+      +'<button type="button" class="pu prim" style="margin-top:12px" data-az="pausa">'+ic(pl.on?'pausa':'play')+(pl.on?'Pausa':'Riprendi')+'</button>'
+      +'<div class="fila" style="margin-top:8px"><button type="button" class="pu" data-az="salta">Indietro 10 secondi</button><button type="button" class="pu" data-az="dacapo">'+ic('dacapo')+'Da capo</button></div>'
+      +'<button type="button" class="pu" style="margin-top:8px" data-az="ferma">Smetti di ascoltare</button>'
+      +'<p class="pic" style="margin-top:10px">Prototipo: il tempo scorre ma non c\'è suono.</p>';
+  } else if(mia){
+    html+='<button type="button" class="pu prim" data-az="suona" data-a="'+id+'" data-b="'+me.voce+'">'+ic('play')+'Ascolta la mia parte</button><p class="pic" style="margin-top:8px;text-align:center">'+VOCI[me.voce]+'</p>';
+  } else {
+    html+='<p class="b">La parte di '+VOCI[me.voce]+' non c\'è ancora.</p><p class="pic" style="margin:4px 0 12px">Puoi ascoltare tutte le voci insieme.</p><button type="button" class="pu prim" data-az="suona" data-a="'+id+'" data-b="mix">'+ic('play')+'Ascolta tutte le voci</button>';
+  }
+  html+='</section><h2>Ascolta un\'altra parte</h2><div class="scheda righe">'
+    +['mix','t1','t2','bar','bc','bs'].map(function(v){
+      var c=b.audio[v], att=qui&&pl.v===v;
+      var tit=VOCI[v]+(v===me.voce?' (la tua)':'');
+      if(!c)return '<div class="riga fissa">'+ic('nota')+'<span class="cresce"><span class="tit">'+h(tit)+'</span><span class="sot">Non c\'è ancora</span></span></div>';
+      return '<button type="button" class="riga" data-az="suona" data-a="'+id+'" data-b="'+v+'">'+ic(att?'studio':'play')+'<span class="cresce"><span class="tit">'+h(tit)+'</span>'+(att?'<span class="sot">In ascolto</span>':'')+'</span></button>';
+    }).join('')+'</div><h2>Da leggere</h2><div class="scheda righe">'
+    +riga({ico:'nota',tit:'Spartito',vai:'leggi/'+id+'/spartito'})+riga({ico:'doc',tit:'Testo',vai:'leggi/'+id+'/testo'})+'</div>'
+    +'<div class="scheda righe">'+riga({ico:'stella',tit:preferiti[id]?'È tra i tuoi preferiti':'Metti tra i preferiti',sot:preferiti[id]?'Tocca per toglierlo':'',az:'preferito',arg:id})
+    +riga({ico:'busta',tit:'Mandami tutto per email',sot:'Audio, spartito e testo di questo brano',az:'email',arg:'Il materiale'})+'</div>';
+  return {m:'studio',html:html};
+};
+P.leggi=function(id,che){
+  var b=brano(id); if(!b)return P.studio();
+  var righi='';
+  if(che==='spartito'){for(var i=0;i<5;i++){righi+='<svg viewBox="0 0 320 60" width="100%" class="sp" aria-hidden="true" style="display:block;margin:14px 0">';for(var j=0;j<5;j++)righi+='<line x1="0" x2="320" y1="'+(10+j*9)+'" y2="'+(10+j*9)+'" stroke="currentColor" stroke-width="1"/>';for(var k=0;k<9;k++)righi+='<ellipse cx="'+(28+k*33)+'" cy="'+(14+((k*7+i*3)%7)*5)+'" rx="5" ry="4" fill="currentColor"/>';righi+='</svg>';}}
+  return {m:'studio',html:indietro('brano/'+id)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">'+h(b.t)+'</h1><p class="pic" style="margin-top:4px">'+cap(che)+'</p>'
+    +'<div class="scheda" style="margin-top:14px">'+(che==='spartito'?righi+'<p class="pic">Qui si apre lo spartito vero, a tutta pagina.</p>':'<p>Qui si legge il testo del brano, grande, una strofa dopo l\'altra.</p>')+'</div>'};
+};
+
+/* ── BACHECA ── */
+P.bacheca=function(){
+  return {m:'home',html:indietro('home')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Bacheca</h1><p class="pic" style="margin-top:4px">Gli avvisi del Direttivo e del direttore.</p>'
+    +'<h2>Avvisi</h2><div class="scheda righe">'+avvisi.map(function(a){return riga({tit:a.titolo,sot:a.da+', '+a.data,statoSotto:a.nuovo?stato('Nuovo'):'',vai:'avviso/'+a.id});}).join('')+'</div>'
+    +'<h2>Documenti del coro</h2><div class="scheda righe">'+documenti.map(function(d){return riga({ico:'doc',tit:d,az:'pdf',arg:d});}).join('')+'</div>'};
+};
+P.avviso=function(id){
+  var a=avvisi.filter(function(x){return x.id===id;})[0]; if(!a)return P.bacheca();
+  a.nuovo=false;
+  return {m:'home',html:indietro('bacheca','Torna alla Bacheca')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">'+h(a.titolo)+'</h1><p class="pic" style="margin-top:4px">'+h(a.da)+', '+h(a.data)+'</p>'
+    +'<div class="scheda" style="margin-top:14px"><p>'+h(a.testo)+'</p></div>'
+    +(a.allegato?'<div class="scheda righe">'+riga({ico:'doc',tit:a.allegato,sot:'Documento allegato',az:'pdf',arg:a.allegato})+'</div>':'')};
+};
+
+/* ── FOTO ── */
+function finta(i,cl,alt){var g=(i*47)%360;return 'style="background:linear-gradient(135deg,hsl('+g+' 22% 62%),hsl('+((g+40)%360)+' 24% 34%))" aria-label="'+h(alt)+'"';}
+P.foto=function(){
+  return {m:'home',html:indietro('home')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 12px">Foto e video</h1><button type="button" class="pu prim" data-vai="carica">'+ic('cam')+'Carica le tue foto</button>'
+    +album.map(function(al,x){var q='';for(var i=0;i<al.n;i++)q+='<button type="button" class="miniatura" data-vai="fotov/'+al.id+'/'+i+'" '+finta(x*7+i,'','Foto '+(i+1)+' di '+al.tit)+'></button>';return '<h2>'+h(al.tit)+'</h2><p class="pic" style="margin:-6px 0 8px">'+h(al.data)+'</p><div class="griglia-foto">'+q+'</div>';}).join('')};
+};
+P.fotov=function(aid,i){
+  var al=album.filter(function(a){return a.id===aid;})[0]; if(!al)return P.foto(); i=+i||0; var x=album.indexOf(al);
+  return {m:'home',html:indietro('foto')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 12px">'+h(al.tit)+'</h1><div class="foto-grande" role="img" '+finta(x*7+i,'','Foto '+(i+1)+' di '+al.n)+'></div><p class="pic" style="margin-bottom:12px;text-align:center">Foto '+(i+1)+' di '+al.n+'</p>'
+    +'<div class="fila"><button type="button" class="pu" data-vai="fotov/'+aid+'/'+((i+al.n-1)%al.n)+'">Precedente</button><button type="button" class="pu" data-vai="fotov/'+aid+'/'+((i+1)%al.n)+'">Successiva</button></div>'
+    +'<button type="button" class="pu" style="margin-top:8px" data-az="pdf" data-a="La foto">'+ic('scarica')+'Scarica la foto</button>'};
+};
+P.carica=function(){
+  return {m:'home',html:indietro('foto')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 4px">Carica le tue foto</h1><p class="pic">Prima l\'evento, poi le foto dal telefono.</p>'
+    +'<form data-form="carica" novalidate><label class="et" for="ce">Di quale serata sono?</label><select class="cm" id="ce"><option value="">Scegli la serata</option>'+album.map(function(a){return '<option>'+h(a.tit)+'</option>';}).join('')+'</select>'
+    +'<label class="et" for="cf">Le foto o i video</label><label class="pu file-pu">'+ic('foto')+'<span id="cfn">Scegli dal telefono</span><input id="cf" type="file" multiple accept="image/*,video/*" data-nomi="cfn"></label>'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="foto">Annulla</button><button class="pu prim" type="submit">Carica</button></div></form>'};
+};
+
+/* ── IO ── */
+P.io=function(){
+  var daPagare=quote.filter(function(q){return q.stato==='Da pagare';})[0];
+  var att=rimborsi.filter(function(r){return r.stato==='In attesa';}).length;
+  var ini=me.nome[0]+me.cognome[0];
+  var mie=
+    '<div class="scheda righe">'
+    +riga({ico:'euro',tit:'Quote',sot:'Quota 2026',statoSotto:stato('Pagata')+(daPagare?' <span class="st ambra" style="margin-top:4px">'+ic('att')+'Loreto: 25 € da pagare</span>':''),vai:'quote'})
+    +riga({ico:'tes',tit:'Tessera',sot:'N. '+me.numero+', anno 2026',vai:'tessera'})
+    +riga({ico:'lista',tit:'Presenze',sot:'38 prove su 44 quest\'anno',vai:'presenze'})
+    +riga({ico:'ric',tit:'Rimborsi',sot:att?(att===1?'1 richiesta in attesa':att+' richieste in attesa'):'Chiedi indietro una spesa',vai:'rimborsi'})
+    +'</div>';
+  var altre=
+    '<div class="scheda righe">'
+    +riga({ico:'doc',tit:'Riepilogo dell\'anno',sot:'Presenze, risposte, pagamenti',vai:'riepilogo'})
+    +riga({ico:'gruppo',tit:'Accompagnatori',sot:accompagnatori.length+' persone con te',vai:'accompagnatori'})
+    +riga({ico:'io',tit:'I miei dati',sot:'Quelli che ha il coro',vai:'dati'})
+    +'</div>';
+  var imp=
+    '<h2>Impostazioni</h2><div class="scheda righe">'
+    +riga({ico:'camp',tit:'Notifiche',sot:me.notifiche?'Accese':'Spente',vai:'notifiche'})
+    +riga({ico:'luna',tit:'Tema',sot:document.documentElement.dataset.tema==='scuro'?'Scuro. Tocca per il chiaro':'Chiaro. Tocca per lo scuro',az:'tema'})
+    +riga({ico:'chiave',tit:'Cambia password',vai:'password'})
+    +riga({ico:'scudo',tit:'Privacy e consensi',vai:'privacy'})
+    +riga({ico:'esci',tit:'Esci',vai:'esci'})
+    +'</div>';
+  var proto='<div class="prototipo"><p class="b">Solo per provare il progetto</p><p class="pic" style="margin-bottom:10px">Nell\'app vera questo riquadro non ci sarà.</p>'
+    +'<p class="pic" style="margin-bottom:4px">Cosa succede stasera?</p>'
+    +[['stasera','C\'è prova'],['niente','Non c\'è prova'],['annullata','Prova annullata']].map(function(s){return '<button type="button" class="pu" data-az="scenario" data-a="'+s[0]+'">'+(scenario===s[0]?ic('si'):'')+s[1]+'</button>';}).join('')
+    +'<label class="et" for="vs">La mia voce</label><select class="cm" id="vs" data-voce>'+['t1','t2','bar','bc','bs'].map(function(v){return '<option value="'+v+'"'+(me.voce===v?' selected':'')+'>'+VOCI[v]+'</option>';}).join('')+'</select></div>';
+  return {m:'io',largo:true,html:'<div class="testa" style="margin-top:4px"><span class="tondino" aria-hidden="true">'+ini+'</span><div><h1 class="t1" tabindex="-1">'+h(me.nome+' '+me.cognome)+'</h1><p class="pic">'+VOCI[me.voce]+', socio dal '+me.socio+'</p></div></div>'
+    +'<div class="due"><div>'+mie+altre+'</div><div>'+imp+proto+'</div></div>'};
+};
+
+P.quote=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Quote</h1><p class="pic" style="margin-top:4px">Cosa hai pagato e cosa manca.</p>'
+    +'<div class="scheda righe" style="margin-top:14px">'+quote.map(function(q){return '<div class="riga fissa"><span class="cresce"><span class="tit">'+h(q.voce)+'</span><span class="sot">'+h(q.imp)+'. '+h(q.det)+'</span><span style="display:block;margin-top:4px">'+stato(q.stato)+'</span></span></div>';}).join('')+'</div>'
+    +'<h2>Come si paga</h2><div class="scheda"><p>Con bonifico al coro, oppure in contanti al tesoriere durante le prove.</p><p class="pic" style="margin-top:8px">Conto del coro (esempio)</p><p class="b">IT00 X000 0000 0000 0000 0000 000</p></div>'
+    +'<button type="button" class="pu" data-az="email" data-a="Il riepilogo delle quote">'+ic('busta')+'Mandamelo per email</button>'};
+};
+P.tessera=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 14px">Tessera</h1><section class="scheda"><div class="tes"><img class="logo" src="'+LOGO+'" alt="Logo del coro La Cordata"><div><p class="b">Coro La Cordata</p><p class="pic">Tessera del socio, anno 2026</p></div></div>'
+    +'<dl class="dl"><div><dt>Nome</dt><dd>'+h(me.nome+' '+me.cognome)+'</dd></div><div><dt>Numero</dt><dd>'+me.numero+'</dd></div><div><dt>Voce</dt><dd>'+VOCI[me.voce]+'</dd></div><div><dt>Socio dal</dt><dd>'+me.socio+'</dd></div></dl><p style="margin-top:12px">'+stato('Pagata')+'</p></section>'
+    +'<button type="button" class="pu prim" data-az="pdf" data-a="La tessera">'+ic('scarica')+'Apri il PDF da stampare</button><button type="button" class="pu" data-az="email" data-a="La tessera">'+ic('busta')+'Mandamela per email</button>'};
+};
+P.presenze=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Presenze</h1>'
+    +'<section class="scheda" style="margin-top:14px"><p class="t1">38 su 44</p><p style="margin-top:4px">Prove del 2026 a cui sei venuto. 3 da Meet. Le prove annullate non contano.</p></section>'
+    +'<h2>Le ultime prove</h2><div class="scheda righe">'+presUltime.map(function(p){return '<div class="riga fissa"><span class="cresce"><span class="tit">'+h(p[0])+'</span></span>'+stato(p[1])+'</div>';}).join('')+'</div>'
+    +'<h2>Mese per mese</h2><div class="scheda righe">'+presMesi.map(function(m){return '<div class="riga fissa"><span class="cresce"><span class="tit">'+m[0]+'</span></span><span class="b">'+m[1]+' su '+m[2]+'</span></div>';}).join('')+'</div>'};
+};
+P.riepilogo=function(){
+  var ris=impegni.filter(function(x){return x.sond;});
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Riepilogo del 2026</h1>'
+    +'<div class="scheda righe" style="margin-top:14px">'+riga({tit:'Presenze alle prove',sot:'38 su 44',vai:'presenze'})+riga({tit:'Quota dell\'anno',dx:stato('Pagata'),vai:'quote'})+riga({tit:'Rimborsi',sot:'1 rimborsato, 1 in attesa',vai:'rimborsi'})+'</div>'
+    +'<h2>Le mie risposte</h2><div class="scheda righe">'+ris.map(function(x){return riga({tit:x.titolo,statoSotto:statoImp(x),vai:'imp/'+x.id});}).join('')+'</div>'
+    +'<button type="button" class="pu" data-az="email" data-a="Il riepilogo">'+ic('busta')+'Mandamelo per email</button>'};
+};
+P.dati=function(){
+  var r=[['Nome e cognome',me.nome+' '+me.cognome],['Nato il',me.nascita],['Codice fiscale',me.cf],['Indirizzo',me.indirizzo],['Telefono',me.telefono],['Email',me.email],['Voce',VOCI[me.voce]],['Socio dal',me.socio],['Conto per i rimborsi',me.iban]];
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">I miei dati</h1><p class="pic" style="margin-top:4px">Li vedi solo tu e il Direttivo.</p>'
+    +'<section class="scheda" style="margin-top:14px"><dl class="dl">'+r.map(function(x){return '<div><dt>'+h(x[0])+'</dt><dd>'+h(x[1])+'</dd></div>';}).join('')+'</dl></section>'
+    +'<button type="button" class="pu" data-vai="segnala">C\'è un errore? Dillo al Direttivo</button>'};
+};
+P.segnala=function(){
+  return {m:'io',html:indietro('dati')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Segnala un errore</h1>'
+    +'<form data-form="segnala" novalidate><label class="et" for="sg">Che cosa è sbagliato?</label><textarea class="cm" id="sg" placeholder="Es.: ho cambiato indirizzo"></textarea>'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="dati">Annulla</button><button class="pu prim" type="submit">Manda</button></div></form>'};
+};
+P.accompagnatori=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Accompagnatori</h1><p class="pic" style="margin-top:4px">Chi viene con te a concerti e trasferte.</p>'
+    +'<div class="scheda righe" style="margin-top:14px">'+accompagnatori.map(function(a){return '<div class="riga fissa"><span class="cresce"><span class="tit">'+h(a.nome)+'</span><span class="sot">'+h(a.rel)+'</span><span style="display:block;margin-top:4px">'+stato(a.stato)+'</span></span></div>';}).join('')+'</div>'
+    +'<button type="button" class="pu prim" data-vai="nuovoacc">Proponi una persona</button>'};
+};
+P.nuovoacc=function(){
+  return {m:'io',html:indietro('accompagnatori')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Proponi una persona</h1><p class="pic" style="margin-top:4px">Il Direttivo approva e ti avvisa.</p>'
+    +'<form data-form="nuovoacc" novalidate><label class="et" for="an">Nome e cognome</label><input class="cm" id="an" autocomplete="off"><label class="et" for="ar">Chi è per te?</label><input class="cm" id="ar" placeholder="Es.: moglie, figlio, amico" autocomplete="off">'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="accompagnatori">Annulla</button><button class="pu prim" type="submit">Manda</button></div></form>'};
+};
+
+/* ── RIMBORSI: tre pagine corte, una domanda per volta ── */
+var rb={};
+P.rimborsi=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 4px">Rimborsi</h1><p class="pic" style="margin-bottom:12px">Hai pagato qualcosa per il coro? Chiedi i soldi indietro.</p>'
+    +'<button type="button" class="pu prim" data-az="nuovorb">'+ic('ric')+'Chiedi un rimborso</button>'
+    +'<h2>Le mie richieste</h2><div class="scheda righe">'+rimborsi.map(function(r){return '<div class="riga fissa"><span class="cresce"><span class="tit">'+h(r.cosa)+'</span><span class="sot">'+h(r.imp)+', '+h(r.data)+'. '+h(r.det)+'</span><span style="display:block;margin-top:4px">'+stato(r.stato)+'</span></span></div>';}).join('')+'</div>'};
+};
+P.rimborso=function(p){
+  p=+p||1;
+  var testa='<p class="passo" style="margin-top:8px">Passo '+p+' di 3</p>', corpo='';
+  if(p===1){
+    corpo='<h1 class="t1" tabindex="-1">La ricevuta</h1><p style="margin-top:6px">Fai una foto allo scontrino, o scegli un file.</p><form data-form="rb1" novalidate style="margin-top:14px">'
+      +'<label class="pu file-pu'+(rb.file?'':' prim')+'">'+ic('cam')+'<span id="rbn1">'+(rb.file?h(rb.file):'Fotografa la ricevuta')+'</span><input type="file" accept="image/*" capture="environment" data-nomi="rbn1" data-rb></label>'
+      +'<label class="pu file-pu" style="margin-top:8px">'+ic('doc')+'<span id="rbn2">Scegli una foto o un PDF</span><input type="file" accept="image/*,application/pdf" multiple data-nomi="rbn2" data-rb></label>'
+      +'<div class="fila"><button type="button" class="pu stretto" data-vai="rimborsi">Annulla</button><button class="pu'+(rb.file?' prim':'')+'" id="rbav" type="submit">Avanti</button></div>'
+      +'<p class="pic" style="margin-top:10px">Prototipo: puoi andare avanti anche senza foto.</p></form>';
+  } else if(p===2){
+    corpo='<h1 class="t1" tabindex="-1">La spesa</h1><form data-form="rb2" novalidate>'
+      +'<label class="et" for="rd">Cosa hai pagato?</label><input class="cm" id="rd" value="'+h(rb.cosa||'')+'" placeholder="Es.: cartelline per gli spartiti" autocomplete="off">'
+      +'<label class="et" for="ri">Quanti euro?</label><input class="cm" id="ri" inputmode="decimal" value="'+h(rb.imp||'')+'" placeholder="Es.: 18,50" autocomplete="off">'
+      +'<label class="et" for="rt">Quando?</label><input class="cm" id="rt" inputmode="numeric" value="'+h(rb.data||'06/11/2026')+'" autocomplete="off">'
+      +'<label class="et" for="rp">Per quale occasione? (se vuoi)</label><input class="cm" id="rp" value="'+h(rb.per||'')+'" placeholder="Es.: concerto, prove, sede" autocomplete="off">'
+      +'<div class="fila"><button type="button" class="pu stretto" data-vai="rimborso/1">Indietro</button><button class="pu prim" type="submit">Avanti</button></div></form>';
+  } else {
+    corpo='<h1 class="t1" tabindex="-1">Come lo vuoi?</h1><form data-form="rb3" novalidate style="margin-top:8px">'
+      +'<label class="spunta"><input type="radio" name="mod" value="Bonifico" checked data-mod>Bonifico sul mio conto</label><label class="spunta"><input type="radio" name="mod" value="Contanti" data-mod>In contanti</label>'
+      +'<div id="ibanb"><p class="pic">Conto che ha il coro: '+h(me.iban)+'</p></div>'
+      +'<label class="spunta alta" style="margin-top:8px"><input type="checkbox" id="rdich"><span>Ho pagato io questa spesa per il coro e non ne ho già chiesto il rimborso.</span></label>'
+      +'<div class="fila"><button type="button" class="pu stretto" data-vai="rimborso/2">Indietro</button><button class="pu prim" type="submit">Manda la richiesta</button></div></form>';
+  }
+  return {m:'io',html:testa+corpo};
+};
+
+P.notifiche=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 12px">Notifiche</h1><section class="scheda"><p style="margin-bottom:10px">'+stato(me.notifiche?'Accese':'Spente')+'</p><p>'
+    +(me.notifiche?'Su questo telefono ti arrivano il promemoria della prova e le domande nuove del coro.':'Non arriva niente sul telefono: i promemoria ti arrivano per email.')+'</p></section>'
+    +'<button type="button" class="pu'+(me.notifiche?'':' prim')+'" data-az="notifiche">'+(me.notifiche?'Spegni le notifiche':'Accendi le notifiche')+'</button>'};
+};
+P.password=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Cambia password</h1>'
+    +'<form data-form="password" novalidate><label class="et" for="p0">La password di adesso</label><input class="cm" id="p0" type="password" autocomplete="current-password">'
+    +'<label class="et" for="p1">La password nuova</label><input class="cm" id="p1" type="password" autocomplete="new-password"><p class="pic" style="margin-top:4px">Almeno 8 caratteri.</p>'
+    +'<label class="et" for="p2">Riscrivi la password nuova</label><input class="cm" id="p2" type="password" autocomplete="new-password">'
+    +'<label class="spunta"><input type="checkbox" data-mostra="p0,p1,p2">Mostra le password</label>'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="io">Annulla</button><button class="pu prim" type="submit">Cambia</button></div></form>'};
+};
+P.privacy=function(){
+  return {m:'io',html:indietro('io')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 14px">Privacy e consensi</h1><div class="scheda righe">'
+    +'<div class="riga fissa"><span class="cresce"><span class="tit">Uso dei dati per il coro</span><span class="sot">Dato il 12 gennaio 2024</span></span></div>'
+    +'<div class="riga fissa"><span class="cresce"><span class="tit">Foto e video delle serate</span><span class="sot">Dato il 12 gennaio 2024</span></span></div></div>'
+    +'<div class="scheda righe">'+riga({ico:'doc',tit:'Informativa sulla privacy',az:'pdf',arg:'L\'informativa'})+'</div>'
+    +'<button type="button" class="pu" data-az="email" data-a="Il riepilogo dei consensi">'+ic('busta')+'Mandamelo per email</button>'};
+};
+P.esci=function(){
+  return {m:'io',html:'<h1 class="t1" tabindex="-1" style="margin-top:20px">Vuoi uscire?</h1><p style="margin-top:8px">Per rientrare ti serviranno email e password.</p>'
+    +'<div class="fila"><button type="button" class="pu stretto" data-vai="io">Annulla</button><button type="button" class="pu prim" data-az="esci">Esci</button></div>'};
+};
+
+/* ═══ DISEGNO DELLA PAGINA ═══ */
+function render(tieni){
+  var r=(location.hash||'').replace(/^#\/?/,'')||'home';
+  var libere=/^(accesso|chiedi)/;
+  if(!me.dentro&&!libere.test(r)&&r!=='conferma')r='accesso';
+  if(me.dentro&&libere.test(r))r='home';
+  var pz=r.split('/'), fn=Object.prototype.hasOwnProperty.call(P,pz[0])?P[pz[0]]:P.home;
+  if(/^(home|agenda|io|riepilogo)$/.test(r))origine=r;
+  if(pz[0]==='imp'||r==='studio')daBrano=r;
+  var o=fn(pz[1],pz[2]);
+  var pag=$('#pagina');
+  pag.className=o.largo?'largo':'';
+  pag.innerHTML='<div class="colonna">'+o.html+'</div>';
+  document.body.classList.toggle('senza-menu',!!o.senza);
+  document.querySelectorAll('.mv').forEach(function(b){if(b.dataset.m===o.m)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  mini(pz[0]==='brano'&&pz[1]===pl.b);
+  if(!tieni){window.scrollTo(0,0);var t=pag.querySelector('h1');if(t)t.focus({preventScroll:true});}
+}
+function mini(nascondi){
+  var m=$('#mini'), vis=pl.b&&!nascondi;
+  m.hidden=!vis; document.body.classList.toggle('con-mini',!!vis);
+  if(!vis)return;
+  var b=brano(pl.b);
+  m.innerHTML='<button type="button" class="ap" data-vai="brano/'+b.id+'"><span class="b">'+h(b.t)+'</span><span class="pic">'+VOCI[pl.v]+'</span></button><button type="button" class="pu" data-az="pausa">'+ic(pl.on?'pausa':'play')+(pl.on?'Pausa':'Riprendi')+'</button>';
+}
+
+/* ═══ TOCCHI ═══ */
+var A={
+  rispondi:function(id,v){
+    var it=trova(id), era=it.risp; it.risp=v;
+    var alt=[['cambia/'+id,'Ho sbagliato, cambia']];
+    if(it.sond&&!/^Non ci sono/.test(v))alt.push(['nota/'+id,'Scrivi una nota']);
+    conferma({tono:tono(v)[0],ico:tono(v)[1],titolo:era?'Risposta cambiata':'Risposta inviata',prima:era?'Ora hai detto':'Hai detto',stato:v,cosa:titolo(it)+'. '+dataLunga(it.data)+', ore '+it.ora+'.',frase:fraseDopo(it,v),altre:alt});
+  },
+  suona:function(id,v){suona(id,v);},
+  pausa:function(){pl.on=!pl.on;if(pl.t>=brano(pl.b).dur)pl.t=0;aggiornaPl();},
+  salta:function(){pl.t=Math.max(0,pl.t-10);aggiornaTempo();},
+  dacapo:function(){pl.t=0;aggiornaTempo();},
+  ferma:function(){pl.b=null;pl.on=false;render(true);},
+  preferito:function(id){preferiti[id]=!preferiti[id];render(true);avvisa(preferiti[id]?'Messo tra i preferiti.':'Tolto dai preferiti.');},
+  email:function(che){avvisa(che+': nell\'app vera arriva alla tua email. Nel prototipo non parte niente.');},
+  pdf:function(che){avvisa(che+': nell\'app vera si apre il file.');},
+  tema:function(){impostaTema(document.documentElement.dataset.tema==='scuro'?'chiaro':'scuro');render(true);},
+  notifiche:function(){me.notifiche=!me.notifiche;render(true);avvisa(me.notifiche?'Notifiche accese.':'Notifiche spente.');},
+  scenario:function(s){scenario=s;impegni[0].risp=null;render(true);avvisa('Ora vai in Home a vedere come cambia.');},
+  nuovorb:function(){rb={};vai('rimborso/1');},
+  esci:function(){me.dentro=false;pl.b=null;pl.on=false;ult=null;location.hash='#/accesso';}
+};
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-vai],[data-az]'); if(!t)return;
+  if(t.dataset.vai!==undefined){ if(t.tagName==='BUTTON'&&t.type==='submit')e.preventDefault(); var dest='#/'+t.dataset.vai; if(location.hash===dest)render(); else location.hash=dest; return; }
+  var f=A[t.dataset.az]; if(f)f(t.dataset.a,t.dataset.b);
+});
+document.addEventListener('input',function(e){
+  var t=e.target;
+  if(t.id==='plR'){pl.t=+t.value;aggiornaTempo();}
+  if(t.id==='cerca'){
+    var q=t.value.trim().toLowerCase(), tot=0;
+    document.querySelectorAll('.br-sez').forEach(function(s){var n=0;s.querySelectorAll('.br-riga').forEach(function(r){var ok=r.dataset.t.indexOf(q)>=0;r.hidden=!ok;if(ok)n++;});s.hidden=!n;tot+=n;});
+    $('#nessuno').hidden=tot>0;
+  }
+});
+document.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.dataset.mostra){t.dataset.mostra.split(',').forEach(function(id){var c=document.getElementById(id);if(c)c.type=t.checked?'text':'password';});}
+  if(t.dataset.nomi&&t.files&&t.files.length){
+    var nome=t.files.length===1?t.files[0].name:t.files.length+' file scelti';
+    document.getElementById(t.dataset.nomi).textContent=nome;
+    if(t.dataset.rb!==undefined){rb.file=nome;var av=$('#rbav');if(av)av.classList.add('prim');t.parentNode.parentNode.querySelectorAll('.file-pu').forEach(function(l){l.classList.remove('prim');});}
+  }
+  if(t.dataset.mod!==undefined){$('#ibanb').hidden=t.value!=='Bonifico';}
+  if(t.dataset.voce!==undefined){me.voce=t.value;render(true);}
+});
+var F={
+  accesso:function(f){
+    var em=$('#em').value.trim(), pw=$('#pw').value;
+    if(em.indexOf('@')<1)return errore(f,'Scrivi la tua email: quella che hai dato al coro.');
+    if(!pw)return errore(f,'Scrivi la tua password.');
+    me.dentro=true; location.hash='#/home';
+  },
+  chiedi:function(f){
+    if($('#em2').value.indexOf('@')<1)return errore(f,'Scrivi la tua email.');
+    conferma({tono:'verde',ico:'busta',titolo:'Messaggio mandato',frase:'Guarda la tua email: dentro trovi come scegliere la password. Se non la vedi, guarda anche nella posta indesiderata.',torna:'Torna all\'accesso',vai:'accesso'});
+  },
+  chiedicambio:function(f){
+    var it=trova(f.dataset.id), v=f.querySelector('input[name=v]:checked').value; it.richiesta=v;
+    conferma({tono:'ambra',ico:'ora',titolo:'Richiesta mandata',prima:'Il Direttivo deve decidere',stato:'In attesa',cosa:it.titolo+': vorresti dire «'+v+'».',frase:'Per ora resta la risposta di prima. Ti avvisiamo quando decidono.'});
+  },
+  nota:function(f){
+    var it=trova(f.dataset.id), v=$('#nt').value.trim();
+    if(!v)return errore(f,'Scrivi la nota, oppure tocca Annulla.');
+    it.nota2=v; conferma({tono:'verde',ico:'si',titolo:'Nota mandata',cosa:titolo(it),frase:'La legge chi organizza.'});
+  },
+  carica:function(f){
+    if(!$('#ce').value)return errore(f,'Scegli di quale serata sono le foto.');
+    if(!$('#cf').files.length)return errore(f,'Scegli almeno una foto.');
+    conferma({tono:'verde',ico:'si',titolo:'Foto caricate',cosa:$('#ce').value,frase:'Grazie! Le vedono tutti i coristi.',torna:'Torna alle foto',vai:'foto'});
+  },
+  segnala:function(f){
+    if(!$('#sg').value.trim())return errore(f,'Scrivi che cosa è sbagliato.');
+    conferma({tono:'verde',ico:'si',titolo:'Segnalazione mandata',frase:'Il Direttivo corregge il dato e ti avvisa.',torna:'Torna a Io',vai:'io'});
+  },
+  nuovoacc:function(f){
+    var n=$('#an').value.trim(), r=$('#ar').value.trim();
+    if(!n)return errore(f,'Scrivi nome e cognome.');
+    accompagnatori.push({nome:n,rel:r||'Accompagnatore',stato:'In attesa'});
+    conferma({tono:'ambra',ico:'ora',titolo:'Proposta mandata',prima:'Il Direttivo deve approvare',stato:'In attesa',cosa:n,torna:'Torna agli accompagnatori',vai:'accompagnatori'});
+  },
+  rb1:function(){vai('rimborso/2');},
+  rb2:function(f){
+    var c=$('#rd').value.trim(), i=$('#ri').value.trim(), d=$('#rt').value.trim();
+    if(!c)return errore(f,'Scrivi cosa hai pagato.');
+    if(!/^\d+([.,]\d{1,2})?$/.test(i))return errore(f,'Scrivi quanti euro con solo numeri, per esempio 18,50.');
+    if(!d)return errore(f,'Scrivi la data della spesa.');
+    rb.cosa=c;rb.imp=i;rb.data=d;rb.per=$('#rp').value.trim();vai('rimborso/3');
+  },
+  rb3:function(f){
+    if(!rb.cosa)return vai('rimborso/2');
+    if(!$('#rdich').checked)return errore(f,'Metti la spunta sulla frase qui sopra: senza non possiamo mandare la richiesta.');
+    var imp=rb.imp.replace('.',',').replace(/,(\d)$/,',$10'); if(imp.indexOf(',')<0)imp+=',00';
+    rimborsi.unshift({id:'r'+Date.now(),cosa:rb.cosa,imp:imp+' €',data:'6 novembre',stato:'In attesa',det:'Il Direttivo la sta guardando'});
+    conferma({tono:'ambra',ico:'ora',titolo:'Richiesta mandata',prima:'Il Direttivo deve guardarla',stato:'In attesa',cosa:rb.cosa+': '+imp+' €.',frase:'Ti avvisiamo quando è approvata. Puoi seguirla in Rimborsi.',torna:'Vedi i miei rimborsi',vai:'rimborsi'});
+  },
+  password:function(f){
+    if(!$('#p0').value)return errore(f,'Scrivi la password di adesso.');
+    if($('#p1').value.length<8)return errore(f,'La password nuova deve avere almeno 8 caratteri.');
+    if($('#p1').value!==$('#p2').value)return errore(f,'Le due password nuove sono diverse: riscrivile.');
+    conferma({tono:'verde',ico:'si',titolo:'Password cambiata',frase:'La prossima volta entra con quella nuova.',torna:'Torna a Io',vai:'io'});
+  }
+};
+document.addEventListener('submit',function(e){
+  e.preventDefault(); var f=e.target, g=F[f.dataset.form]; if(g)g(f);
+});
+function impostaTema(t){
+  document.documentElement.dataset.tema=t;
+  document.querySelector('meta[name=theme-color]').content=t==='scuro'?'#15120F':'#F6F3EE';
+}
+if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)impostaTema('scuro');
+window.addEventListener('hashchange',function(){render();});
+render();
+</script>
+</body>
+</html>
