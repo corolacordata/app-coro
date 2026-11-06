@@ -767,7 +767,7 @@ function misuraFascia(){
 window.addEventListener('resize',function(){misuraFascia();});
 function render(tieni){
   var r=(location.hash||'').replace(/^#\/?/,'')||'home';
-  var libere=/^(accesso|chiedi)/;
+  var libere=/^(accesso|chiedi)(\/|$)/;
   if(!me.dentro&&!libere.test(r)&&r!=='conferma')r='accesso';
   if(me.dentro&&libere.test(r))r='home';
   var pz=r.split('/'), fn=Object.prototype.hasOwnProperty.call(P,pz[0])?P[pz[0]]:P.home;
