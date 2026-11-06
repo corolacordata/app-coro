@@ -1,5 +1,5 @@
 /* Il «motore» dell'app installata: apre subito, riceve le notifiche, prepara gli aggiornamenti. */
-const VERSIONE='b5779967b53d',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
+const VERSIONE='5f1fb0082011',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
 const FILE=['./','index.html','vera.html','manifest.webmanifest','icona-192.png','icona-512.png','icona-apple-180.png'];
 const ESTERNI_OK=/^https:\/\/(cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net)\//;
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILE)));});   /* la nuova versione entra da sola */

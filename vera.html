@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="La Cordata">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Figtree:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&family=Figtree:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
   <!-- pdfmake, chart.js e html2canvas caricati in fondo al body -->
   <style>
 /* ═══════════════════════════════════════════════════════════════
@@ -4546,6 +4546,123 @@ body #gestionaleArea button.on{min-height:36px!important;}
 @media(min-width:720px){body.ges-mode .g3-umenu-box{position:fixed!important;margin:0!important;top:auto!important;right:auto!important;left:12px!important;bottom:72px!important;}}
 @media(min-width:720px) and (max-width:1179px){body.ges-mode .g3-umenu-box{left:112px!important;bottom:12px!important;}
   body.ges-mode{--sb-w:104px;}#apsSidebar{width:104px!important;}}
+
+/* ═══ v5: LA GRAFICA SCELTA IL 06/11/2026, SCURA E CHIARA, UGUALE ALL'APP DEI CORISTI ═══
+   Valgono questi colori: stessi nomi di app/src/tema.js. Solo aspetto. */
+:root,body{--v5-sf:linear-gradient(135deg,#C2304F 0%,#8E2E35 52%,#4A1650 100%);--v5-sfv:#1F7A4D;--v5-testata:var(--v5-sf);
+  --bg:#F7F5F5;--bg-card:#FFFFFF;--bg-card-2:#F3EFED;--bg-input:#F3EFED;--bg-header:#FFFFFF;--tx-1:#2B2226;--tx-2:#4A3F43;--tx-3:#6F6266;--bd:#E6DCDD;--bd-2:#F0E7E8;
+  --c-primary:#B3263F;--c-soft:#F8ECED;--v5-su:#FFFFFF;--v5-menu:#FFFFFF;--sb-bg:#FFFFFF;--sb-bd:#E6DCDD;--sh-card:none;--sh-md:0 8px 24px rgba(70,30,40,.12);--sh-lg:0 14px 34px rgba(70,30,40,.18);--g4-sh:none;--f-disp:'Plus Jakarta Sans',system-ui,sans-serif;}
+body.dark{--bg:#14080D;--bg-card:#22121A;--bg-card-2:#2F1E26;--bg-input:#2F1E26;--bg-header:#22121A;--tx-1:#FBF3F5;--tx-2:#E3D5D9;--tx-3:#C4B1B7;--bd:#40262F;--bd-2:#2F1E26;
+  --c-primary:#FF6B85;--c-soft:#351A24;--v5-su:#2A0710;--v5-menu:#1C0E15;--sb-bg:#1C0E15;--sb-bd:#40262F;--sh-md:0 8px 24px rgba(0,0,0,.45);--sh-lg:0 14px 34px rgba(0,0,0,.55);--g4-r:#F4A29C;--g4-g:#7BD3A4;}
+body{background:var(--bg)!important;color:var(--tx-1);}
+body,button,input,select,textarea,h1,h2,h3,h4,.g4-t1,.ges-top-title{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif!important;}
+#gestionaleArea,#apsMain,#gestionaleArea .panel-main,#gestionaleArea .panel-layout{background:var(--bg)!important;}
+
+/* menu laterale */
+#apsSidebar,#admSidebar{--c-primary:#B3263F;--sb-bg:#FFFFFF;--sb-bd:#E6DCDD;--sb-text:#2B2226;--tx-1:#2B2226;--tx-3:#6F6266;--bg:#F7F5F5;--bg-card:#FFFFFF;--bg-card-2:#F3EFED;background:var(--v5-menu)!important;border-right:1px solid var(--bd)!important;box-shadow:none!important;}
+body.dark #apsSidebar,body.dark #admSidebar{--c-primary:#FF6B85;--sb-bg:#1C0E15;--sb-bd:#40262F;--sb-text:#FBF3F5;--tx-1:#FBF3F5;--tx-3:#C4B1B7;--bg:#14080D;--bg-card:#1C0E15;--bg-card-2:#2F1E26;}
+#apsSidebar .sb-group,#apsSidebar .sb-item[data-tab="gesOverview"]{display:none!important;}
+#apsSidebar .sb-item,#apsSidebar .sb-item.active{background:transparent!important;color:var(--tx-3)!important;box-shadow:none!important;font-size:14px!important;}
+#apsSidebar .sb-item.active{color:var(--c-primary)!important;background:var(--c-soft)!important;}
+#apsSidebar .sb-item i,#apsSidebar .sb-item.active i{color:inherit!important;}
+#v5Aree{display:flex;flex-direction:column;gap:4px;padding:0 10px;}
+.v5-area{display:flex;align-items:center;gap:12px;width:100%;min-height:46px;padding:0 14px;border:0;border-radius:16px;background:transparent;color:var(--tx-3);font-size:15px;font-weight:700;cursor:pointer;text-align:left;}
+.v5-area i{width:22px;font-size:18px;text-align:center;}
+.v5-area:hover{background:var(--c-soft);}
+.v5-area.on{background:var(--c-soft);color:var(--c-primary);}
+.v5-sb-az button{min-height:46px!important;border-radius:23px!important;}
+.v5-sb-nuovo{background:var(--c-primary)!important;color:var(--v5-su)!important;box-shadow:none!important;order:-1;}
+.v5-sb-cerca{background:transparent!important;color:var(--tx-3)!important;border:1px solid var(--bd)!important;}
+#apsSidebar .g3-brand-lg{background:var(--v5-sf)!important;color:#fff!important;}
+#apsSidebar .sb-fondo{background:var(--v5-menu)!important;box-shadow:none!important;border-top:1px solid var(--bd);}
+
+/* la testata: titolo semplice, il colore resta al riquadro della Home */
+body #gestionaleArea #gesTopBar{background:var(--bg)!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:12px 0 6px!important;margin:0!important;position:static!important;}
+body #gestionaleArea #gesTopBar .ges-top-title{color:var(--tx-1)!important;font-size:1.6rem!important;font-weight:800!important;}
+body #gestionaleArea #gesTopBar .ges-top-title::before{display:none!important;content:none!important;}
+body #gestionaleArea #gesTopBar>button:first-child,body #gestionaleArea #gesTopBar .g4-ges-me{background:var(--bg-card)!important;color:var(--tx-1)!important;border:1px solid var(--bd)!important;border-radius:22px!important;}
+body #gestionaleArea #gesTopBar>button:first-child i{color:var(--tx-1)!important;}
+body #gestionaleArea #gesTopBar .g3-topsearch{display:none!important;}
+.g3-dash-head,.g4-hello{background:var(--v5-sf)!important;border-radius:28px!important;box-shadow:none!important;}
+.g3-dash-head .btn-sm,.g3-dash-head button,.g4-hello .btn-sm,.g4-hello button{background:rgba(0,0,0,.24)!important;color:#fff!important;border-radius:23px!important;}
+
+/* le pillole dell'area */
+#v5Pillole{position:sticky;top:0;z-index:30;background:var(--bg);padding:4px 0 12px;}
+.v5-pill{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;}
+.v5-pill::-webkit-scrollbar{display:none;}
+.v5-p{flex:none;min-height:42px;padding:0 16px;border-radius:21px;border:1px solid var(--bd);background:transparent;color:var(--tx-3);font-size:14px;font-weight:700;cursor:pointer;}
+.v5-p.on{border-color:var(--c-primary);color:var(--c-primary);}
+
+/* riquadri: bordo sottile, niente ombre */
+.dashboard-card,.g4-card,.g3-rcard,.new-card,.ges-card,.table-container,.conv-stat-card,.kpi-card,.ev-box,.siti-card,.imp2-sez,.ev-kpi,.card,.g3-kpi{background-color:var(--bg-card)!important;border:1px solid var(--bd)!important;border-radius:20px!important;box-shadow:none!important;}
+.g3-rcard-ico,.g4-ti{background:var(--c-soft)!important;color:var(--c-primary)!important;}
+.g3-rcard-ico i,.g4-ti i{color:var(--c-primary)!important;}
+.modal-content,.mshell,.g3-drawer{background:var(--bg-card)!important;color:var(--tx-1);border:1px solid var(--bd);}
+.mshell>div:first-child,.g3-drawer-head{background:transparent!important;border-bottom:1px solid var(--bd)!important;}
+.mshell>div:first-child h3,.mshell>div:first-child h3 i,.mshell>div:first-child button,.g3-drawer-head h3{color:var(--tx-1)!important;}
+
+/* campi */
+.form-control,.form-select,input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],input[type=password],input[type=search],select,textarea{background-color:var(--bg-input)!important;color:var(--tx-1)!important;border:1px solid var(--bd)!important;border-radius:14px!important;}
+.form-control:focus,.form-select:focus,input:focus,select:focus,textarea:focus{border-color:var(--c-primary)!important;background-color:var(--bg-input)!important;box-shadow:none!important;}
+::placeholder{color:var(--tx-3)!important;opacity:1;}
+
+/* pulsanti: a pillola, tre tipi soli */
+.btn-sm,.btn-action,.btn{border-radius:23px!important;font-weight:700!important;box-shadow:none!important;}
+.btn-sm:not(.primary):not(.success):not(.danger):not(.wa){background:transparent!important;color:var(--tx-1)!important;border:1px solid var(--bd)!important;}
+body.dark .btn-sm:not(.primary):not(.success):not(.danger):not(.wa){color:var(--tx-1)!important;}
+.btn-sm.primary,.btn.primary,.btn-primary,.btn-action,.g4-hdr-nuovo{background:var(--c-primary)!important;color:var(--v5-su)!important;border:1px solid var(--c-primary)!important;box-shadow:none!important;}
+.btn-sm.primary i,.btn-action i{color:var(--v5-su)!important;}
+.btn-sm.success{background:#1F7A4D!important;color:#fff!important;border:1px solid #1F7A4D!important;}
+.sub-tabs .sub-tab,.sub-tab-v{background:transparent!important;color:var(--tx-3)!important;border:1px solid var(--bd)!important;border-radius:21px!important;box-shadow:none!important;}
+.sub-tabs .sub-tab.active,.sub-tab-v.active{background:transparent!important;color:var(--c-primary)!important;border-color:var(--c-primary)!important;}
+.mail-toggle input:checked+.mail-toggle-slider,.g4-sw.on{background:var(--c-primary)!important;}
+#gestionaleArea table tbody tr:hover td{background:var(--c-soft)!important;}
+
+/* menu in basso */
+.ges-bottom-nav{background:var(--v5-menu)!important;border:0!important;border-top:1px solid var(--bd)!important;border-radius:24px 24px 0 0!important;box-shadow:none!important;}
+.ges-bn-item,.ges-bn-item i{color:var(--tx-3)!important;background:transparent!important;}
+.ges-bn-item.active,.ges-bn-item.active i{color:var(--c-primary)!important;background:transparent!important;}
+.ges-bn-plus span{background:var(--c-primary)!important;color:var(--v5-su)!important;border:4px solid var(--bg);}
+.ges-bn-plus span i{color:var(--v5-su)!important;}
+.ges-bottom-sheet{background:var(--bg-card)!important;border-top:1px solid var(--bd);}
+.g3-menu button{background:transparent!important;color:var(--tx-1)!important;border:1px solid var(--bd)!important;border-radius:16px!important;}
+.g3-menu button i{color:var(--c-primary)!important;}
+
+/* tablet: il menu stretto */
+@media(min-width:720px) and (max-width:1179px){
+  .v5-area{flex-direction:column;gap:3px;min-height:60px;padding:6px 2px;font-size:12px;justify-content:center;text-align:center;}
+  #v5Aree{padding:0 6px;}
+  .v5-area .sb-label{font-size:12px!important;}
+}
+
+/* prove lampone, eventi oro, riunioni azzurro: anche nelle date della Home */
+:root,body{--v5-pt:#FBE6EA;--v5-pf:#A32440;--v5-et:#FBF0DA;--v5-ef:#7A5200;--v5-rt:#E0F2F6;--v5-rf:#0F6275;}
+body.dark{--v5-pt:#3D1825;--v5-pf:#FF9BAE;--v5-et:#3A2A10;--v5-ef:#F2D28C;--v5-rt:#123340;--v5-rf:#8FD8EC;}
+.g3v-dt{background:var(--v5-pt)!important;color:var(--v5-pf)!important;border-radius:14px!important;}
+.g3v-dt small,.g3v-dt b{color:inherit!important;opacity:1!important;}
+.g3v-dt small{font-size:12px!important;}
+.g3v-dt.ev{background:var(--v5-et)!important;color:var(--v5-ef)!important;}
+.g3v-dt.w{background:rgba(0,0,0,.24)!important;color:#fff!important;}
+.g3v-dt.so{background:var(--bg-card-2)!important;color:var(--tx-1)!important;}
+.conv-chip,.conv-chip.active,body.dark .conv-chip.active{background:transparent!important;color:var(--tx-3)!important;border:1px solid var(--bd)!important;border-radius:21px!important;}
+.conv-chip.active,body.dark .conv-chip.active{color:var(--c-primary)!important;border-color:var(--c-primary)!important;}
+body.dark [style*="#0B6E8A"]{color:#8FD8EC!important;}
+.chip-stato{font-size:12px!important;}
+#sbUserAvatar{min-width:36px;min-height:36px;}
+/* elenco dei soci */
+#tbodySociGes .g4-sr .btn-sm{background:transparent!important;color:var(--tx-1)!important;border:1px solid var(--bd)!important;min-height:36px!important;min-width:36px!important;}
+#tbodySociGes .g4-sr .btn-sm i{color:inherit!important;}
+#tbodySociGes .g4-sr .btn-sm.success:not([disabled]){background:#1F7A4D!important;color:#fff!important;border-color:#1F7A4D!important;}
+#tbodySociGes .g4-sr .btn-sm[disabled]{opacity:.5;}
+@media(max-width:719px){
+  #tbodySociGes .g4-sr{flex-wrap:wrap!important;padding:10px 4px!important;gap:6px 8px!important;}
+  #tbodySociGes .g4-sr>td{padding:0!important;}
+  #tbodySociGes .g4-sr>td:nth-child(2){flex:1 1 100%!important;}
+  #tbodySociGes .g4-sr>td:nth-child(5){display:block!important;flex:none;}
+  #tbodySociGes .g4-sr>td:nth-child(6){display:flex!important;flex:none;margin-left:auto;gap:6px;}
+  #gesSoci .g4-sbar{gap:6px!important;}
+}
+#apsSidebar .sb-item .sb-label,#apsSidebar .sb-item.active .sb-label{color:inherit!important;}
 </style>
 <script>window.__SOLO_GESTIONALE=1;</script><style>#dashboardScreen{display:none!important}</style></head>
 <body>
@@ -5470,8 +5587,9 @@ body #gestionaleArea button.on{min-height:36px!important;}
         <!-- v5: Cerca e Nuovo stanno qui, così in alto non serve più una riga -->
         <div class="v5-sb-az">
           <button type="button" class="v5-sb-cerca" onclick="apriRicerca()" title="Cerca (Ctrl+K)" aria-label="Cerca"><i class="fa-solid fa-magnifying-glass"></i><span class="sb-label">Cerca</span></button>
-          <button type="button" class="v5-sb-nuovo" onclick="apriAzioniRapide()" title="Cosa vuoi fare?" aria-label="Nuovo"><i class="fa-solid fa-plus"></i><span class="sb-label">Nuovo</span></button>
+          <button type="button" class="v5-sb-nuovo" onclick="apriAzioniRapide()" title="Cosa vuoi fare?" aria-label="Nuovo"><i class="fa-solid fa-plus"></i><span class="sb-label">Cosa vuoi fare</span></button>
         </div>
+        <nav id="v5Aree" aria-label="Aree del gestionale"></nav>
 
         <!-- Dashboard (sempre visibile) -->
         <div class="sb-item active" onclick="switchGesTab('gesOverview',this);closeMobileSidebar()" data-tab="gesOverview" style="margin:6px 6px 2px;">
@@ -5586,7 +5704,7 @@ body #gestionaleArea button.on{min-height:36px!important;}
             <i class="fa-solid fa-book-open"></i><span class="sb-label">Manuale</span>
           </div>
           <div class="sb-item" onclick="tornaAlPortaleCoristi();closeMobileSidebar();" style="color:var(--c-primary);font-weight:600;" title="Torna al Portale Coristi (sessione attiva 30 min)">
-            <i class="fa-solid fa-house"></i><span class="sb-label">Portale Coristi</span>
+            <i class="fa-solid fa-house"></i><span class="sb-label">App dei coristi</span>
           </div>
           <!-- Utente collegato (v3, riempito da _setHeaderGestionale_) -->
           <div class="g3-sbuser"><div class="g3-av" id="sbUserAvatar" onclick="apriMenuUtente()" role="button" title="Il mio menu" style="cursor:pointer;">–</div><div class="sb-label" onclick="apriMenuUtente()" role="button" title="Il mio menu" style="min-width:0;flex:1;cursor:pointer;"><b id="sbUserName">Utente</b><small id="sbUserTimer">sessione: 30 min</small></div><button class="g3-renew" onclick="rinnovaSessioneUI(this)" title="Rinnova la sessione per altri 30 minuti"><i class="fa-solid fa-rotate-right"></i></button></div>
@@ -5603,6 +5721,9 @@ body #gestionaleArea button.on{min-height:36px!important;}
         <button class="g3-topsearch" onclick="apriRicerca()" title="Cerca (Ctrl+K)" style="border:1px solid var(--bd);"><i class="fa-solid fa-magnifying-glass"></i><span>Cerca…</span><kbd>Ctrl K</kbd></button>
         <button class="g4-ges-me" onclick="apriMenuUtente()" title="Menu"></button>
       </div>
+
+      <!-- v5: le sezioni dell'area, a pillole -->
+      <div id="v5Pillole"></div>
 
       <!-- ── DASHBOARD OVERVIEW ── -->
       <div id="gesOverview" class="tab-section">
@@ -6283,33 +6404,19 @@ body #gestionaleArea button.on{min-height:36px!important;}
 
     <!-- ══ Bottom Nav Mobile Gestionale ══ -->
     <nav id="gesBottomNav" class="ges-bottom-nav">
-      <!-- Dashboard — sempre visibile -->
-      <div class="ges-bn-item active" data-tab="gesOverview" onclick="_gesNavTo_('gesOverview')">
-        <i class="fa-solid fa-gauge-high"></i><span>Home</span>
-      </div>
-      <!-- Soci -->
-      <div class="ges-bn-item" data-tab="gesSoci" data-perm="LibroSoci" onclick="_gesNavTo_('gesSoci')" style="display:none;">
-        <i class="fa-solid fa-users"></i><span>Persone</span>
-      </div>
-      <!-- + azioni rapide: al centro esatto della barra -->
+      <div class="ges-bn-item active" data-area="home" onclick="_v5ApriArea_('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
+      <div class="ges-bn-item" data-area="persone" onclick="_v5ApriArea_('persone')"><i class="fa-solid fa-users"></i><span>Persone</span></div>
       <div class="ges-bn-gap"></div>
-      <div class="ges-bn-plus" onclick="apriAzioniRapide()" title="Azioni rapide"><span><i class="fa-solid fa-plus"></i></span></div>
-      <!-- Contabilità: spostata nel menu "Altro" per tenere il + al centro -->
-      <!-- Sondaggi -->
-      <div class="ges-bn-item" data-tab="ges_admEv" data-perm="Sondaggi" onclick="_gesNavTo_('ges_admEv')" style="display:none;">
-        <i class="fa-solid fa-music"></i><span>Attività</span>
-      </div>
-      <!-- Altro → bottom sheet -->
-      <div class="ges-bn-item" onclick="toggleGesBottomSheet()">
-        <i class="fa-solid fa-ellipsis"></i><span>Altro</span>
-      </div>
+      <div class="ges-bn-plus" onclick="apriAzioniRapide()" title="Cosa vuoi fare?"><span><i class="fa-solid fa-plus"></i></span></div>
+      <div class="ges-bn-item" data-area="agenda" onclick="_v5ApriArea_('agenda')"><i class="fa-solid fa-calendar-days"></i><span>Agenda</span></div>
+      <div class="ges-bn-item" data-area="altro" onclick="toggleGesBottomSheet()"><i class="fa-solid fa-ellipsis"></i><span>Altro</span></div>
     </nav>
 
     <!-- Overlay + Bottom Sheet "Altro" -->
     <div id="gesBottomSheetOverlay" onclick="closeGesBottomSheet()" style="display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.4);backdrop-filter:blur(2px);"></div>
     <div id="gesBottomSheet" class="ges-bottom-sheet">
       <div class="ges-bs-handle"></div>
-      <div style="font-weight:600;font-size:0.7rem;color:var(--tx-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding:0 4px;">Tutte le sezioni</div>
+      <div style="font-weight:600;font-size:0.7rem;color:var(--tx-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding:0 4px;">Le altre aree</div>
       <div class="v5-sheet-az"><button type="button" class="btn-sm" onclick="toggleGesBottomSheet();apriRicerca()"><i class="fa-solid fa-magnifying-glass"></i> Cerca</button><button type="button" class="btn-sm" onclick="toggleGesBottomSheet();apriMenuUtente()"><i class="fa-solid fa-circle-user"></i> Il mio menu</button></div>
       <div class="g3-sheet-sess"><span id="sbUserTimerMobile">sessione: 30 min</span><button class="btn-sm" onclick="rinnovaSessioneUI(this)"><i class="fa-solid fa-rotate-right"></i> Rinnova</button></div>
       <div id="gesBottomSheetItems"></div>
@@ -7100,10 +7207,10 @@ function toggleDarkMode(){
   var isDark=document.body.classList.toggle('dark');
   var ico=document.getElementById('darkModeIcon');
   if(ico){ico.className=isDark?'fa-solid fa-sun':'fa-solid fa-moon';}
-  try{localStorage.setItem('_theme',isDark?'dark':'light');}catch(e){}
+  try{localStorage.setItem('_theme',isDark?'dark':'light');localStorage.setItem('_app_tema',isDark?'scuro':'chiaro');}catch(e){}
 }
 (function(){
-  try{if(localStorage.getItem('_theme')==='dark'){document.body.classList.add('dark');var ico=document.getElementById('darkModeIcon');if(ico)ico.className='fa-solid fa-sun';}}catch(e){}
+  try{var _tA_=localStorage.getItem('_app_tema')||'scuro';if(_tA_==='scuro'||(_tA_==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)){document.body.classList.add('dark');var ico=document.getElementById('darkModeIcon');if(ico)ico.className='fa-solid fa-sun';}}catch(e){}
 })();
 
 /* Conferma modale — usata anche fuori dal gestionale */
