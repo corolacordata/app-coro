@@ -4434,7 +4434,7 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
       <div class="g3-logo"><i class="fa-solid fa-music"></i></div>
       <h1>La Cordata</h1>
       <p class="g3-lsub" id="accSub">Il portale dei coristi · entra con la tua email</p>
-      <span class="g3-ver">Versione 4.11.8</span>
+      <span class="g3-ver">Versione 4.11.9</span>
       <div id="accBox"></div>
       <div id="loginSearchWrap" style="display:none;">
         <div id="g4LoginRic"></div>
@@ -4464,7 +4464,7 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
           <i class="fa-solid fa-building-columns" style="font-size:26px;color:white;"></i>
         </div>
         <h2 style="margin:0 0 4px;font-weight:600;">Gestionale APS</h2>
-        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.8</span></p>
+        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.9</span></p>
       </div>
       <div id="gesOtpMsg" style="background:var(--bg-card-2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:0.85rem;color:var(--c-primary);font-weight:600;">
         <i class="fa-solid fa-envelope-circle-check"></i> Controlla la tua email per il codice.
@@ -5194,7 +5194,7 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
           <i class="fa-solid fa-building-columns" style="font-size:26px;color:white;"></i>
         </div>
         <h2 style="margin:0 0 4px;font-weight:600;">Gestionale APS</h2>
-        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.8</span></p>
+        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.9</span></p>
       </div>
       <!-- Step 1: nome+cognome -->
       <div id="apsStep1">
@@ -6315,7 +6315,7 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
           </div>
         </div>
         <label class="lbl-form">Chi convoca (Presidente)</label>
-        <input type="text" id="convPresidente" class="form-control" value="Stefano Di Bufà">
+        <input type="text" id="convPresidente" class="form-control" value="">
         <div class="grid-2">
           <div><label class="lbl-form">Data 1ª Conv.</label><input type="text" id="convData1" class="form-control" placeholder="dd/mm/yyyy"></div>
           <div><label class="lbl-form">Ora 1ª Conv.</label><input type="text" id="convOra1" class="form-control" placeholder="21:30"></div>
@@ -6506,7 +6506,7 @@ return /^[\w:.-]{1,60}$/.test(p)?p:'';})();</script>
 <script>
 /* Numero di versione mostrato nell'app (login, codice del coro, informazioni).
    Grafica nuova = numero intero (3); ogni blocco nuovo aggiunto dopo = 3.1, 3.2… */
-var APP_VERSIONE='4.11.8';
+var APP_VERSIONE='4.11.9';
 document.addEventListener('DOMContentLoaded',function(){ document.querySelectorAll('.g3-ver').forEach(function(e){ e.textContent='Versione '+APP_VERSIONE; }); });
 /* v3 — data in riquadro: «MAR 06 OTT» e «domani / tra 3 giorni» (portale e gestionale) */
 function _g3vData_(s){
@@ -7684,7 +7684,7 @@ var _toastT_=null;
     if(msg===ultimo&&Date.now()-quando<5000)return; ultimo=msg; quando=Date.now();
     try{ showToast('Qualcosa non ha funzionato',escapeHtml(msg)+' — rifai l\'operazione; se torna, manda una foto di questo messaggio','error'); }catch(e){}
   };
-  window.addEventListener('error',function(e){ if(e&&e.filename&&!/googleusercontent|script\.google|userCodeAppPanel|^$/.test(e.filename))return; mostra(e&&e.message); });
+  window.addEventListener('error',function(e){ if(e&&e.filename&&!/googleusercontent|script\.google|userCodeAppPanel|github\.io|^$/.test(e.filename))return; mostra(e&&e.message); });
   window.addEventListener('unhandledrejection',function(e){ var r=e&&e.reason; mostra(r&&r.message||r); });
 })();
 function showToast(title,message,type,undo){
@@ -7900,6 +7900,8 @@ document.addEventListener("DOMContentLoaded", async function(){
 
   } catch(err){
     var msg=String(err&&err.message||err||'Errore sconosciuto');
+    /* v5: fuori da Google, se manca la rete, si dice con parole semplici */
+    if(window.__API_URL){ document.getElementById('sysLoader').innerHTML='<div style="text-align:center;padding:40px;max-width:400px;"><i class="fa-solid fa-wifi" style="font-size:40px;color:#8E2E35;"></i><p style="font-weight:700;margin:16px 0 6px;">Non riesco a collegarmi</p><p style="color:var(--tx-3);margin:0 0 16px;">Controlla la rete e riprova.</p><button onclick="location.reload()" class="btn-sm primary" style="min-height:48px;padding:0 24px;">Riprova</button></div>'; document.getElementById('sysLoader').style.display='flex'; return; }
     document.getElementById('sysLoader').innerHTML=
       '<div style="text-align:center;padding:40px;max-width:400px;">'
       +'<i class="fa-solid fa-triangle-exclamation" style="font-size:40px;color:#B3261E;"></i>'
@@ -7991,7 +7993,7 @@ function _popolaLoginSelect_(filtro){
   var f=String(filtro||'').toLowerCase().trim();
   if(!f)_g4RicMostra_();
   var _sa=function(x){ return String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }, pz=_sa(f).split(/\s+/).filter(Boolean);
-  /* v4.2: conta l'inizio delle parole («s» trova Sacripanti e Stefano, non Biondi Massimiliano) */
+  /* v4.2: conta l'inizio delle parole («s» trova chi ha nome o cognome con la s iniziale) */
   var utentiOrd=db.utenti.slice().filter(function(u){ if(!pz.length)return true; var w=_sa(u.c+' '+u.n).split(/[\s'’\-]+/).filter(Boolean); return pz.every(function(p){ return w.some(function(x){ return x.indexOf(p)===0; }); }); }).sort(function(a,b){return (a.c+a.n).localeCompare(b.c+b.n);});
   sel.innerHTML='<option value="">'+(f?(utentiOrd.length?'— '+utentiOrd.length+(utentiOrd.length===1?' nome':' nomi')+': tocca qui —':'— nessun nome trovato —'):'— Seleziona il tuo nome —')+'</option>'
     +utentiOrd.map(function(u,i){
