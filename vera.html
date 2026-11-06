@@ -4663,6 +4663,53 @@ body.dark [style*="#0B6E8A"]{color:#8FD8EC!important;}
   #gesSoci .g4-sbar{gap:6px!important;}
 }
 #apsSidebar .sb-item .sb-label,#apsSidebar .sb-item.active .sb-label{color:inherit!important;}
+
+/* ─── v5: pagina Soci ─── */
+.v5-numeri{margin-bottom:12px!important;}
+#btnRichiesteGes:not(:has(#richBadgeGes span)){display:none!important;}
+#gesSoci .g4-sociTab{background:transparent!important;border:0!important;padding:0!important;}
+.v5-lista{display:flex;flex-direction:column;gap:8px;}
+.v5-vuoto{padding:24px;text-align:center;color:var(--tx-3);}
+.v5-sr{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--bg-card);border:1px solid var(--bd);border-radius:20px;}
+.v5-sr::-webkit-scrollbar{display:none;}
+.v5-sr.off{opacity:.62;}
+.v5-sr.on{border-color:var(--c-primary);}
+.v5-sr-a,.v5-sr-b{flex:0 0 100%;box-sizing:border-box;scroll-snap-align:start;display:flex;align-items:center;gap:8px;padding:10px 12px;}
+.v5-sr-t{flex:1;min-width:0;display:flex;align-items:center;gap:12px;background:transparent;border:0;padding:0;color:var(--tx-1);text-align:left;cursor:pointer;}
+.v5-sr-t .g3-av{flex:none;width:46px!important;height:46px!important;}
+.v5-sr-n{flex:1;min-width:0;display:block;}
+.v5-sr-n b{display:block;font-size:15px;line-height:20px;font-weight:700;color:var(--tx-1);overflow-wrap:anywhere;}
+.v5-sr-n small{display:block;font-size:13px;line-height:18px;color:var(--tx-3);}
+.v5-sr-c{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;}
+.v5-sr-fr{flex:none;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:var(--c-soft);color:var(--c-primary);cursor:pointer;font-size:16px;}
+.v5-sr-ind{color:var(--tx-3);}
+.v5-sr-b .btn-sm{flex:1 1 0;min-width:0;min-height:58px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px!important;font-size:12px!important;text-decoration:none;}
+@media(min-width:720px){
+  .v5-sr{overflow:hidden;scroll-snap-type:none;}
+  .v5-sr-a{flex:1 1 auto;min-width:0;}
+  .v5-sr-b{flex:none;padding-left:0;}
+  .v5-sr-fr{display:none;}
+  .v5-sr-b .btn-sm{flex:none;min-height:40px!important;flex-direction:row;padding:0 14px!important;gap:6px;font-size:13px!important;}
+  .v5-sr-tel{display:none!important;}
+}
+@media(min-width:1180px){ .v5-sr-b .btn-sm:first-of-type span{display:none;} .v5-sr-b .btn-sm:first-of-type{width:40px;padding:0!important;justify-content:center;} }
+.g5-socioPan,#gesSocioPan{background:var(--bg-card)!important;border:1px solid var(--bd)!important;border-radius:20px!important;box-shadow:none!important;}
+.g5-sp-hd{background:var(--v5-sf)!important;border-radius:20px;padding:16px!important;margin-bottom:12px;}
+.g5-sp-hd h2,.g5-sp-hd small{color:#fff!important;}
+.g5-sp-box{background:var(--bg-card-2)!important;border-radius:14px;}
+#msTabs .ms-tab,#msTabs .ms-tab.active,body.dark #msTabs .ms-tab.active{background:transparent!important;border:1px solid var(--bd)!important;border-radius:21px!important;color:var(--tx-3)!important;min-height:42px;}
+#msTabs .ms-tab.active,body.dark #msTabs .ms-tab.active{border-color:var(--c-primary)!important;color:var(--c-primary)!important;}
+#msTabs{background:transparent!important;border:0!important;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#msTabs .ms-tab{flex:none;padding:0 14px;}
+@media(max-width:719px){ .v5-numeri{grid-template-columns:repeat(2,minmax(0,1fr))!important;} .g4-sbar-cerca{flex:1 1 100%!important;} }
+.v5-sr .btn-sm{min-width:0!important;overflow:hidden;}
+.v5-sr .btn-sm.success{background:#1F7A4D!important;color:#fff!important;border-color:#1F7A4D!important;}
+.v5-sr .btn-sm.success i,.v5-sr .btn-sm.success span{color:#fff!important;}
+.v5-sr .btn-sm:not(.success){background:transparent!important;color:var(--tx-1)!important;border:1px solid var(--bd)!important;}
+.v5-sr .btn-sm:not(.success) i{color:inherit!important;}
+.v5-sr-b{min-width:0;}
+.v5-sr-b .btn-sm span{white-space:normal;text-align:center;line-height:14px;}
+#tbodySociGes .v5-sr .btn-sm.success,body.dark #tbodySociGes .v5-sr .btn-sm.success{background:#1F7A4D!important;background-image:none!important;color:#fff!important;border:1px solid #1F7A4D!important;}
 </style>
 <script>window.__SOLO_GESTIONALE=1;</script><style>#dashboardScreen{display:none!important}</style></head>
 <body>
@@ -5736,17 +5783,19 @@ body.dark [style*="#0B6E8A"]{color:#8FD8EC!important;}
       <div id="gesSoci" class="tab-section" style="display:none;">
         <!-- Lista soci — v4.0.1 come nel progetto: cerca, «Nuovo socio», le voci a pillole, la tabella.
              Gli altri comandi sono tutti in «Altro» (non tolti: spostati). -->
+        <div id="gesSociKpi" class="g3-kpis v5-numeri"></div>
         <div class="g4-sbar">
           <div class="g4-sbar-cerca"><i class="fa-solid fa-magnifying-glass"></i><input type="text" class="form-control s" id="cercaSocioGes" placeholder="Cerca un socio…" oninput="renderSociGes()"></div>
           <select class="form-select" id="filtroStatoSocioGes" style="padding:9px 12px;font-size:0.85rem;margin:0;width:auto;" onchange="renderSociGes()">
               <option value="">Tutti</option><option value="ATTIVO">Attivi</option><option value="AMMESSO">Ammessi (quota da versare)</option><option value="NON ATTIVO">Non Attivi</option>
             </select>
           <button class="btn-sm" id="btnRichiesteGes" style="background:rgba(184,116,26,0.14);color:#8F5A14;border:1px solid rgba(184,116,26,0.35);" onclick="richApriPannello()"><i class="fa-solid fa-inbox"></i> Richieste <span id="richBadgeGes"></span></button>
-          <button class="btn-sm" onclick="apriReport('soci')"><i class="fa-solid fa-print"></i> Report e stampe</button>
-          <button class="btn-sm" onclick="tesApri()"><i class="fa-solid fa-id-card"></i> Tessere</button>
           <button class="btn-sm primary" onclick="apriModaleSocio(null)"><i class="fa-solid fa-plus"></i> Nuovo socio</button>
           <details class="g4-altro"><summary title="Altre azioni"><i class="fa-solid fa-ellipsis"></i> Altro</summary>
             <div class="g4-altro-p">
+              <button class="btn-sm" onclick="this.closest('details').open=false;richApriPannello()"><i class="fa-solid fa-inbox"></i> Richieste</button>
+              <button class="btn-sm" onclick="this.closest('details').open=false;apriReport('soci')"><i class="fa-solid fa-print"></i> Report e stampe</button>
+              <button class="btn-sm" onclick="this.closest('details').open=false;tesApri()"><i class="fa-solid fa-id-card"></i> Tessere</button>
               <label class="g4-altro-anno">Anno delle quote <select id="gesAnnoQuote" class="form-select" style="padding:9px 12px;font-size:0.85rem;margin:0;width:auto;" onchange="aggiornaAnnoQuote()">
                 <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option>
               </select></label>
@@ -5764,13 +5813,10 @@ body.dark [style*="#0B6E8A"]{color:#8FD8EC!important;}
         <div id="gesSociPill" class="sub-tabs g4-pill"></div>
         <div class="g5-soci">
         <div class="dashboard-card g4-sociTab">
-          <div class="tbl-wrap"><table class="tbl"><thead><tr>
-            <th>Tessera</th><th>Nome</th><th>Voce</th><th>Stato</th><th>Quota</th><th style="width:80px;"></th>
-          </tr></thead><tbody id="tbodySociGes"></tbody></table></div>
+          <div id="tbodySociGes" class="v5-lista"></div>
         </div>
         <aside id="gesSocioPan" class="dashboard-card g5-socioPan"></aside>
         </div>
-        <div id="gesSociKpi" class="g3-kpis"></div>
         <!-- Impostazioni quote (collassabile) -->
         <div class="dashboard-card" id="gesImpCard" style="margin-bottom:12px;padding:14px 18px;">
           <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleGesImpQuote()">
