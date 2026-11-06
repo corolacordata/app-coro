@@ -267,6 +267,17 @@ body.menu-aperto #velo{display:block;}
 .carta{padding:0;}
 [data-tema="scuro"] .mv .ic{color:var(--inchiostro);}
 [data-tema="scuro"] .carta-img .tipo{background:#fff;color:#2B2233;}
+
+/* telefono: le quattro voci sempre a portata di pollice; il resto nel menu a scomparsa */
+:root{--menu-h:64px;}
+#sotto{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--scheda);border-radius:18px 18px 0 0;box-shadow:0 -6px 24px rgba(43,34,51,.08);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom);}
+.sv{min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:600;color:var(--grigio);}
+.sv .ic{width:32px;height:26px;padding:3px 6px;}
+.sv[aria-current="page"]{color:var(--bordeaux-testo);font-weight:700;}
+.sv[aria-current="page"] .ic{background:linear-gradient(310deg,#7A1F2B,#D9534F);color:#fff;border-radius:9px;box-shadow:0 4px 10px rgba(122,31,43,.25);}
+body.senza-menu #sotto{display:none;}
+@media (min-width:768px){:root{--menu-h:0px;}#sotto{display:none;}}
+[data-tema="scuro"] #sotto{box-shadow:none;border-top:1px solid var(--linea);}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icona-apple-180.png"><link rel="icon" href="icona-192.png"><script>if(/[?&](accesso|apri|iscrizione|accompagnatore|contatto|azione|coro|prova|tessera)=?/.test(location.search))location.replace("vera.html"+location.search);</script></head>
 <body class="senza-menu">
@@ -321,6 +332,12 @@ body.menu-aperto #velo{display:block;}
   <button type="button" class="mv" data-vai="notifiche" data-m="notifiche"><svg class="ic" aria-hidden="true"><use href="#i-camp"/></svg>Notifiche</button>
   <button type="button" class="mv" data-az="tema"><svg class="ic" aria-hidden="true"><use href="#i-luna"/></svg>Tema chiaro o scuro</button>
   <button type="button" class="mv" data-vai="esci"><svg class="ic" aria-hidden="true"><use href="#i-esci"/></svg>Esci</button>
+</nav>
+<nav id="sotto" aria-label="Voci principali">
+  <button type="button" class="sv" data-vai="home" data-m="home"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Home</button>
+  <button type="button" class="sv" data-vai="agenda" data-m="agenda"><svg class="ic" aria-hidden="true"><use href="#i-agenda"/></svg>Agenda</button>
+  <button type="button" class="sv" data-vai="studio" data-m="studio"><svg class="ic" aria-hidden="true"><use href="#i-studio"/></svg>Studio</button>
+  <button type="button" class="sv" data-vai="io" data-m="io"><svg class="ic" aria-hidden="true"><use href="#i-io"/></svg>Io</button>
 </nav>
 <div id="velo" data-az="chiudimenu"></div>
 <header id="barra"><button type="button" class="apri" data-az="apri" aria-label="Apri il menu"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><span class="marca" id="barraT">La Cordata</span><button type="button" data-vai="notifiche" aria-label="Notifiche"><svg class="ic" aria-hidden="true"><use href="#i-camp"/></svg></button></header>
@@ -926,7 +943,7 @@ function render(tieni){
   misuraFascia();
   var tt={home:'La Cordata',agenda:'Agenda',studio:'Studio',io:'La mia pagina',bacheca:'Bacheca',foto:'Foto e video',notifiche:'Notifiche'}[o.m]||'La Cordata'; var bt=$('#barraT'); if(bt)bt.textContent=tt;
   document.body.classList.toggle('senza-menu',!!o.senza);
-  document.querySelectorAll('.mv').forEach(function(b){if(b.dataset.m===o.m)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  document.querySelectorAll('.mv,.sv').forEach(function(b){if(b.dataset.m===o.m)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
   mini(pz[0]==='brano'&&pz[1]===pl.b);
   if(!tieni){window.scrollTo(0,0);var t=pag.querySelector('h1');if(t)t.focus({preventScroll:true});}
 }
