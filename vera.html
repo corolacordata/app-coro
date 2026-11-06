@@ -3004,7 +3004,8 @@ body.dark #gestionaleArea .g3-todo{box-shadow:inset 0 0 0 1px var(--bd);}
 /* ── v4 gestionale, tutte le sezioni: titolo grande (non più barra), schede bianche senza bordo, tabelle e filtri come nel progetto ── */
 #gesTopBar{background:transparent!important;border:0!important;box-shadow:none!important;position:static!important;padding:6px 0 14px!important;}
 #gesTopBar>button:first-child{width:38px;height:38px;justify-content:center;padding:0!important;border:0!important;border-radius:12px!important;background:var(--bg-card)!important;box-shadow:var(--g4-sh);font-size:0!important;gap:0!important;}
-#gesTopBar>button:first-child i{font-size:.9rem;}
+body #gestionaleArea #gesTopBar .g4-ges-me{background:rgba(255,255,255,.18)!important;color:#fff!important;border:0!important;}
+body #gestionaleArea #gesTopBar>button:first-child i{font-size:.9rem;}
 body.dark #gesTopBar>button:first-child{box-shadow:inset 0 0 0 1px var(--bd);}
 #gesTopBar .ges-top-title{font-size:2.15rem!important;line-height:1.1!important;flex:1;}
 #gesTopBar .ges-top-title::before{content:'GESTIONALE'!important;font-family:Figtree,system-ui,sans-serif;font-size:.62rem!important;font-weight:600!important;letter-spacing:.14em;color:var(--tx-3);margin-bottom:4px;}
@@ -3392,7 +3393,8 @@ body.dark .g4-seg button.on{background:#A8353D;}
   body.ges-mode #gestionaleArea .panel-main,body.ges-mode #apsMain{padding-top:calc(16px + env(safe-area-inset-top,0px))!important;}
   body.ges-sez #gesTopBar{display:flex!important;align-items:center;gap:10px;padding:0 0 12px!important;}
   body.ges-sez #gesTopBar>button:first-child{display:flex!important;width:36px;height:36px;font-size:0!important;}
-  body.ges-sez #gesTopBar>button:first-child i{font-size:.85rem;}
+  body.ges-sez body #gestionaleArea #gesTopBar .g4-ges-me{background:rgba(255,255,255,.18)!important;color:#fff!important;border:0!important;}
+body #gestionaleArea #gesTopBar>button:first-child i{font-size:.85rem;}
   #gesTopBar .ges-top-title::before{display:none!important;}
   #gesTopBar .ges-top-title{font-size:1.75rem!important;}
   .g4-ges-me{display:flex;width:38px;height:38px;border-radius:50%;border:0;background:var(--c-soft);color:var(--c-primary);align-items:center;justify-content:center;font-weight:600;font-size:.74rem;cursor:pointer;flex:none;margin-left:auto;background-size:cover;background-position:center;}
@@ -4339,23 +4341,92 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
 .mio-box{max-width:520px;padding:20px!important;}.mio-testa{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}.mio-testa h3{margin:0;font-weight:700;}
 #mioCorpo section{padding:12px 0;border-top:1px solid var(--bd);}#mioCorpo h4{margin:0 0 6px;font-size:1rem;font-weight:700;}#mioCorpo p{margin:6px 0 0;}#mioCorpo ul{list-style:none;margin:8px 0 0;padding:0;}#mioCorpo li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;}.mio-nota{color:var(--tx-3);font-size:.84rem;}
 
-/* ═══ v5 — LA VESTE DELL'APP: stessi colori, schede e pulsanti dell'app nuova, per gestionale e pagine pubbliche ═══ */
-:root{--bg:#F7F5F5;--bg-card-2:#F3EFED;--tx-1:#2B2226;--bd:#EFE9E7;--bd-2:#F3EFED;
-  --sh-card:0 10px 28px rgba(70,30,40,.09);--sh-md:0 10px 28px rgba(70,30,40,.11);--sh-lg:0 14px 34px rgba(70,30,40,.14);
+/* ═══ v5 — LA GRAFICA DELL'APP (versione 2) PER GESTIONALE E PAGINE PUBBLICHE ═══
+   Solo aspetto: nessuna funzione cambia. Stessi colori e stessi mattoni di app/src/tema.js e componenti.js. */
+:root,body{--v5-sf:linear-gradient(135deg,#C4454F,#7A2230);--v5-sfv:linear-gradient(135deg,#3FB37F,#1B7A50);
+  --v5-testata:radial-gradient(circle at 94% -30%,rgba(255,255,255,.09) 0 130px,transparent 131px),radial-gradient(circle at 2% 130%,rgba(255,255,255,.07) 0 80px,transparent 81px),linear-gradient(135deg,#C4454F,#7A2230);
+  --bg:#F7F5F5;--bg-card-2:#F3EFED;--tx-1:#2B2226;--tx-2:#4A3F43;--tx-3:#6F6266;--bd:#EFE9E7;--bd-2:#F3EFED;--c-soft:#F8ECED;
+  --sb-bg:#FFFFFF;--sb-bd:#EFE9E7;--f-disp:'Nunito',system-ui,sans-serif;
+  --sh-card:0 10px 28px rgba(70,30,40,.09);--sh-md:0 10px 28px rgba(70,30,40,.11);--sh-lg:0 14px 34px rgba(70,30,40,.14);--g4-sh:0 10px 28px rgba(70,30,40,.09);
   --r-md:14px;--r-lg:20px;--r-xl:20px;}
-body.dark,html.dark,[data-theme="dark"]{--sh-card:0 8px 24px rgba(0,0,0,.35);--sh-md:0 8px 24px rgba(0,0,0,.4);--sh-lg:0 12px 30px rgba(0,0,0,.45);}
-body,button,input,select,textarea{font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;}
-.dashboard-card,.g4-card,.g3-rcard,.conv-stat-card,.card{border-radius:20px;border:0;box-shadow:var(--sh-card);}
-/* menu laterale: voce attiva sfumata, come nell'app */
-.panel-sidebar .sb-item{border-radius:12px;font-weight:700;}
-.panel-sidebar .sb-item.active{background:linear-gradient(135deg,#C4454F,#7A2230);color:#fff;box-shadow:0 8px 18px rgba(122,34,48,.28);}
-.panel-sidebar .sb-item.active i{color:#fff;}
-/* titoli e pulsanti */
-h1,h2,h3,.g4-t1{font-family:'Nunito',system-ui,sans-serif;font-weight:800;letter-spacing:0;}
-.btn-sm,.btn{font-family:inherit;font-weight:700;border-radius:14px;}
-.btn-sm.primary,.btn.primary,.btn-primary{background:linear-gradient(135deg,#C4454F,#7A2230);border-color:transparent;color:#fff;box-shadow:0 8px 18px rgba(122,34,48,.24);}
-.btn-sm.primary:hover,.btn.primary:hover,.btn-primary:hover{filter:brightness(1.06);}
-input,select,textarea{border-radius:12px;}
+body.dark{--bg:#151112;--bg-card:#231D1F;--bg-card-2:#2F282A;--bg-input:#2F282A;--bg-header:#231D1F;--tx-1:#F4EFEC;--tx-2:#DDD4D5;--tx-3:#C3B8BA;--bd:#3A3134;--bd-2:#2F282A;--c-soft:#3A2024;
+  --sb-bg:#231D1F;--sb-bd:#3A3134;--sh-card:0 8px 24px rgba(0,0,0,.35);--sh-md:0 8px 24px rgba(0,0,0,.4);--sh-lg:0 12px 30px rgba(0,0,0,.45);--g4-sh:0 8px 24px rgba(0,0,0,.35);}
+body,button,input,select,textarea,h1,h2,h3,h4,.g4-t1,.ges-top-title{font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif!important;}
+h1,h2,h3,.g4-t1{font-weight:800!important;letter-spacing:0!important;}
+
+/* menu laterale: bianco, voce attiva sfumata */
+#apsSidebar,#admSidebar{--c-primary:#8E2E35;--sb-bg:#FFFFFF;--sb-bd:#EFE9E7;--sb-text:#2B2226;--tx-1:#2B2226;--tx-3:#6F6266;--bg:#F7F5F5;--bg-card:#FFFFFF;--bg-card-2:#F3EFED;}
+body.dark #apsSidebar,body.dark #admSidebar{--c-primary:#F2B0B6;--sb-bg:#231D1F;--sb-bd:#3A3134;--sb-text:#F4EFEC;--tx-1:#F4EFEC;--tx-3:#C3B8BA;--bg:#151112;--bg-card:#231D1F;--bg-card-2:#2F282A;}
+body[data-area] #apsSidebar .sb-item.active,body[data-area=home] #apsSidebar .sb-item.active{background:var(--v5-sf)!important;}
+#apsSidebar,#admSidebar{background:var(--bg-card)!important;border-right:0!important;box-shadow:0 0 24px rgba(70,30,40,.07);}
+#apsSidebar .sb-item,#admSidebar .sb-item{color:var(--tx-1)!important;font-weight:700!important;border-radius:12px!important;}
+#apsSidebar .sb-item i,#admSidebar .sb-item i{color:var(--tx-3)!important;}
+#apsSidebar .sb-item:hover,#admSidebar .sb-item:hover{background:var(--c-soft)!important;}
+#apsSidebar .sb-item.active,#admSidebar .sb-item.active{background:var(--v5-sf)!important;color:#fff!important;box-shadow:0 8px 18px rgba(122,34,48,.26)!important;}
+#apsSidebar .sb-item.active i,#admSidebar .sb-item.active i{color:#fff!important;}
+#apsSidebar .sb-group-header>span,#apsSidebar .sb-group-header,#apsSidebar .sb-group-header i{color:var(--tx-3)!important;}
+#apsSidebar .g3-brand b,#apsSidebar .g3-sbuser b,#apsSidebar .sb-toggle{color:var(--tx-1)!important;}
+#apsSidebar .g3-brand small,#apsSidebar .g3-sbuser small{color:var(--tx-3)!important;}
+#apsSidebar .sb-toggle{background:transparent!important;}
+
+/* la testata: sfumata, come in ogni pagina dell'app */
+#gestionaleArea .panel-main[data-area-nome]::before{background:var(--c-soft)!important;color:var(--c-primary)!important;border:0!important;font-weight:700!important;margin-bottom:0!important;}
+body #gestionaleArea #gesTopBar{background:var(--v5-testata)!important;border:0!important;box-shadow:none!important;border-radius:0 0 28px 28px!important;padding:12px 24px 22px!important;margin-top:0!important;margin-bottom:18px!important;}
+body #gestionaleArea #gesTopBar .ges-top-title{color:#fff!important;font-weight:800!important;font-size:1.6rem!important;}
+body #gestionaleArea #gesTopBar .ges-top-title::before{color:rgba(255,255,255,.82)!important;font-family:inherit!important;}
+body #gestionaleArea #gesTopBar>button:first-child{background:rgba(255,255,255,.18)!important;color:#fff!important;border:0!important;}
+body #gestionaleArea #gesTopBar .g4-ges-me{background:rgba(255,255,255,.18)!important;color:#fff!important;border:0!important;}
+body #gestionaleArea #gesTopBar>button:first-child i{color:#fff!important;}
+body.dark #gestionaleArea .panel-main[data-area-nome]::before{color:#F2B0B6!important;}
+.g3-dash-head{background:var(--v5-testata);border-radius:24px;padding:22px 24px!important;box-shadow:0 12px 24px rgba(122,34,48,.22);margin-bottom:16px;}
+.g3-dash-head,.g3-dash-head h1,.g3-dash-head div,.g3-dash-head small{color:#fff!important;}
+.g3-dash-head .btn-sm,.g3-dash-head button{background:rgba(255,255,255,.18)!important;color:#fff!important;border:0!important;box-shadow:none!important;}
+.g3-dash-head button i,.g3-dash-head .btn-sm i{color:#fff!important;}
+.g4-hello{background:var(--v5-testata);border-radius:24px;padding:22px 24px;box-shadow:0 12px 24px rgba(122,34,48,.22);}
+.g4-hello,.g4-hello .g4-t1,.g4-hello h1,.g4-hello small{color:#fff!important;}
+.g4-hello .btn-sm,.g4-hello button{background:rgba(255,255,255,.18)!important;color:#fff!important;border:0!important;box-shadow:none!important;}
+.g4-hello button i,.g4-hello .btn-sm i{color:#fff!important;}
+
+/* schede bianche con l'ombra morbida */
+.dashboard-card,.g4-card,.g3-rcard,.new-card,.ges-card,.table-container,.conv-stat-card,.kpi-card,.ev-box,.siti-card,.imp2-sez,.ev-kpi,.card{border:0!important;border-radius:20px!important;box-shadow:var(--sh-card)!important;background-color:var(--bg-card);}
+.kpi-val{font-weight:800!important;}
+.g3-rcard-ico,.g4-ti{background:var(--v5-sf)!important;color:#fff!important;border-radius:30%!important;}
+.g3-rcard-ico i,.g4-ti i{color:#fff!important;}
+
+/* tabelle ariose */
+.tbl,.rtable,table.ev-t{border-collapse:separate;border-spacing:0;}
+#gestionaleArea table thead th,.tbl th{background:transparent!important;color:var(--tx-3)!important;font-weight:700!important;border:0!important;border-bottom:1px solid var(--bd)!important;}
+#gestionaleArea table tbody td,.tbl td{border-color:var(--bd)!important;}
+#gestionaleArea table tbody tr:hover td{background:var(--c-soft);}
+
+/* campi e pulsanti */
+.form-control,.form-select,input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],input[type=password],select,textarea{border-radius:12px!important;background-color:var(--bg-card-2)!important;border:1px solid transparent!important;color:var(--tx-1);}
+.form-control:focus,.form-select:focus,input:focus,select:focus,textarea:focus{border-color:var(--c-primary)!important;background-color:var(--bg-card)!important;box-shadow:0 0 0 3px var(--c-soft)!important;}
+.btn-sm,.btn-action,.btn{font-weight:700!important;border-radius:14px!important;}
+.btn-sm:not(.primary):not(.success):not(.danger):not(.wa){background:var(--c-soft)!important;color:var(--c-primary)!important;border-color:transparent!important;box-shadow:none!important;}
+body.dark .btn-sm:not(.primary):not(.success):not(.danger):not(.wa){color:#F2B0B6!important;}
+.btn-sm:not(.primary):not(.success):not(.danger):not(.wa) i{color:inherit!important;}
+.btn-sm.primary,.btn.primary,.btn-primary,.g4-hdr-nuovo{background:var(--v5-sf)!important;border-color:transparent!important;color:#fff!important;box-shadow:0 8px 18px rgba(122,34,48,.24)!important;}
+.btn-sm.success{background:var(--v5-sfv)!important;border-color:transparent!important;color:#fff!important;}
+.btn-sm.primary i,.btn-sm.success i{color:#fff!important;}
+
+/* pillole */
+.sub-tabs{background:transparent!important;border:0!important;box-shadow:none!important;padding:2px 0!important;gap:8px!important;}
+.sub-tabs .sub-tab,.sub-tab-v{background:var(--bg-card)!important;color:var(--tx-1)!important;border:0!important;border-radius:12px!important;box-shadow:var(--sh-card)!important;font-weight:700!important;min-height:40px;}
+.sub-tabs .sub-tab.active,.sub-tab-v.active{background:var(--c-primary)!important;color:#fff!important;}
+
+/* finestre: testata sfumata, come le pagine */
+.mshell,.modal-content{border-radius:24px!important;}
+.mshell>div:first-child{background:var(--v5-testata)!important;border:0!important;padding:16px 20px!important;}
+.mshell>div:first-child h3,.mshell>div:first-child h3 i,.mshell>div:first-child button{color:#fff!important;}
+.mshell>div:first-child h3{font-size:1.1rem!important;font-weight:800!important;}
+
+/* menu in basso sul telefono */
+.ges-bottom-nav{background:var(--bg-card)!important;border:0!important;border-radius:22px 22px 0 0!important;box-shadow:0 -6px 24px rgba(70,30,40,.10)!important;}
+.ges-bn-item{font-weight:700!important;}
+.ges-bn-item.active i{background:var(--v5-sf)!important;color:#fff!important;}
+.ges-bn-plus span{background:var(--v5-sf)!important;color:#fff!important;}
+.app-header{background:var(--bg-card)!important;border:0!important;box-shadow:0 2px 12px rgba(70,30,40,.05)!important;}
 </style>
 </head>
 <body>
