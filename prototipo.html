@@ -261,6 +261,24 @@ label.et{margin:14px 0 4px;font-size:13px;}
 body:not(.senza-menu) .colonna>.tes *:not(.tondino){color:#fff;}
 @media (min-width:370px){.scelte-in-fila .pu{white-space:nowrap;font-size:13.5px;padding:6px 2px;}}
 @media (min-width:1200px){#pagina::before{height:118px;}}
+
+/* ══ Scala unica delle grandezze: uguale su telefono, tablet e PC ══ */
+:root{--t1:24px;--t2:16px;--tb:15px;--t3:13px;}
+@media (min-width:768px){:root{--t1:26px;--t2:16px;}}
+.t1{font-size:var(--t1);}
+h2{font-size:var(--t2);}
+.riga .tit{font-size:15px;}.riga .sot{font-size:13px;}
+.scheda>.t1,.scheda h1,.scheda h2:first-child{font-size:22px;}
+.pu,.scelte-in-fila .pu{font-size:14px;min-height:44px;height:auto;}
+.scelte-in-fila{align-items:stretch;}
+.scelte-in-fila .pu,.scelte-in-fila .pu+.pu{margin:0!important;}
+.scelte-in-fila .pu{white-space:nowrap;padding:6px 4px;font-size:14px;}
+@media (max-width:430px){.scelte-in-fila .pu .ic{display:none;}}
+.scheda>:last-child{margin-bottom:0;}
+.scheda .collegamento:last-child{margin-top:8px;min-height:32px;}
+/* colonne: i pulsanti non si allargano troppo sugli schermi grandi */
+@media (min-width:768px){#pagina>.colonna{max-width:560px;}#pagina.largo>.colonna{max-width:560px;}}
+@media (min-width:1200px){#pagina.largo>.colonna{max-width:980px;}#pagina>.colonna{max-width:560px;}}
 </style>
 </head>
 <body class="senza-menu">
