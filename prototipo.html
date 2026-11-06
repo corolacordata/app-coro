@@ -288,6 +288,18 @@ h2{font-size:var(--t2);}
 #avviso{left:50%;right:auto;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);bottom:calc(var(--menu-h) + 12px + env(safe-area-inset-bottom));padding:8px 14px;border-radius:999px;font-size:13px;}
 @media (min-width:768px){#avviso{left:calc(50% + 42px);bottom:20px;}}
 @media (min-width:1200px){#avviso{left:calc(50% + 112px);}}
+
+/* pagina dell'evento: tutto in testa alla scheda, niente testo sulla fascia */
+.ev-testa{display:flex;gap:12px;align-items:flex-start;}
+.ev-testa .cresce{flex:1;min-width:0;}
+.ev-testa .su{margin-bottom:4px;}
+.ev-tit{font:600 20px/1.2 Inter,system-ui,sans-serif;letter-spacing:-.015em;margin:0 0 2px;}
+h1.ev-tit:focus{outline:0;}
+.ev-risp{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;padding:10px 12px;background:var(--tenue);border-radius:12px;}
+/* risposte a un sondaggio: righe discrete, non pulsantoni */
+.scelte:not(.scelte-in-fila) .pu{justify-content:flex-start;min-height:44px;padding:8px 12px;font-size:14px;margin-top:6px;background:var(--scheda);box-shadow:inset 0 0 0 1px var(--linea);color:var(--inchiostro);}
+.scelte:not(.scelte-in-fila) .pu .ic{color:var(--grigio);}
+.scelte:not(.scelte-in-fila) .pu:hover{background:var(--tenue);}
 </style>
 </head>
 <body class="senza-menu">
@@ -548,43 +560,37 @@ P.agenda=function(){
 P.imp=function(id){
   var it=trova(id); if(!it)return P.home();
   var torna=origine, sez=origine==='riepilogo'?'io':origine;
-  var html=indietro(torna)+'<div class="su" style="margin-top:4px">'+tipoEt(it)+statoImp(it)+'</div><h1 class="t1" tabindex="-1">'+h(titolo(it))+'</h1>'
-    +'<p class="b" style="margin-top:6px">'+dataLunga(it.data)+', ore '+it.ora+'</p>';
+  var html=indietro(torna);
+  var testa='<div class="ev-testa">'+dataBlocco(it)+'<div class="cresce"><div class="su">'+tipoEt(it)+statoImp(it)+'</div><h1 class="ev-tit" tabindex="-1">'+h(titolo(it))+'</h1><p class="pic">'+dataLunga(it.data)+', ore '+it.ora+'</p></div></div>';
   if(annullata(it)){
-    html+='<div class="scheda" style="margin-top:14px"><p class="b">Questa prova non si fa.</p><p style="margin-top:4px">'+h(it.motivo)+'</p></div>';
+    html+='<section class="scheda">'+testa+'<p class="b" style="margin-top:14px">Questa prova non si fa.</p><p class="pic" style="margin-top:4px">'+h(it.motivo)+'</p></section>';
     return {m:sez,html:html};
   }
-  /* la domanda */
+  /* la domanda: nella prova si cambia con un tocco; nel sondaggio, dopo la risposta, decide il Direttivo */
   var dom=it.tipo==='prova'?'Ci sei?':it.sond.domanda;
-  html+='<section class="scheda" style="margin-top:14px">';
-  if(it.sond&&it.sond.chi)html+='<p class="pic">'+h(it.sond.chi)+'</p>';
-  if(aperta(it)){
-    html+='<p class="dom" style="margin-top:0">'+h(dom)+'</p>'+bottoniRisposta(it);
-    if(it.sond)html+='<p class="pic" style="margin-top:10px">Puoi cambiare idea fino a '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>';
-    if(it.nota2)html+='<p class="pic" style="margin-top:10px">La tua nota: '+h(it.nota2)+'</p>';
+  html+='<section class="scheda">'+testa;
+  if(it.tipo==='prova'||(!it.risp&&aperta(it))){
+    html+='<p class="dom">'+h(dom)+'</p>'+bottoniRisposta(it);
+    if(it.sond)html+='<p class="pic" style="margin-top:8px">Rispondi entro '+dataLunga(it.sond.chiude).toLowerCase()+'. Dopo, per cambiare serve l\'approvazione del Direttivo.</p>';
     if(it.risp==='Da Meet')html+='<a class="pu prim" style="margin-top:10px" href="https://meet.google.com/" target="_blank" rel="noopener">'+ic('meet')+'Collegati da casa</a>';
-    if(it.sond&&it.risp&&!/^Non ci sono/.test(it.risp))html+='<button type="button" class="collegamento" data-vai="nota/'+it.id+'">Scrivi una nota</button>';
   } else {
-    html+='<p class="b">La tua risposta</p><p style="margin:6px 0 8px">'+stato(it.risp||'Chiuso')+'</p><p class="pic" style="margin-bottom:12px">Le risposte sono chiuse dal '+dataLunga(it.sond.chiude).toLowerCase()+'.</p>'
-      +(it.richiesta?'<p>Hai chiesto di cambiare in «'+h(it.richiesta)+'».</p><p style="margin-top:6px">'+stato('In attesa')+'</p>'
-        :'<button type="button" class="pu" data-vai="chiedicambio/'+it.id+'">Chiedi di cambiare</button>');
+    html+='<div class="ev-risp"><span class="pic">La tua risposta</span>'+stato(it.risp||'Chiuso')+'</div>';
+    if(it.richiesta)html+='<div class="ev-risp"><span class="pic">Hai chiesto di cambiare in «'+h(it.richiesta)+'»</span>'+stato('In attesa')+'</div>';
+    else html+='<button type="button" class="collegamento" data-vai="chiedicambio/'+it.id+'">Chiedi di cambiare risposta</button>';
+    if(it.nota2)html+='<p class="pic" style="margin-top:6px">La tua nota: '+h(it.nota2)+'</p>';
+    else if(aperta(it)&&!/^Non ci sono/.test(it.risp||''))html+='<button type="button" class="collegamento" data-vai="nota/'+it.id+'">Scrivi una nota</button>';
   }
   html+='</section>';
-  /* dove */
-  html+='<h2>Dove</h2><div class="scheda righe">'
-    +riga({ico:'pin',tit:luogo(it),sot:indirizzo(it),fissa:1})
-    +riga({ico:'pin',tit:'Apri la mappa',sot:'Le indicazioni per arrivare',href:mappa(it),dx:freccia()})
-    +(it.meet?riga({ico:'meet',tit:'Collegati da casa',sot:'Google Meet, per chi non può venire',href:'https://meet.google.com/',dx:freccia()}):'')+'</div>';
-  /* orari e cosa serve */
-  if(it.ritrovo||it.divisa||it.portare){
-    html+='<h2>Cosa serve sapere</h2><div class="scheda righe">'
-      +(it.ritrovo?riga({ico:'ora',tit:'Ritrovo',sot:it.ritrovo}):'')
-      +(it.divisa?riga({ico:'tes',tit:'Divisa',sot:it.divisa}):'')
-      +(it.portare?riga({ico:'doc',tit:'Da portare',sot:it.portare}):'')+'</div>';
-  }
-  if(it.quota)html+='<h2>La tua quota</h2><div class="scheda righe">'+riga({ico:'euro',tit:it.quota.imp+', '+it.quota.per,dx:stato(it.quota.stato),vai:'quote'})+'</div>';
-  if(it.programma)html+='<h2>Come va la giornata</h2><div class="scheda righe">'+it.programma.map(function(p){return riga({tit:p[0],sot:p[1]});}).join('')+'</div>';
+  /* una sola scheda con le informazioni pratiche */
+  html+='<div class="scheda righe">'
+    +riga({ico:'pin',tit:luogo(it),sot:indirizzo(it),href:mappa(it),dx:freccia()})
+    +(it.meet?riga({ico:'meet',tit:'Collegati da casa',sot:'Google Meet',href:'https://meet.google.com/',dx:freccia()}):'')
+    +(it.ritrovo?riga({ico:'ora',tit:'Ritrovo',sot:it.ritrovo}):'')
+    +(it.divisa?riga({ico:'tes',tit:'Divisa',sot:it.divisa}):'')
+    +(it.portare?riga({ico:'doc',tit:'Da portare',sot:it.portare}):'')
+    +(it.quota?riga({ico:'euro',tit:it.quota.imp+', '+it.quota.per,dx:stato(it.quota.stato),vai:'quote'}):'')+'</div>';
   if(it.brani.length)html+='<h2>'+(it.tipo==='prova'?'Si prova':'Si canta')+'</h2><div class="scheda righe">'+it.brani.map(function(b){var x=brano(b);return riga({ico:'nota',tit:x.t,sot:'Ascolta la tua parte',vai:'brano/'+b});}).join('')+'</div>';
+  if(it.programma)html+='<h2>La giornata</h2><div class="scheda righe">'+it.programma.map(function(p){return riga({tit:p[0],sot:p[1]});}).join('')+'</div>';
   if(it.nota)html+='<h2>Dal direttore</h2><div class="scheda"><p>'+h(it.nota)+'</p></div>';
   return {m:sez,html:html};
 };
@@ -599,7 +605,7 @@ P.cambia=function(id){
 
 P.chiedicambio=function(id){
   var it=trova(id); if(!it)return P.home();
-  return {m:'agenda',html:indietro('imp/'+id)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Chiedi di cambiare</h1><p style="margin-top:6px">Le risposte sono chiuse: decide il Direttivo e ti avvisa.</p>'
+  return {m:'agenda',html:indietro('imp/'+id)+'<h1 class="t1" tabindex="-1" style="margin-top:4px">Chiedi di cambiare</h1><p style="margin-top:6px">Hai già risposto: per cambiare decide il Direttivo e ti avvisa.</p>'
     +'<form data-form="chiedicambio" data-id="'+id+'" novalidate><p class="dom">Vorresti dire</p>'
     +risposte(it).filter(function(v){return v!==it.risp;}).map(function(v,i){return '<label class="spunta"><input type="radio" name="v" value="'+h(v)+'"'+(i===0?' checked':'')+'>'+h(v)+'</label>';}).join('')
     +'<label class="et" for="mot">Perché (se vuoi)</label><textarea class="cm" id="mot"></textarea>'
@@ -891,7 +897,9 @@ function mini(nascondi){
 var A={
   rispondi:function(id,v){
     /* si resta sulla pagina: il pulsante scelto si colora e compare un piccolo avviso */
-    var it=trova(id), era=it.risp; if(era===v)return; it.risp=v;
+    var it=trova(id), era=it.risp; if(era===v)return;
+    if(it.sond&&era){location.hash='#/chiedicambio/'+id;return;}   /* sondaggio: una risposta sola, poi decide il Direttivo */
+    it.risp=v;
     render(true); avvisa((era?'Risposta cambiata: ':'Risposta salvata: ')+v+'.');
   },
   suona:function(id,v){suona(id,v);},
