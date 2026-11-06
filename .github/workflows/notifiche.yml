@@ -1,10 +1,10 @@
-name: Notifiche
+name: Notifiche e copia veloce
 on:
   schedule:
-    - cron: '7,37 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: notifiche
 jobs:
@@ -23,3 +23,9 @@ jobs:
           NOT_SEGRETO: ${{ secrets.NOT_SEGRETO }}
           VAPID_PUBLIC: ${{ secrets.VAPID_PUBLIC }}
           VAPID_PRIVATE: ${{ secrets.VAPID_PRIVATE }}
+      - name: Salva la copia cifrata
+        run: |
+          git add dati/portale.json 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git -c user.name="Coro La Cordata" -c user.email="info@corolacordata.org" commit -m "Copia cifrata aggiornata"
+          git push

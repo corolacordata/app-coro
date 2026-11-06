@@ -6590,17 +6590,56 @@ function assicuraBundleAdmin(){
 
 /* ═══ v5 — ACCESSO CON EMAIL E PASSWORD (server: accessi.gs) ═══ */
 function _accTokSalvato_(){ try{ var v=JSON.parse(localStorage.getItem('_aps_socio')||'{}'); return (v.id&&v.tok&&v.scade>Date.now())?v.tok:''; }catch(e){ return ''; } }
-function _accTieniBiglietto_(socioId,r){ if(!r||!r.tok)return; if(r.ricorda===false){ _socioTok_=r.tok; try{ localStorage.removeItem('_aps_socio'); }catch(e){} return; } _socioTokSalva_(socioId,r.tok,r.scadeIl); }
+function _accTieniBiglietto_(socioId,r){ if(!r||!r.tok)return; try{ if(r.chiaveCopia&&r.ricorda!==false)localStorage.setItem('_aps_chc',r.chiaveCopia); if(r.dati&&r.ricorda!==false)_accRicordaMie_(socioId,r.dati); }catch(e){} if(r.ricorda===false){ _socioTok_=r.tok; try{ localStorage.removeItem('_aps_socio'); }catch(e){} return; } _socioTokSalva_(socioId,r.tok,r.scadeIl); }
 var _accFine_=null, _accLink_='';
 /* Al caricamento: link dell'email, poi biglietto salvato, altrimenti la schermata di accesso */
+/* v5: apertura immediata dalla copia cifrata, poi i dati freschi da Google */
+async function _copiaLeggi_(chiaveB64){
+  var ctl=new AbortController(), t=setTimeout(function(){ ctl.abort(); },3000);
+  try{
+    var r=await fetch('dati/portale.json?'+Date.now(),{signal:ctl.signal,cache:'no-store'}); if(!r.ok)return null;
+    var j=await r.json(), dec=function(b){ var s=atob(b.replace(/-/g,'+').replace(/_/g,'/')), u=new Uint8Array(s.length); for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i); return u; };
+    var k=await crypto.subtle.importKey('raw',dec(chiaveB64),'AES-GCM',false,['decrypt']);
+    var chiaro=await crypto.subtle.decrypt({name:'AES-GCM',iv:dec(j.iv)},k,dec(j.ct));
+    return JSON.parse(new TextDecoder().decode(chiaro));
+  }catch(e){ return null; }finally{ clearTimeout(t); }
+}
+function _accRicordaMie_(socioId,d){
+  try{ var u=(d.utenti||[]).filter(function(x){return x.id===socioId;})[0], n=u?(u.n+' '+u.c).toLowerCase():''; localStorage.setItem('_aps_mie',JSON.stringify({r:(d.mapRisposte||{})[socioId]||{},a:(d.mapAssenze||{})[n]||{}})); }catch(e){}
+}
+function _accUnisciMie_(socioId,d){
+  d.mapRisposte={}; d.mapAssenze={}; d.modPendenti=d.modPendenti||{};
+  try{ var m=JSON.parse(localStorage.getItem('_aps_mie')||'{}'), u=(d.utenti||[]).filter(function(x){return x.id===socioId;})[0]; d.mapRisposte[socioId]=m.r||{}; if(u)d.mapAssenze[(u.n+' '+u.c).toLowerCase()]=m.a||{}; }catch(e){}
+  return d;
+}
+function _accFreschi_(tok){
+  gs('ACC_apri',tok).then(function(r){
+    if(r&&r.error==='accesso'){ eseguiLogout(); return; }
+    if(!r||!r.success)return;
+    if(r.chiaveCopia){ try{ localStorage.setItem('_aps_chc',r.chiaveCopia); }catch(e){} }
+    if(r.tok)_socioTokSalva_(r.socioId,r.tok,r.scadeIl);
+    _accRicordaMie_(r.socioId,r.dati);
+    db=r.dati;
+    /* si ridisegna solo se si è ancora sulla Home senza finestre aperte: non si interrompe chi sta facendo qualcosa */
+    var home=document.getElementById('tabSondaggi');
+    if(home&&home.style.display!=='none'&&!document.querySelector('.g3-drawer-overlay,.modal-overlay[style*="flex"]'))_accAttiva_(r.socioId);
+  }).catch(function(){});
+}
 async function _sbloccaPortale_(){
   var v=(typeof APRI_INIZIALE==='string')?APRI_INIZIALE:'';
   if(v.indexOf('accesso:')===0){ APRI_INIZIALE=''; _accLink_=v.slice(8); try{ if(window.__API_URL)history.replaceState(null,'',location.pathname); }catch(e){} _accMostra_('link'); return _accAspetta_(); }
   var tok=_accTokSalvato_();
+  if(tok&&window.__API_URL&&window.crypto&&crypto.subtle){
+    var _kc=''; try{ _kc=localStorage.getItem('_aps_chc')||''; }catch(e){}
+    if(_kc){
+      var _cp=await _copiaLeggi_(_kc), _sid=''; try{ _sid=JSON.parse(localStorage.getItem('_aps_socio')||'{}').id||''; }catch(e){}
+      if(_cp&&_sid&&(_cp.utenti||[]).some(function(u){return u.id===_sid;})){ _socioTok_=tok; _accFreschi_(tok); return {dati:_accUnisciMie_(_sid,_cp),socioId:_sid}; }
+    }
+  }
   if(tok){
     try{
       var r=await gs('ACC_apri',tok);
-      if(r&&r.success){ var v2=JSON.parse(localStorage.getItem('_aps_socio')||'{}'); _socioTok_=r.tok||tok; if(r.tok)_socioTokSalva_(r.socioId,r.tok,r.scadeIl); else _socioTokSalva_(r.socioId,tok,v2.scade); return {dati:r.dati,socioId:r.socioId}; }
+      if(r&&r.success){ try{ if(r.chiaveCopia)localStorage.setItem('_aps_chc',r.chiaveCopia); }catch(e){} _accRicordaMie_(r.socioId,r.dati); var v2=JSON.parse(localStorage.getItem('_aps_socio')||'{}'); _socioTok_=r.tok||tok; if(r.tok)_socioTokSalva_(r.socioId,r.tok,r.scadeIl); else _socioTokSalva_(r.socioId,tok,v2.scade); return {dati:r.dati,socioId:r.socioId}; }
       if(r&&r.error==='accesso'){ try{ localStorage.removeItem('_aps_socio'); }catch(e){} }
     }catch(e){ throw e; }
   }
@@ -8163,7 +8202,7 @@ function _resetHeader_(){
 
 function eseguiLogout(){
   try{ if(_logoutOtpOnExit_)gs('logoutOTP',_logoutOtpOnExit_).catch(function(){}); }catch(e){}
-  try{ ['_aps_socio','_aps_ricordami','_coro_codice','_aps_otp_token','_aps_otp_nome','_aps_otp_scad','_aps_otp_email','_not_chiesto'].forEach(function(k){ localStorage.removeItem(k); }); }catch(e){}
+  try{ ['_aps_socio','_aps_ricordami','_coro_codice','_aps_otp_token','_aps_otp_nome','_aps_otp_scad','_aps_otp_email','_not_chiesto','_aps_chc','_aps_mie'].forEach(function(k){ localStorage.removeItem(k); }); }catch(e){}
   _socioTok_=''; curUser=null;
   /* v5: i dati del portale non restano nella pagina dietro la schermata di accesso */
   if(window.__API_URL){ setTimeout(function(){ location.reload(); },150); return; }

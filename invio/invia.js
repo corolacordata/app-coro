@@ -26,11 +26,28 @@ async function esegui({api,segreto,webpush,fetchFn=fetch,log=console.log}){
   log(`messaggi: ${(c.messaggi||[]).length} · consegnati: ${ok} · non riusciti: ${ko} · telefoni tolti: ${morti.size}`);
   return {ok,ko,fatti,morti:[...morti]};
 }
-module.exports={esegui};
+/* Copia cifrata: i dati comuni, in un file illeggibile senza la chiave. Solo conteggi nel registro. */
+async function copia({api,segreto,cartella,fetchFn=fetch,log=console.log}){
+  const fs=require('fs'),path=require('path'),crypto=require('crypto');
+  const f=path.join(cartella,'portale.json');
+  let verNota='';try{verNota=JSON.parse(fs.readFileSync(f,'utf8')).ver||'';}catch(e){}
+  const c=await chiama(api,'COPIA_leggi',[segreto,verNota],fetchFn);
+  if(c.uguale){log('copia: nessuna novità');return false;}
+  const b64=b=>b.toString('base64').replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  const chiave=Buffer.from(c.chiave.replace(/-/g,'+').replace(/_/g,'/'),'base64'),iv=crypto.randomBytes(12);
+  const ci=crypto.createCipheriv('aes-256-gcm',chiave,iv);
+  const ct=Buffer.concat([ci.update(JSON.stringify(c.dati),'utf8'),ci.final(),ci.getAuthTag()]);
+  fs.mkdirSync(cartella,{recursive:true});
+  fs.writeFileSync(f,JSON.stringify({ver:c.ver,iv:b64(iv),ct:b64(ct)}));
+  log('copia: aggiornata');
+  return true;
+}
+module.exports={esegui,copia};
 if(require.main===module){
   const {API_URL,NOT_SEGRETO,VAPID_PUBLIC,VAPID_PRIVATE,VAPID_EMAIL}=process.env;
-  if(!API_URL||!NOT_SEGRETO||!VAPID_PUBLIC||!VAPID_PRIVATE){console.error('Mancano le impostazioni segrete del repository');process.exit(1);}
+  if(!API_URL||!NOT_SEGRETO||!VAPID_PUBLIC||!VAPID_PRIVATE){console.log('Le impostazioni segrete non ci sono ancora: per ora non faccio nulla');process.exit(0);}
   const webpush=require('web-push');
   webpush.setVapidDetails(VAPID_EMAIL||'mailto:info@corolacordata.org',VAPID_PUBLIC,VAPID_PRIVATE);
-  esegui({api:API_URL,segreto:NOT_SEGRETO,webpush}).catch(e=>{console.error(e.message);process.exit(1);});
+  esegui({api:API_URL,segreto:NOT_SEGRETO,webpush}).catch(e=>{console.error(e.message);process.exitCode=1;})
+    .then(()=>copia({api:API_URL,segreto:NOT_SEGRETO,cartella:'dati'})).catch(e=>{console.error(e.message);process.exitCode=1;});
 }
