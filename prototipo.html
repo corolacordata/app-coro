@@ -649,7 +649,7 @@ var pl={b:null,v:null,t:0,on:false};
 function mm(s){return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
 function suona(b,v){pl.b=b;pl.v=v;pl.t=0;pl.on=true;render(true);}
 setInterval(function(){
-  if(!pl.b||!pl.on)return; var dur=brano(pl.b).dur;
+  if(window.__API_URL||!pl.b||!pl.on)return; var dur=brano(pl.b).dur;
   pl.t++; if(pl.t>=dur){pl.t=dur;pl.on=false;aggiornaPl();return;}
   aggiornaTempo();
 },1000);
@@ -929,7 +929,7 @@ window.addEventListener('resize',function(){misuraFascia();});
 window.addEventListener('scroll',function(){var b=$('#barra');if(b)b.classList.toggle('su-bianco',window.scrollY>40);},{passive:true});
 function render(tieni){
   var r=(location.hash||'').replace(/^#\/?/,'')||'home';
-  var libere=/^(accesso|chiedi)(\/|$)/;
+  var libere=/^(accesso|chiedi|sceglipw)(\/|$)/;
   if(!me.dentro&&!libere.test(r)&&r!=='conferma')r='accesso';
   if(me.dentro&&libere.test(r))r='home';
   var pz=r.split('/'), fn=Object.prototype.hasOwnProperty.call(P,pz[0])?P[pz[0]]:P.home;
@@ -1074,7 +1074,7 @@ function impostaTema(t){
 }
 if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)impostaTema('scuro');
 window.addEventListener('hashchange',function(){render();});
-render();
+if(!window.__API_URL)render();
 </script>
 <script>if("serviceWorker" in navigator){var ave=!!navigator.serviceWorker.controller,ri=false;navigator.serviceWorker.register("sw.js");navigator.serviceWorker.addEventListener("controllerchange",function(){if(ri||!ave)return;ri=true;location.reload();});}</script></body>
 </html>
