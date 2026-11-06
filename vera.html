@@ -4486,6 +4486,66 @@ body #gestionaleArea #gesTopBar>button:first-child{background:rgba(0,0,0,.2)!imp
 body #gestionaleArea .app-st button,body #gestionaleArea button.on.p,body #gestionaleArea button.on.a,body #gestionaleArea button.on.m,body #gestionaleArea button.p,body #gestionaleArea button.a,body #gestionaleArea button.m{min-height:36px!important;min-width:36px!important;}
 body.dark .btn-sm[style*="color"],body.dark #gesOverview .btn-sm:not(.primary):not(.success){color:#F4A29C!important;}
 body.dark{--g4-r:#F4A29C;--g4-g:#7BD3A4;}
+
+/* ─── v5: UN SOLO MENU, CHE FUNZIONA SU PC, TABLET E TELEFONO ───
+   Via la riga in alto in tutte le pagine: Cerca e Nuovo stanno nel menu, le iniziali in fondo al menu.
+   PC da 1180: menu completo con i titoli delle aree, tutte le voci sempre visibili.
+   Tablet 720-1179: menu stretto con icona e nome, tutte le voci. Telefono: menu in basso. */
+body.ges-mode .app-header{display:none!important;}
+body.ges-mode .panel-layout{height:100vh!important;height:100dvh!important;}
+#apsSidebar{height:100vh!important;height:100dvh!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin;padding:10px 0 0!important;}
+#apsSidebar .sb-toggle{display:none!important;}
+/* tutte le voci sempre aperte: niente doppio clic per trovarle */
+#apsSidebar .sb-group .sb-group-items,#apsSidebar .sb-group.collapsed .sb-group-items{display:block!important;max-height:none!important;overflow:visible!important;opacity:1!important;}
+#apsSidebar .sb-group-header{pointer-events:none!important;cursor:default!important;padding:14px 18px 4px!important;}
+#apsSidebar .sb-group-header i{display:none!important;}
+#apsSidebar .sb-sep{display:none!important;}
+#apsSidebar .sb-item{min-height:40px!important;margin:1px 10px!important;padding:8px 12px!important;display:flex!important;align-items:center!important;gap:12px!important;width:auto!important;}
+#apsSidebar .sb-item[style*="display:none"],#apsSidebar .sb-item[style*="display: none"]{display:none!important;}
+#apsSidebar .sb-item .sb-label{font-size:14px!important;opacity:1!important;}
+#apsSidebar .sb-item i{width:20px!important;text-align:center;font-size:15px!important;margin:0!important;}
+#apsSidebar .sb-fondo{position:sticky;bottom:0;background:var(--bg-card);margin-top:auto!important;padding-top:6px;box-shadow:0 -8px 14px -10px rgba(70,30,40,.18);z-index:2;}
+/* Cerca e Nuovo */
+.v5-sb-az{display:flex;flex-direction:column;gap:8px;padding:0 10px 10px;}
+.v5-sb-az button{display:flex;align-items:center;gap:10px;min-height:42px;width:100%;border:0;border-radius:12px;padding:0 14px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;}
+.v5-sb-cerca{background:var(--bg-card-2);color:var(--tx-2);}
+.v5-sb-nuovo{background:var(--v5-sf);color:#fff;box-shadow:0 8px 18px rgba(122,34,48,.24);}
+.v5-sb-az button:hover{filter:brightness(.97);}
+.v5-sb-az i{width:20px;text-align:center;}
+.v5-sheet-az{display:flex;gap:8px;margin-bottom:10px;}.v5-sheet-az .btn-sm{flex:1;justify-content:center;}
+#apsSidebar .g3-sbuser{padding:10px 14px!important;}
+#apsSidebar .g3-sbuser small{font-size:12px!important;}
+/* il contenuto usa tutto lo spazio */
+body.ges-mode #apsMain .app-container{max-width:none!important;}
+/* tablet: menu stretto, ogni voce con icona e nome */
+@media(min-width:720px) and (max-width:1179px){
+  body.ges-mode{--sb-w:96px;}
+  #apsSidebar{width:96px!important;}
+  #apsSidebar .g3-brand{justify-content:center!important;padding:4px 0 10px!important;}
+  #apsSidebar .sb-group-header{display:none!important;}
+  #apsSidebar .sb-group{border-top:1px solid var(--bd);margin-top:6px;padding-top:6px;}
+  #apsSidebar .sb-item{flex-direction:column!important;gap:3px!important;margin:1px 6px!important;padding:8px 2px!important;min-height:56px!important;justify-content:center!important;text-align:center;}
+  #apsSidebar .sb-item .sb-label{font-size:12px!important;line-height:1.15!important;white-space:normal!important;}
+  .v5-sb-az{padding:0 8px 8px;}
+  .v5-sb-az button{flex-direction:column;gap:2px;min-height:54px;padding:6px 2px;justify-content:center;}
+  .v5-sb-az .sb-label{font-size:12px;}
+  #apsSidebar .g3-sbuser{justify-content:center!important;padding:8px 0!important;}
+  #apsSidebar .g3-sbuser>div:not(.g3-av),#apsSidebar .g3-sbuser .g3-renew{display:none!important;}
+}
+/* telefono: la testata è la prima cosa della pagina */
+@media(max-width:719px){
+  .panel-sidebar#apsSidebar:not(.mobile-open){display:none!important;}
+  body.ges-mode .panel-layout{height:calc(100dvh - 0px)!important;}
+}
+/* ultimi punti dell'audit */
+body #gestionaleArea .chip-stato,body #gestionaleArea #gesOverview .btn-sm{font-size:12px!important;}
+body #gestionaleArea #gesOverview .btn-sm{font-size:13px!important;}
+body #gestionaleArea .rub-uso,body #gestionaleArea .g4-ric{min-height:32px!important;}
+body #gestionaleArea button.on{min-height:36px!important;}
+/* il menu personale si apre vicino al nome, in fondo al menu laterale */
+@media(min-width:720px){body.ges-mode .g3-umenu-box{position:fixed!important;margin:0!important;top:auto!important;right:auto!important;left:12px!important;bottom:72px!important;}}
+@media(min-width:720px) and (max-width:1179px){body.ges-mode .g3-umenu-box{left:112px!important;bottom:12px!important;}
+  body.ges-mode{--sb-w:104px;}#apsSidebar{width:104px!important;}}
 </style>
 <script>window.__SOLO_GESTIONALE=1;</script><style>#dashboardScreen{display:none!important}</style></head>
 <body>
@@ -5407,6 +5467,12 @@ body.dark{--g4-r:#F4A29C;--g4-g:#7BD3A4;}
         <!-- Intestazione: logo e nome (v3) -->
         <div class="g3-brand"><div class="g3-brand-lg"><i class="fa-solid fa-music"></i></div><div class="sb-label"><b>Coro La Cordata</b><small>Gestionale APS</small></div><button class="g4-sbchiudi" onclick="_g4SbChiudi_()" title="Chiudi o apri la barra laterale"><i class="fa-solid fa-angles-left"></i></button></div>
 
+        <!-- v5: Cerca e Nuovo stanno qui, così in alto non serve più una riga -->
+        <div class="v5-sb-az">
+          <button type="button" class="v5-sb-cerca" onclick="apriRicerca()" title="Cerca (Ctrl+K)" aria-label="Cerca"><i class="fa-solid fa-magnifying-glass"></i><span class="sb-label">Cerca</span></button>
+          <button type="button" class="v5-sb-nuovo" onclick="apriAzioniRapide()" title="Cosa vuoi fare?" aria-label="Nuovo"><i class="fa-solid fa-plus"></i><span class="sb-label">Nuovo</span></button>
+        </div>
+
         <!-- Dashboard (sempre visibile) -->
         <div class="sb-item active" onclick="switchGesTab('gesOverview',this);closeMobileSidebar()" data-tab="gesOverview" style="margin:6px 6px 2px;">
           <i class="fa-solid fa-gauge-high"></i><span class="sb-label">Home</span>
@@ -5523,7 +5589,7 @@ body.dark{--g4-r:#F4A29C;--g4-g:#7BD3A4;}
             <i class="fa-solid fa-house"></i><span class="sb-label">Portale Coristi</span>
           </div>
           <!-- Utente collegato (v3, riempito da _setHeaderGestionale_) -->
-          <div class="g3-sbuser"><div class="g3-av" id="sbUserAvatar">–</div><div class="sb-label" style="min-width:0;flex:1;"><b id="sbUserName">Utente</b><small id="sbUserTimer">sessione: 30 min</small></div><button class="g3-renew" onclick="rinnovaSessioneUI(this)" title="Rinnova la sessione per altri 30 minuti"><i class="fa-solid fa-rotate-right"></i></button></div>
+          <div class="g3-sbuser"><div class="g3-av" id="sbUserAvatar" onclick="apriMenuUtente()" role="button" title="Il mio menu" style="cursor:pointer;">–</div><div class="sb-label" onclick="apriMenuUtente()" role="button" title="Il mio menu" style="min-width:0;flex:1;cursor:pointer;"><b id="sbUserName">Utente</b><small id="sbUserTimer">sessione: 30 min</small></div><button class="g3-renew" onclick="rinnovaSessioneUI(this)" title="Rinnova la sessione per altri 30 minuti"><i class="fa-solid fa-rotate-right"></i></button></div>
         </div>
       </nav>
       <!-- Main content -->
@@ -6244,6 +6310,7 @@ body.dark{--g4-r:#F4A29C;--g4-g:#7BD3A4;}
     <div id="gesBottomSheet" class="ges-bottom-sheet">
       <div class="ges-bs-handle"></div>
       <div style="font-weight:600;font-size:0.7rem;color:var(--tx-3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding:0 4px;">Tutte le sezioni</div>
+      <div class="v5-sheet-az"><button type="button" class="btn-sm" onclick="toggleGesBottomSheet();apriRicerca()"><i class="fa-solid fa-magnifying-glass"></i> Cerca</button><button type="button" class="btn-sm" onclick="toggleGesBottomSheet();apriMenuUtente()"><i class="fa-solid fa-circle-user"></i> Il mio menu</button></div>
       <div class="g3-sheet-sess"><span id="sbUserTimerMobile">sessione: 30 min</span><button class="btn-sm" onclick="rinnovaSessioneUI(this)"><i class="fa-solid fa-rotate-right"></i> Rinnova</button></div>
       <div id="gesBottomSheetItems"></div>
     </div>
@@ -8313,6 +8380,7 @@ function _setHeaderCorista_(u){
 }
 
 function _setHeaderGestionale_(nome){
+  document.body.classList.remove('sb-chiusa');   /* v5: il menu non si chiude più: ha già il suo formato per ogni schermo */
   var hmi=document.getElementById('headerMusicBtn');if(hmi)hmi.style.display='none';
   var hh=document.getElementById('headerHamburger');if(hh){hh.style.display='flex';hh.classList.add('ges-mode');}
   var hui=document.getElementById('headerUserInfo');if(hui)hui.style.display='flex';
