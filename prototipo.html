@@ -180,7 +180,7 @@ input[type=range]{width:100%;height:44px;accent-color:var(--bordeaux);margin:0;d
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
-</head>
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icona-apple-180.png"><link rel="icon" href="icona-192.png"><script>if(/[?&](accesso|apri|iscrizione|accompagnatore|contatto|azione|coro|prova|tessera)=?/.test(location.search))location.replace("vera.html"+location.search);</script></head>
 <body class="senza-menu">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -908,5 +908,5 @@ if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)imposta
 window.addEventListener('hashchange',function(){render();});
 render();
 </script>
-</body>
+<script>if("serviceWorker" in navigator){var ave=!!navigator.serviceWorker.controller,ri=false;navigator.serviceWorker.register("sw.js");navigator.serviceWorker.addEventListener("controllerchange",function(){if(ri||!ave)return;ri=true;location.reload();});}</script></body>
 </html>
