@@ -1,9 +1,9 @@
 /* Il «motore» dell'app installata: apre subito, riceve le notifiche, prepara gli aggiornamenti. */
-const VERSIONE='0bca40e4966b',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
+const VERSIONE='cace568f4a44',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
 const FILE=['./','index.html','manifest.webmanifest','icona-192.png','icona-512.png','icona-apple-180.png'];
 const ESTERNI_OK=/^https:\/\/(cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net)\//;
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILE)));});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(l=>Promise.all(l.filter(k=>k!==CACHE&&k!==ESTERNI).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(l=>Promise.all(l.filter(k=>k.indexOf('coro-')===0&&k!==CACHE&&k!==ESTERNI).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('message',e=>{if(e.data==='aggiorna')self.skipWaiting();});
 self.addEventListener('fetch',e=>{
   const r=e.request;if(r.method!=='GET')return;

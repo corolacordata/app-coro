@@ -3512,6 +3512,7 @@ body:not(.ges-mode) .app-header{display:none!important;}
 .sitoc-top>div{flex:1 1 200px;min-width:0}.sitoc-top b{display:block;color:var(--tx-1)}
 .sitoc-salva{display:block;font-size:.7rem;color:var(--tx-3)}.sitoc-salva.ok{color:#1F7A4D}.sitoc-salva.ko{color:#B3261E}
 .sitoc-bl{border-bottom:1px solid var(--bd)}
+.sab-f{position:relative}.sab-f.via img{opacity:.28;filter:grayscale(1)}.sab-s{position:absolute;top:4px;right:4px;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;cursor:pointer}.sab-s.on{background:#E0A100;color:#111}
 .sitoc-bl summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;font-weight:600;color:var(--tx-1);font-size:.88rem}
 .sitoc-bl summary::-webkit-details-marker{display:none}
 .sitoc-bl summary small{display:block;font-weight:500;font-size:.7rem;color:var(--tx-3)}
@@ -4229,7 +4230,7 @@ body.dark #apsSidebar{--sb-bg:#100B0C;background:#100B0C!important;}
 }
 /* v5 app installata sul telefono (GitHub): niente lampo al tocco, niente rimbalzo della pagina */
 *{-webkit-tap-highlight-color:transparent;}
-@media(display-mode:standalone){html,body{overscroll-behavior-y:none;}}
+
 /* v5 leggibilità: colori scritti a mano che con la grafica nuova o al buio si leggevano male */
 #apsSidebar .g3-av{background-color:#8E2E35!important;color:#fff!important;}
 [style*="color:#9AA0AC"],[style*="color:#c4c4c4"]{color:var(--tx-3)!important;}
@@ -4263,6 +4264,76 @@ body.dark .acc-msg.err{color:#F2958E;}
 .acc-st{display:inline-block;font-size:.8rem;font-weight:600;padding:2px 10px;border-radius:999px;white-space:nowrap;}
 .acc-st.g{background:var(--g4-g2);color:var(--g4-g);}.acc-st.o{background:var(--g4-o2);color:var(--g4-o);}.acc-st.r{background:var(--g4-r2);color:var(--g4-r);}.acc-st.n{background:var(--bg-card-2);color:var(--tx-2);}
 .pwa-agg{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:9000;display:flex;align-items:center;gap:12px;background:#241719;color:#fff;padding:10px 14px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:.92rem;white-space:nowrap;}
+/* ══ v5 — TERZA PARTE: un solo aspetto per tutta l'app (richiesta di Stefano del 05/11) ══ */
+/* lo scorrimento lo fa una sola cosa: la pagina. Prima anche il corpo della pagina poteva scorrere e sul telefono si bloccava */
+html{overflow-y:auto;overflow-x:hidden;height:auto;}
+body{overflow-y:visible;overflow-x:clip;font-size:15px;}
+@supports (overflow:clip){html{overflow-x:clip;}}
+@media(pointer:coarse),(max-width:767px){html{font-size:16px;}}
+/* colori scritti a mano nelle pagine vecchie: ora seguono il tema, chiaro e scuro */
+[style*="color:#7A766E"],[style*="color:#7a766e"],[style*="color:#9AA0AC"],[style*="color:#9aa0ac"],[style*="color:#6B6F7A"],[style*="color:#c4c4c4"],[style*="color:#6b7280"],[style*="color:#94a3b8"],[style*="color:#64748b"]{color:var(--tx-3)!important;}
+[style*="color:#3F4451"],[style*="color:#3f4451"],[style*="color:#475569"],[style*="color:#334155"]{color:var(--tx-2)!important;}
+[style*="color:#16181D"],[style*="color:#16181d"],[style*="color:#1e293b"],[style*="color:#0f172a"]{color:var(--tx-1)!important;}
+[style*="background:#F1EFEA"],[style*="background:#f1efea"],[style*="background:#F6F4F0"],[style*="background:#f6f4f0"],[style*="background:#f1f5f9"],[style*="background:#f8fafc"],[style*="background:#FAF8F4"]{background:var(--bg-card-2)!important;}
+[style*="background:#fff;"],[style*="background:#FFF;"],[style*="background:#ffffff"],[style*="background:#FFFFFF"]{background:var(--bg-card)!important;}
+[style*="color:#1F7A4D"],[style*="color:#1f7a4d"]{color:var(--g4-g)!important;}
+[style*="background:#E4F3EA"],[style*="background:#e4f3ea"]{background:var(--g4-g2)!important;}
+[style*="color:#8F5A14"],[style*="color:#B8741A"],[style*="color:#b8741a"],[style*="color:#a8661a"]{color:var(--g4-o)!important;}
+[style*="background:#FBF0DA"],[style*="background:#fbf0da"],[style*="background:#FFF4E0"]{background:var(--g4-o2)!important;}
+[style*="color:#B3261E"],[style*="color:#b3261e"],[style*="color:#8F1E18"]{color:var(--g4-r)!important;}
+[style*="background:#FBE7E5"],[style*="background:#FBEAEA"],[style*="background:#fbe7e5"]{background:var(--g4-r2)!important;}
+[style*="solid #E6E3DD"],[style*="solid #e6e3dd"],[style*="solid #D3D0C9"],[style*="solid #EFEDE8"]{border-color:var(--bd)!important;}
+/* tasti: si capisce subito che si toccano */
+.btn-sm:not(.primary):not(.success):not(.danger){border:1.5px solid color-mix(in srgb,var(--c-primary) 40%,var(--bd))!important;color:var(--c-primary);background:var(--bg-card);font-weight:600;}
+.btn-sm.primary{background:#8E2E35!important;border-color:#8E2E35!important;color:#fff!important;}
+.btn-sm.success{background:#1B6E45!important;border-color:#1B6E45!important;color:#fff!important;}
+.btn-sm.danger{background:#B3261E!important;border-color:#B3261E!important;color:#fff!important;}
+.g4-row[onclick]::after,.ev-card::after{content:'\f054';font:900 .7rem 'Font Awesome 6 Free';color:var(--tx-3);margin-left:auto;flex:none;align-self:center;}
+@media(max-width:767px){
+  .g4-sbar{gap:8px;flex-wrap:wrap;}.ev-lh span>.btn-sm{flex:1 1 auto;}.g4-sbar>.sub-tabs,.tab-section>div>.sub-tabs.compatta{flex:1 1 100%;order:5;min-width:0;}
+  .sub-tabs.compatta{flex-wrap:wrap;overflow:visible;}
+  .g3-dash-head h1{font-size:1.45rem!important;}
+  .g3-kpis{margin-bottom:10px!important;}
+  #gesOverviewContent .g4-gh{display:flex;flex-direction:column;gap:12px;}
+  #gesOverviewContent .g4-gh>.g3v-hero{order:1;}#gesOverviewContent .g4-gh>.g4-gtasti{order:2;}#gesOverviewContent .g4-gh>.g3-kpis{order:3;}
+}
+/* STATI: stessa forma ovunque; il colore e il segno dicono com'è la situazione */
+.chip-stato,.g4-tag,.acc-st{display:inline-flex;align-items:center;gap:4px;border-radius:999px!important;padding:3px 10px!important;font-size:.78rem!important;font-weight:700!important;white-space:nowrap;}
+.chip-attivo,.chip-approvato,.g4-tag.g,.acc-st.g{background:#CDEBD8!important;color:#0F5A35!important;}
+.chip-inattesa,.chip-rinviato,.g4-tag.o,.acc-st.o{background:#FBE1A8!important;color:#6E4409!important;}
+.chip-respinto,.g4-tag.r,.acc-st.r{background:#F8CFCA!important;color:#8F1E18!important;}
+.chip-archiviato,.acc-st.n{background:var(--bg-card-2)!important;color:var(--tx-2)!important;}
+.chip-attivo:not(:has(i))::before,.chip-approvato:not(:has(i))::before,.g4-tag.g:not(:has(i))::before{content:'✓';}
+.chip-inattesa:not(:has(i))::before,.chip-rinviato:not(:has(i))::before,.g4-tag.o:not(:has(i))::before{content:'●';font-size:.6em;}
+.chip-respinto:not(:has(i))::before,.g4-tag.r:not(:has(i))::before{content:'✕';}
+body.dark .chip-attivo,body.dark .chip-approvato,body.dark .g4-tag.g,body.dark .acc-st.g{background:#17402A!important;color:#8CE0B2!important;}
+body.dark .chip-inattesa,body.dark .chip-rinviato,body.dark .g4-tag.o,body.dark .acc-st.o{background:#4A360C!important;color:#F4CB7F!important;}
+body.dark .chip-respinto,body.dark .g4-tag.r,body.dark .acc-st.r{background:#4F1F1B!important;color:#F7AAA3!important;}
+/* PROVE ED EVENTI: prova = bordeaux, evento = ambra */
+.g5-corda .g3v-dt.ev,.g5-corda .g4-dt{background:#FBE1A8!important;box-shadow:inset 0 0 0 2px #B8741A;color:#4A2F06!important;}
+.g5-corda .g4-dt b,.g5-corda .g4-dt small,.g5-corda .g3v-dt.ev small,.g5-corda .g3v-dt.ev b{color:#4A2F06!important;}
+.chip-concerto{background:#FBE1A8!important;color:#6E4409!important;}
+.ev-dt{background:#FBE1A8!important;color:#4A2F06!important;}
+.g5-corda .g3v-dt:not(.ev){background:#F6E8E9!important;color:#6E2228!important;}
+.g5-corda .g3v-dt:not(.ev) small{color:#6E2228!important;}
+body.dark .g5-corda .g3v-dt:not(.ev){background:#3A2226!important;color:#F3C8CC!important;}body.dark .g5-corda .g3v-dt:not(.ev) small{color:#F3C8CC!important;}
+/* PORTALE E GESTIONALE: nel gestionale c'è sempre la fascia colorata con il nome dell'area; il portale ha il menu bordeaux */
+#gestionaleArea .panel-main[data-area-nome]::before{content:attr(data-area-nome);display:block;position:sticky;top:0;z-index:40;background:var(--area,#241719);color:#fff;font-size:.8rem;font-weight:700;letter-spacing:.02em;padding:5px 16px;}
+body[data-area=home]{--area:#241719;}body[data-area=persone]{--area:#2A6FB0;}body[data-area=attivita]{--area:#8E2E35;}body[data-area=soldi]{--area:#1B6E45;}body[data-area=comunicare]{--area:#6B3FA0;}body[data-area=associazione]{--area:#55606E;}body[data-area=sistema]{--area:#55606E;}
+body[data-area] #apsSidebar .sb-item.active{background:var(--area)!important;}
+body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
+#apsSidebar .sb-group-header>span::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;background:#55606E;}
+#sbg-persone .sb-group-header>span::before{background:#5B9BD8;}#sbg-att .sb-group-header>span::before{background:#E08A92;}#sbg-soldi .sb-group-header>span::before{background:#5FBF8C;}#sbg-com .sb-group-header>span::before{background:#A77FD6;}#sbg-ass .sb-group-header>span::before{background:#9AA5B2;}
+@media(min-width:768px){
+  #dashboardScreen .nav-segment{--bg:rgba(255,255,255,.14);--bg-card:rgba(255,255,255,.14);--c-soft:#fff;--c-primary:#8E2E35;background:#5C1A1F!important;}
+  body.dark #dashboardScreen .nav-segment{background:#3F1216!important;}
+  #dashboardScreen .nav-link.active,body.dark #dashboardScreen .nav-link.active,#dashboardScreen .nav-link.active i,body.dark #dashboardScreen .nav-link.active i{color:#8E2E35!important;}
+  #dashboardScreen .nav-link.active,body.dark #dashboardScreen .nav-link.active{background:#fff!important;}
+}
+/* logo del coro */
+.g3-logo,.g4-logo,.g3-brand-lg,body.dark .g3-logo,body.dark .g3-brand-lg,#dashboardScreen .g4-sbrand .g4-logo,#apsSidebar .g3-brand-lg{background:#fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAChCAMAAAB3TUS6AAAAYFBMVEWmpqbV1dWwsLDe3t7Nzc1aWlrOzs62trYqKir9/f0AAAAAAADn5+fX19fHx8e3t7enp6eXl5eHh4d3d3cXFxdnZ2dXV1cnJydHR0c3Nzf///+pqal9fX3X19fHx8fFxcVBdpz9AAAAIHRSTlMgq1bSXBAgjwz+/wD9/f7//////////////wEDB86Qcu1ztXwAABedSURBVHjavV2JQuNIDnUCzGxC3bdDgP//y32qw/GZOAzd3tmmG0L8LJWuJ1Wle//xdf3oLuVvXXf8PhwOn5+fHBe+HA5f38djV1/YfVx/fpfup+guGdz1ePz6fGGn1Yu9fB6Oxwzu0p7l7wC85rt1x6/DBrQJzM+vIsvL5e8AvHzQjbrvPeAGkIeC8ePyxwFm4XXHzwU6LqTSWhuDP5QUbCnI7+4nEJ8DSFr633EqOya0D9Gdp5dzfbBqipN9khwvH38MIEmv+/oci037BbQpzmQVH//CVxbjHwFY4N1EwqSP511Xb8VkOZIqfh0gKbe76ZbJ4M5PXNGLkaZfnzDpnQA/JtIT/il0FaPhNyl2u82l26ndt+8Bnu7PP7yCnEL8LYB41GMzDWbi+T9cvRrM5ftjlxC7PeLrDgM8d/6PV9QN4udxjxC7HavvyH4NXobYpMi+Ph4j7B6q962JT8XzL119W4uf3fvl+l8Awhk08Yl0/sXLN6V8P1Jz98A6/q3vZM+/e7mm58PHfQzd3eXX1Cv6869foT765z93Zdjd+1FXnYs5/4mrCZEfa4L5JEDgeylvkM5/6LLNmu94xG57/VXzkO78x66+Rr9/txF2m9+v+Mz5T15ONoRb2UO3Kb8/Y72LqwaWf68bCLv7+ML5j1+mIrysW0p3Dx9L579w2bvrsFtffwVff/4rl7+HsNu233v43K+admgI3/YAROgp9nsHX+LWpt+X4dcKnMV3ru/Xgm8bgIPleSXsL4qxrEP2uqymukX+8vZ5H5+zjMxHK+G1/2Vb5t0C4QLg++Gu/3M2O3/upeDWm98zI7WBsFt3MHpr8dUUhFshhRJamV/LYktderjMTLmbG0iJv1uLWQ6UAqgYoZQ4CflL1uLKs3+/3wF4vbzlBIYtVn8fXApaDxSBAEAOvkgIweXvlCrnVAxllh52UwV/rRtIf9JRaal8yzJZ0KJdjP1SOWBrAjuJyt3KAlwkMD1DSQJ8WqamYwPtMk74OJPsl3IeWb3hxzrA66V4QDFfHFlsQUt4FmUGOhCS4/mSpHf5G8YSWfWGH6sAm4Jnt1I1L1TESwo7sEe0/gCRiZJ0Mp/ZtpS8DTr9p4jy+c8osekWCrZrSxciCoZsYmCAwPsx/O/EB0pIKFmFe1Jn91tKHgP8XFPwQAN4OBUpBjvWvkqOTdhWCfcDjCG4/6Dksbvubi7wuJYixNvdhYeOB08IRwP10tcxgcrZ4Mltcj+25MP7dQ4QLpCthRA1ur2CEG3DwxUj7Qqm14l9PIqyP7AcPrOTblDwd/5J3BQgOT+jvR0AnhhUypnfaD0YrFiu0s/c9ctHc4bd1MWYOwKEA/fID4ZgBw8DfDxu9Zk0uUn5NEQ5FWE3cTHzGNfPhOK9R/bLZQFI8mPC8aV6b98CelHY9r2JT19FeB0DbAK0q1Y/XDoZh9+XJEWgZOSqWbKr8hubDh5LGx16tz/xYscqwu6eANPsrjKm5MTJhGIkjCAKc+ZrAOENKRjCO9rge21tSD7GtFuEh7oIa5vvbVWA8zsLZ3Xyp5CyW84AhVBnvy5CSFch4HCuYM+0YqUKfo/vkeP0vxuZ8MnNA8+s5SZxAxNlCiVesJwtyBD4Vg+RCYo2XOSoLQBR2h5KQJxxLmBhuj5uGnL1hQXg/z7XfCA/6bmKbYD/VYRICAocuCczXtfwvLSWrGxcp4oQKaQUiJmaJCuREkmb4rie0FSJ5WjF/8ki7EZ5dD936kbNOprBsJhMjndkqXRDlCat/aEtnxoJy18A7MRZfjWjHBfZByVpgtyohPq1zcJ0IaclIvW1Tv4aANZCScx9tFosrmBONlGyj7Aic+ylhHqILqK3I/Xe4h8ZC30DMKFlKhNEfQQucu82O6yWhdhwZpV6vWSAl1oJT2vIKLS96UxWrpDnaoT8DNIaujFEAq1XmXGZqGbOGQ7dkP7DzTO+E6svATbO7jTDvTeF8ipm0g1UzNTHJGntTcHcjJwhkn0oFQqhRQUNw7J5zbO4jCEZa6xn5GE4SZjWQV6CRWQyY2dWbQEUrq+eJmdd3aBhNSZLLLyXLos8xzgxyQJkkKjcs3Gi7WnghFtGCL6hp+oKTo8rgLLJGloMlDtmodJ6hBbWvXsLoq44uGwm3aDhERXoFfy+tKItQjtZjEEZz7mB/dKyUtYYVZqtUF+Wl7Qa6bftg5EKf/EWQlYSbjBHHjxhCsFa5BLKazYNOhWiK/hfK8CZhmPA4IE3zFqBP6HTEEb6YD750HNmULfj/sKTiGw0cIhQvqT0AQ/QY3DBJjggrRTcc0iBaoEUrIarjgmQ8SYOMsHfNZJcWu14NwnJkAXKOOi4m2vY0W9IQ0UcDSPgnYMPw6OdFMYmDMxHWgMxcAgBAGHHBkvCQErk3jCqwEVvrOS1MJWUd+Fdke3SqhTRkRXju7Qm8oVFYoohMkHq6EXrlGHg5q3asKMqAwkf1hhuCw+FoQiShzcNoAlKjt32JNCIybJi0oipk09maBdLtVCrxbJpTTdNvqYV8V3z0rGSIyIGCDDjq3dgyfXZeUgT1TQh4GLdXzC5koP1nt8ZrVHD8zBDIaHyIF1X4zBvNCdSAQkVogoeXIvEhAnNULCbrn927RwFIukVCgPxuKtL0MSbFUB+WKrm9nbG9jBEuOSf3I4tMog7r8hqzgBVdTTde+GLghniu4rwEtLocQymgMSnWYvgu/DNlT1bFXBNgjXQwtKrmc1xvS7Cri3BkoQJjOGwRAou0SF7Lnaiop2XVS+KsXGfnxFzULpAyHUADUeVS5YlL/oYAtyWTXX16miTz7+fNGGBn+n7PmbHpygLUyeRE/ZhEb6/Fi+oyitCZjng0ojo5QHJD4wbiaDOBXnuyzoEs76kY6FN7vj+HPmYFXN4DmH8PE/2NSPNxVkc1QChRQp/kpIEWqhSotW/SsfQk6HkigCBTGnyRrUGJdEkw4n0mMZrPs3ADZ8l7v2MQWWyfseyRZ5qW0saSRRjuHlhCD4BsNiIC6I8ggfrAhshpxpuxb5KOezZSZckTBGYlq+5+muxkmONJhdyAL9osfnh6QS8EXeq1Le8696LjQTli3gsRwQFQGNaBZCVIylqVh26MtrjGr46h9Tu4UNN3GOd5umbEocn0IvKJA6sc4zRCl2ZLtZ1byWZ9iwUii95EiAAWr6snUKdKym3tOU2sWm6iap+rUrzyjeSYqAFlpXIaDl6pNhIifqSE3bViDVXofyaR2BEhNdeLwmuiki7iCitK7DYKJh6D10AunrPpCoudjMiZI24mgYiCil7Wy7gTFAF6uKYj11JZXqIrd4GsZ/8hLoN37Vky9T6JhgyI2nqK2JtRbhqs6oA7CuuoHSzkpuUkDlIqVupBO80sjeDXCAg9c2K+7f7Lu5qeH3yxKUCYZgySKBaQlVt9MhpsAjqpE9fWf6+Agyp4q42pmotnEZVI35dDQBxOxPGw1MIs+ADakLzb47UPRyxru9nyUjM+FcUJSMphjr3FonIoFy0AmtrsQL0fRVotZ1Q1TeugYNAFmjaHBLkEcfTIAhj0peV9VLmxlQiZrTqE9kuLj7yITEgO9bwI+WWSHSQ0QY/AKyqro9UU8veDuVNHAOvU3AKOVPrDhmlxh4Lb66ldaYALCV7QOpoKkAOHUc/9gQO69JoZ+r3zIkqDDj0CqBaQwNYja0Zd2xAJqwHEvJq3dCZVpOKMkaPYJsjIhzhSyk6ZHtRqGWcGLuChIQY+bt14ymDUxVo6uNk0Q3BoQpLVwlPnDMSJlPXLh7f6rEbyKsSOV4BmCWIyK9bbxWOksZZilOtdJRDmYf6ojY3dWb0lWhuUfpaLEwZFtsqRO5Gfj02VzWIDR5LykkfP5ENuTQCGKig8JMevRlbpjUpGePrS3RtNrJQ/xlWJJhas0TUV8cqx/pi5DjViiRKe19dcKW3EC1U3xeAvABE6Wgmkb28veUlvJwoZVWnKSLhq43X157GsdfZahuWT3SrimAd1y1lUAMtlKqMND8jmrgCsNTEPWpDMWHeqoWmFu1yTlmfvi732kNsrGQN3q5oFI8xDWhh2R4ODSCb82+61z4DFAUg6v/Ix7lUTZ1crIrha2Nw3MxuWQTATL3vLBtwxatX0+BDeqgyVHy3R6eN1iHNSxnUzwVgfqELVIyKAaGjXNA5ynMZQDa7tYVzpBQY8RMTvTKBFA45dOSCzziU1ZQ1Ju8RuuEue5gkLuA7paiiQT0JDhRRoCbYpnI2SAKzjqjyFSVyydEaVKrm8bn24Jn708SRs9LeOt3mBNyUA8ykkC0Bm8tyNzkapI3nzKWRSUbNHAMTBpRm4Cq4mJUsSk5rlm5e0yzZ8OEX4iR1uL0gr714K8/SiH8P+QcSzyWgB9inxdeQbhWZmAGa0zR1iHHzGrc8VppPox+ISdbYnLk/E/+QKMvDUChSscjApni1t5R+CHCMdYP7r5XK6NtxgCuKPcOLwIs5eQ4+nvreS7kf4OFZgHH9J2pMQQ5jgbosip6SSPzlDP+rRdB2901fuq8Rw/vg6ieReKjMdc6bKtUPj55GI/F+qJEcSmBxFghJyYqH5IcF98kLwH/LTXaRGG5Nw35SGYhpt6O4YjLzXrnIe2UYaK70iJRI0Vai+rNk1Kd9izbexhGn37yJ1kzz8FpZa4LvegECU+0hoHqQlOWBD7Vo0g9EiDSbl6TSzFYDn4pslHGwoXdlkUhqOGgDzpWyX/MIYKK8Rpaa5FonEO4iZJN9VBMFqanI/LTlFssaZFAZkk6QA2BA18jDBQPG6rDGd1fILTXhoZfd8+0usp32HkdDSJzIHpcXJ+/RWvEKBO0u+0VX1ZcmDQr3Qn2wxBW/v/iWY7HzMSo1EXY4MZDXPouSJcyz+JxpIbQ/XvCConmjPkobrEchsr0Cz5t95HEKpCaDc8CDXrs9J/o+qjgDkfhcDO6QYe1DnD4vjX6LiW9LMK0Pxc4H+SIZEL/RQbS0YR0E0DLQtie1j/M8gRGoQ2KHgcAM/nGMW5MgX2ShZiRPrSi+EUABCslFahvsiVko5KNoBOZbTfW2Xx/uAJz8MI67ukSgaob9BASQ+jrohvfOxcd+kIJIfY7jeyPRddiM33xjqmC5PsN4/NoQw4vajJ3BWqja96MZgscaxiPFYiMfBPD1gY7t1jRnnfaZWAkb5o1sTtbA650zM672b0dGus2Kll7Qafp4/6fA3nLv2m1uEJgFYxBZSD8byVMeONoCUPLd+MCvgiWRtVkHCda52o1YYnoet4aK5xLOu0MMg9Z9qqbeW0b92VxA7AUI0qH20qnT1JqJMop1F8hPbnOoeCbBvMHGEmIQPcViggMPVGb13M4s1aP0s22u4toNjYiw3koTKzPBU4BmNMWMnownXgxqdrWHSFdju1N4bCKnc9DnIsED5qNIgl11NGJfoJsNTYnbLCOaKWBtaAky2QDyPNeXqHtFUz2Pw4g6tzmX7AVvIwHbcTxu71Ih/8T0rdyXNKjgoF5RqjmdVzdIXbZRNK6YCCykNN1Ylt570/Ep6CcA6sar2xJpMjtpaHyCpqr7UxmYyj1WY/gTJx6Unl1JVuvUx7XqeDPXjVvTSyeZ+0E8k86Z2MUIDLhs6gbB0AWn5goXz4FDi7+0s6Hh62Swh281nMOGp5Z1ooesKDNHxuRJkYB/pTM1mNcHpu7XS2dVdoTUUdsC8LXWUlv5qvfThCbk4YFhZDmSysm55JZnlp47F/0+i4+oQCcXo1HXl+IStrUx3x+B0RA+XgOKgnJgohTDisGIs2HIJ5cfnspMRhy7yS6XbUpiIkHHp8ljyk1SYlV5eRgE4GLnTD2Hj1EeKf1o00EFWMPdph/1KW7NBpdYkiVohvwR7saD4TiJJwWIes7WhKzOiHaTjULe8I0agcuNbKZGY0UBRQ9lgPPotsEf9jSsTEP/OwUoMTfE1XgavQEsIvQbw5QxTgPe7FW6AlTLOmW2yfRhGEazxU3m+bvJXittzXr00dO7yoUFaQIoiyPLe2FAAk6mfvuYHosRQ8ZG1052nZbvppP8YpViCDTT5DbqzrLoDAGkFcxpyIaCHKZb0JB04dZg8jt0bEp7pPqYyah85eH0Uslocw45TZqXdRUg5kkLO0xTo3QjQQNdKk+3IVfANjzvd4UUXgV4uU4BtgmpNcdAxEwF6EpvIy4AeixE2A5P7UeYvHs2BI+u42KzwU2EK0vXggiurbGaP/MNgKFt59D6eVS3N/3sho1XN4CXbpMM0zSW2BfdihUrkQXgWQ1TTto8DQ/dy4EU+b5tyRnvyHnd4i3Jj5Xmq6m5jZkDDGQkPRumG8ok0lMu+ixF2574trqnqe76W0o+wn+ysgFR1wzfzwH2JVrDhGneAbOP1CLDVBQ6LzuHvGC+rDw4G2/w7Mb7Jo8bYQSkiij9Y13r+H6RSbATmt5+fcOD3xNETNR1hvFrY9valp1IAAySD4l0Wpixaa4RxMHqRsrQ9w+yBu84yEQzs5A5wMv1ZZX6EMIxOQC0CzM2pRtd+tEb2x3ig0rJDaI8bu1M3FRycqkXaQghZlZ2rtBfy1g839wzD/YutXXw+b65t/O2OXG+CjHnN8w3FYBTjUnap1j+4JgMTHFogpaJB8Ef5DMoXFLbODk9EWIGsG7cWMGohjxGj/0MhjHmVePtaCiQbUi4HhqxKL+R6SWGnTiXuzu0O7aVCTVSJtyiMSYiKX4gOW3pgxj3AHbGOkndvLq57OVybwP0HV/Tak9fF1yZTcNcoqFGe9/OguKB/WA0mKNnHkdbNO4eY9C2D22wmKkSqLG4cKUpShvZ9BzE0/j6SOGpJOmHfx6eErDlDdUwkDPZ752XjRnIP/V8igAt9M6I2jl8fM7CFkLRqhE22sW6uFl6OoFJQkfXl3r35W3l9KNu9SyrFYS6ZTF2Orgw7aI+iQ+TINRkbL3rtdOZutXD1Nacja5BVdxSfgxB9mNR4h9MhWT3Vus0WoKtZ/0dfOvnzVzfVxCy6v1447YyNTyuQEVsXCGdL/kYJY9aKOzcUPXsqO6ZE3vePtfa2ROA2GDF68Y23fcBRdLieMm7Plpl2dVZ1S18W2cefawgjAUgO9fMFJOiZXqebR5igIkPJGHrHTCMCOiU2va17v363KlRMPfDEmA23li9DOZ4aDtMivezhJU6Oo8SSUdH1uh2SF337Llb1wXCWANIqet6MOK7d7HbFcoxKGTqftP/PT657DpPbVy9VfjhxvXxmbIY58eEQM0RD9c7p791dw/Pe13MfLicbiE3hQRpVpv+H/ftW79FzajwNhhglPWoo3unnj443m80mFSjscG2LTnsfcRsAXaQbZ/Do9DfnAw5MGsYGssBK9e2BPr9+uMDErvb+Y3DAQIub1GBW6EDdu8feySHHbITnimhvRZqT512pl3+wxGTWBtDcsP7n51JNjM1tHPMsHvr6+0Rgu7xCba38S4PidF4Y8oypK+xjO66O6dp3TxLmWREC74vXDZ554eH7nZ7TmH9Hs2zTI9SwBZNTOdiJy0q9D7Ps1IlEjB6Oeu/Cs1q1h19Ix1wWOzjk1i7XefErs/IZc7dYJesFpmLoR1bBHoZOKg06FWs1c0zx7DuO2oXEF+XFXM+LMADnOI3YpbZNU6GUgKYxngPK1bf5fprhxXDaf/vlc1z7LyTB7NOPG1wWWbYrQf6F/tA4vNHAe8/7hkoD7O9mtiabWmz9a0QMSkwHrDYkMb3HPtZGy1jURbJtp86H0m997zn7pnTxrupFBGxaEe2HlEg2JiL/cNn3WNzCTYZn+q6Q6o4EMAF3vUPHDlOEK/fk7UIHOO6nYZ7eZ97e0E7iTVn3Dyr/HryWPTu6TPbX7enXjFxL4VTIhhs2cZ+h5uKG+/y/fSp7U8ee1/aZ68v2zNUeWsBR59bB/ynJ8I7/u/5jw94+oMDCnXSHV7WN/hD48qMz5KafnTA5fo3PnqhCGH/ZxvQhy+8DZ+J8Hc+vKLc6g0fqvHC9n4yxOWvfrrG7QMz8NEfX4eXGU7ap8APX8fj2+jzJP4ywHLf2wFe+JCS4+v3d/6IEs5eDq//1Oforv/lHv8HYS+HG27D3E0AAAAASUVORK5CYII=") center/92% no-repeat!important;border-radius:50%!important;}
+.g3-logo i,.g4-logo i,.g3-brand-lg i{display:none!important;}
+.g3-logo{width:96px!important;height:96px!important;}
 </style>
 </head>
 <body>
@@ -4363,7 +4434,7 @@ body.dark .acc-msg.err{color:#F2958E;}
       <div class="g3-logo"><i class="fa-solid fa-music"></i></div>
       <h1>La Cordata</h1>
       <p class="g3-lsub" id="accSub">Il portale dei coristi · entra con la tua email</p>
-      <span class="g3-ver">Versione 4.11.6</span>
+      <span class="g3-ver">Versione 4.11.8</span>
       <div id="accBox"></div>
       <div id="loginSearchWrap" style="display:none;">
         <div id="g4LoginRic"></div>
@@ -4393,7 +4464,7 @@ body.dark .acc-msg.err{color:#F2958E;}
           <i class="fa-solid fa-building-columns" style="font-size:26px;color:white;"></i>
         </div>
         <h2 style="margin:0 0 4px;font-weight:600;">Gestionale APS</h2>
-        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.6</span></p>
+        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.8</span></p>
       </div>
       <div id="gesOtpMsg" style="background:var(--bg-card-2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:0.85rem;color:var(--c-primary);font-weight:600;">
         <i class="fa-solid fa-envelope-circle-check"></i> Controlla la tua email per il codice.
@@ -4428,8 +4499,8 @@ body.dark .acc-msg.err{color:#F2958E;}
         <i class="fa-solid fa-paper-plane"></i> Richiedi accesso al Presidente
       </button>
       <div id="richiestaAccessoMsg" style="display:none;background:#E4F3EA;border:1px solid #BFE3CC;border-radius:12px;padding:10px 14px;font-size:0.82rem;color:#1F7A4D;font-weight:600;margin-bottom:12px;"></div>
-      <button onclick="nascondiTutti();document.getElementById('loginScreen').style.display='block';" style="width:100%;border:0;background:none;color:#7A766E;font-weight:600;cursor:pointer;font-family:inherit;font-size:0.88rem;">
-        <i class="fa-solid fa-arrow-left"></i> Torna alla selezione
+      <button onclick="tornaAlCorista()" style="width:100%;border:0;background:none;color:#7A766E;font-weight:600;cursor:pointer;font-family:inherit;font-size:0.88rem;">
+        <i class="fa-solid fa-arrow-left"></i> Torna al portale
       </button>
     </div>
   </div>
@@ -5123,7 +5194,7 @@ body.dark .acc-msg.err{color:#F2958E;}
           <i class="fa-solid fa-building-columns" style="font-size:26px;color:white;"></i>
         </div>
         <h2 style="margin:0 0 4px;font-weight:600;">Gestionale APS</h2>
-        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.6</span></p>
+        <p style="font-size:0.82rem;color:#7A766E;margin:0;">Coro "La Cordata" APS · <span class="g3-ver">Versione 4.11.8</span></p>
       </div>
       <!-- Step 1: nome+cognome -->
       <div id="apsStep1">
@@ -6427,7 +6498,7 @@ body.dark .acc-msg.err{color:#F2958E;}
 
 
 <!-- Dati precaricati dal server GAS al momento del render (scriptlet) -->
-<script>var _PRELOADED=null;var APRI_INIZIALE=(function(){var q=new URLSearchParams(location.search),a=q.get('accesso')||'',p=q.get('apri')||'',c=q.get('contatto')||'';
+<script>var _PRELOADED=null;var APRI_INIZIALE=(function(){var q=new URLSearchParams(location.search);if(['azione','coro','prova','tessera','pub','diag'].some(function(k){return q.has(k);})){location.replace(window.__API_URL+location.search);return '';}var a=q.get('accesso')||'',p=q.get('apri')||'',c=q.get('contatto')||'';
 if(/^[0-9a-f]{64}$/.test(a))return 'accesso:'+a;if(q.has('iscrizione'))return 'iscrizione';if(q.has('accompagnatore'))return 'accompagnatore';
 if(/^[A-Za-z0-9_-]{10,900}\.[A-Za-z0-9_-]{20,90}$/.test(c)||/^[A-Za-z0-9_-]{1,40}(~[A-Za-z0-9_-]{1,20}){5}$/.test(c))return 'contatto:'+c;
 return /^[\w:.-]{1,60}$/.test(p)?p:'';})();</script>
@@ -6435,7 +6506,7 @@ return /^[\w:.-]{1,60}$/.test(p)?p:'';})();</script>
 <script>
 /* Numero di versione mostrato nell'app (login, codice del coro, informazioni).
    Grafica nuova = numero intero (3); ogni blocco nuovo aggiunto dopo = 3.1, 3.2… */
-var APP_VERSIONE='4.11.6';
+var APP_VERSIONE='4.11.8';
 document.addEventListener('DOMContentLoaded',function(){ document.querySelectorAll('.g3-ver').forEach(function(e){ e.textContent='Versione '+APP_VERSIONE; }); });
 /* v3 — data in riquadro: «MAR 06 OTT» e «domani / tra 3 giorni» (portale e gestionale) */
 function _g3vData_(s){
@@ -6520,7 +6591,7 @@ var _accFine_=null, _accLink_='';
 /* Al caricamento: link dell'email, poi biglietto salvato, altrimenti la schermata di accesso */
 async function _sbloccaPortale_(){
   var v=(typeof APRI_INIZIALE==='string')?APRI_INIZIALE:'';
-  if(v.indexOf('accesso:')===0){ APRI_INIZIALE=''; _accLink_=v.slice(8); _accMostra_('link'); return _accAspetta_(); }
+  if(v.indexOf('accesso:')===0){ APRI_INIZIALE=''; _accLink_=v.slice(8); try{ if(window.__API_URL)history.replaceState(null,'',location.pathname); }catch(e){} _accMostra_('link'); return _accAspetta_(); }
   var tok=_accTokSalvato_();
   if(tok){
     try{
@@ -6543,6 +6614,7 @@ function _accAttiva_(socioId){
   if(idx<0){ document.getElementById('loginScreen').style.display='block'; _accMostra_('entra'); _accMsg_('Non trovo la tua scheda: chiedi al Direttivo.',true); return; }
   document.getElementById('sysLoader').style.display='none';
   _attivaCorista_(idx);
+  setTimeout(_notAuto_,1500);
 }
 function _accMsg_(t,err){ var m=document.getElementById('accMsg'); if(!m)return; m.textContent=t||''; m.className='acc-msg'+(err?' err':(t?' ok':'')); }
 function _accCampoPw_(id,etich,auto){
@@ -6654,6 +6726,23 @@ async function notApri(){
   }
   ov.innerHTML='<div class="g3-drawer" style="max-width:420px;padding:22px;"><h3 style="margin:0 0 10px;font-weight:600;">Notifiche</h3><p id="notTesto" style="margin:0 0 14px;line-height:1.45;">'+corpo+'</p><div style="display:flex;gap:8px;justify-content:flex-end;">'+az+'</div></div>';
   document.body.appendChild(ov);
+}
+/* Le notifiche si propongono da sole: il telefono chiede comunque il permesso una volta, e questo non si può saltare */
+async function _notAuto_(){
+  try{
+    if(!window.__API_URL||!window.__VAPID||!_notSupportate_()||Notification.permission==='denied')return;
+    if(_notIphone_()&&!_notStandalone_())return;
+    var reg=await navigator.serviceWorker.ready, sub=await reg.pushManager.getSubscription();
+    if(sub||!_socioTok_)return;
+    if(Notification.permission==='granted'){
+      var s=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:_notBase64_(window.__VAPID)});
+      await gs('NOT_iscrivi',_socioTok_,s.toJSON()); return;
+    }
+    var fino=0; try{ fino=Number(localStorage.getItem('_not_chiesto'))||0; }catch(e){}
+    if(fino>Date.now())return;
+    try{ localStorage.setItem('_not_chiesto',String(Date.now()+14*86400000)); }catch(e){}
+    notApri();
+  }catch(e){}
 }
 async function notAccendi(btn){
   var un=_accBloccaBtn_(btn), t=document.getElementById('notTesto');
@@ -8043,9 +8132,14 @@ function _resetHeader_(){
 }
 
 function eseguiLogout(){
-  try{ ['_aps_socio','_aps_ricordami','_coro_codice','_aps_otp_token','_aps_otp_nome','_aps_otp_scad','_aps_otp_email'].forEach(function(k){ localStorage.removeItem(k); }); }catch(e){}
+  try{ if(_logoutOtpOnExit_)gs('logoutOTP',_logoutOtpOnExit_).catch(function(){}); }catch(e){}
+  try{ ['_aps_socio','_aps_ricordami','_coro_codice','_aps_otp_token','_aps_otp_nome','_aps_otp_scad','_aps_otp_email','_not_chiesto'].forEach(function(k){ localStorage.removeItem(k); }); }catch(e){}
   _socioTok_=''; curUser=null;
-  location.reload();   /* v5: i dati del portale non restano nella pagina dietro la schermata di accesso */
+  /* v5: i dati del portale non restano nella pagina dietro la schermata di accesso */
+  if(window.__API_URL){ setTimeout(function(){ location.reload(); },150); return; }
+  db=null; if(typeof gesDb!=='undefined')gesDb=null;
+  try{ _resetHeader_(); }catch(e2){}
+  _accMostra_('entra');   /* nella cornice di Google ricaricare lascerebbe la pagina bianca */
 }
 
 /* ===== GESTIONALE — accesso da login screen o da corista ===== */
@@ -12841,7 +12935,7 @@ var _mediaReelRunning  = false;
 var _swipeStartX       = 0;
 var _mediaAppUrl_      = null; // URL del web app GAS (proxy media)
 
-function _mediaIsAdmin(){ return !!(sessionInfo && sessionInfo.isAdmin); }
+function _mediaIsAdmin(){ return !!((sessionInfo && sessionInfo.isAdmin)||(curUser&&curUser.gesAccess)); }
 
 /* ── TOKEN OAUTH (cache 50 min) ── */
 
@@ -13016,7 +13110,7 @@ async function _caricaTagEvento_(eventoId) {
 
   /* Poi aggiorna con tutti i tag dal server (anche di pagine non ancora caricate) */
   try {
-    var r = await gs('getMediaCorista', eventoId, true, 0, 0);
+    var r = await gs('getMediaCorista', eventoId, true, 0, 0, _socioTok_);
     var media = (r && r.media) ? r.media : [];
     media.forEach(function(m){ if (m.tag) tagSet[m.tag] = true; });
     _mediaTagsEvento = Object.keys(tagSet).sort();
@@ -13060,7 +13154,7 @@ function mediaTagOnInput(val) {
 async function initTabMedia() {
   if (window.innerWidth >= 768) mediaSetSize('m', null);
   try {
-    var r = await gs('getEventiPerMedia');
+    var r = await gs('getEventiPerMedia', _socioTok_);
     var eventi = (r && r.eventi) ? r.eventi : [];
     var sel    = document.getElementById('mediaEventoSel');
     var filtro = document.getElementById('mediaFiltroEvento');
@@ -13081,7 +13175,7 @@ async function initTabMedia() {
 async function _prefetchMediaMeta_() {
   if (Object.keys(_mediaKnownTags).length > 0) return; // già popolati
   try {
-    var r = await gs('getMediaCorista', '', false, 0, 200);
+    var r = await gs('getMediaCorista', '', false, 0, 200, _socioTok_);
     var batch = (r && r.media) ? r.media : [];
     batch.forEach(function(m){
       if (m.tag)     _mediaKnownTags[m.tag] = true;
@@ -13126,7 +13220,7 @@ async function _caricaAlbums() {
   if (more) more.style.display = 'none';
   try {
     // Il portale corista mostra SEMPRE la vista dei coristi (no item oscurati)
-    var r = await gs('getAlbumsSummary', false);
+    var r = await gs('getAlbumsSummary', false, _socioTok_);
     _mediaAlbums = (r && r.albums) ? r.albums : [];
     _renderAlbums();
   } catch(e) {
@@ -13232,7 +13326,7 @@ async function _caricaGrigliaPage(reset) {
     if (more) { more.disabled = true; more.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Caricamento...'; }
   }
   try {
-    var r = await gs('getMediaCorista', eventoId, isAdmin, _mediaOffset, _mediaPageSize);
+    var r = await gs('getMediaCorista', eventoId, isAdmin, _mediaOffset, _mediaPageSize, _socioTok_);
     var batch = (r && r.media) ? r.media : [];
     _mediaGalleriaData = _mediaGalleriaData.concat(batch);
     _mediaTotal   = (r && r.total != null) ? r.total : _mediaGalleriaData.length;
@@ -14639,7 +14733,7 @@ async function initGesMedia() {
   var fil=document.getElementById('gesMediaFiltroEvento');
   fil.innerHTML='<option value="">Tutti gli eventi</option>';
   try {
-    var r=await gs('getEventiPerMedia');
+    var r=await gs('getEventiPerMedia', _socioTok_);
     var eventi=(r&&r.eventi)?r.eventi:[]; _gesMediaEventi_=eventi;
     eventi.forEach(function(ev){
       var label=(ev.data?ev.data+' — ':'')+ev.titolo+(ev.luogo?' ('+ev.luogo+')':'');
@@ -14686,7 +14780,7 @@ async function gesMediaCarica() {
   gal.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#9AA0AC;"><i class="fa-solid fa-spinner fa-spin"></i> Caricamento...</div>';
   document.getElementById('gesMediaEmpty').style.display='none';
   try {
-    var r=await gs('getMediaCorista', eventoId, true, 0, 0); // 0,0 = tutto
+    var r=await gs('getMediaCorista', eventoId, true, 0, 0, _socioTok_); // 0,0 = tutto
     _gesMediaData=(r&&r.media)?r.media:[];
     gesMediaRender();
   } catch(e){
@@ -14979,5 +15073,5 @@ async function gesConfRinomina() {
 function avvisa(w){if(document.getElementById('pwaAgg'))return;var d=document.createElement('div');d.id='pwaAgg';d.className='pwa-agg';d.innerHTML='<span>Nuova versione pronta</span><button class="btn-sm primary">Aggiorna</button>';d.querySelector('button').onclick=function(){w.postMessage('aggiorna');};document.body.appendChild(d);}
 if(reg.waiting&&navigator.serviceWorker.controller)avvisa(reg.waiting);
 reg.addEventListener('updatefound',function(){var w=reg.installing;if(w)w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller)avvisa(w);});});});
-var ric=false;navigator.serviceWorker.addEventListener('controllerchange',function(){if(ric)return;ric=true;location.reload();});}</script></body>
+var aveva=!!navigator.serviceWorker.controller,ric=false;navigator.serviceWorker.addEventListener('controllerchange',function(){if(ric||!aveva)return;ric=true;location.reload();});}</script></body>
 </html>
