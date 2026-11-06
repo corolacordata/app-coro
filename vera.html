@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="La Cordata">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Figtree:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
   <!-- pdfmake, chart.js e html2canvas caricati in fondo al body -->
   <style>
 /* ═══════════════════════════════════════════════════════════════
@@ -4338,6 +4338,24 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
 .not-r small{display:block;color:var(--tx-3);font-size:.82rem;}.not-tot{font-size:1.02rem;}.not-nota{font-size:.84rem;color:var(--tx-3);margin:10px 0 0;}
 .mio-box{max-width:520px;padding:20px!important;}.mio-testa{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}.mio-testa h3{margin:0;font-weight:700;}
 #mioCorpo section{padding:12px 0;border-top:1px solid var(--bd);}#mioCorpo h4{margin:0 0 6px;font-size:1rem;font-weight:700;}#mioCorpo p{margin:6px 0 0;}#mioCorpo ul{list-style:none;margin:8px 0 0;padding:0;}#mioCorpo li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;}.mio-nota{color:var(--tx-3);font-size:.84rem;}
+
+/* ═══ v5 — LA VESTE DELL'APP: stessi colori, schede e pulsanti dell'app nuova, per gestionale e pagine pubbliche ═══ */
+:root{--bg:#F7F5F5;--bg-card-2:#F3EFED;--tx-1:#2B2226;--bd:#EFE9E7;--bd-2:#F3EFED;
+  --sh-card:0 10px 28px rgba(70,30,40,.09);--sh-md:0 10px 28px rgba(70,30,40,.11);--sh-lg:0 14px 34px rgba(70,30,40,.14);
+  --r-md:14px;--r-lg:20px;--r-xl:20px;}
+body.dark,html.dark,[data-theme="dark"]{--sh-card:0 8px 24px rgba(0,0,0,.35);--sh-md:0 8px 24px rgba(0,0,0,.4);--sh-lg:0 12px 30px rgba(0,0,0,.45);}
+body,button,input,select,textarea{font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;}
+.dashboard-card,.g4-card,.g3-rcard,.conv-stat-card,.card{border-radius:20px;border:0;box-shadow:var(--sh-card);}
+/* menu laterale: voce attiva sfumata, come nell'app */
+.panel-sidebar .sb-item{border-radius:12px;font-weight:700;}
+.panel-sidebar .sb-item.active{background:linear-gradient(135deg,#C4454F,#7A2230);color:#fff;box-shadow:0 8px 18px rgba(122,34,48,.28);}
+.panel-sidebar .sb-item.active i{color:#fff;}
+/* titoli e pulsanti */
+h1,h2,h3,.g4-t1{font-family:'Nunito',system-ui,sans-serif;font-weight:800;letter-spacing:0;}
+.btn-sm,.btn{font-family:inherit;font-weight:700;border-radius:14px;}
+.btn-sm.primary,.btn.primary,.btn-primary{background:linear-gradient(135deg,#C4454F,#7A2230);border-color:transparent;color:#fff;box-shadow:0 8px 18px rgba(122,34,48,.24);}
+.btn-sm.primary:hover,.btn.primary:hover,.btn-primary:hover{filter:brightness(1.06);}
+input,select,textarea{border-radius:12px;}
 </style>
 </head>
 <body>
