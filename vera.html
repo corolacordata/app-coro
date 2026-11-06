@@ -4343,8 +4343,8 @@ body[data-area=home] #apsSidebar .sb-item.active{background:#8E2E35!important;}
 
 /* ═══ v5 — LA GRAFICA DELL'APP (versione 2) PER GESTIONALE E PAGINE PUBBLICHE ═══
    Solo aspetto: nessuna funzione cambia. Stessi colori e stessi mattoni di app/src/tema.js e componenti.js. */
-:root,body{--v5-sf:linear-gradient(135deg,#C4454F,#7A2230);--v5-sfv:linear-gradient(135deg,#3FB37F,#1B7A50);
-  --v5-testata:radial-gradient(circle at 94% -30%,rgba(255,255,255,.09) 0 130px,transparent 131px),radial-gradient(circle at 2% 130%,rgba(255,255,255,.07) 0 80px,transparent 81px),linear-gradient(135deg,#C4454F,#7A2230);
+:root,body{--v5-sf:linear-gradient(135deg,#B23A44,#7A2230);--v5-sfv:linear-gradient(135deg,#1F8F5E,#17683F);
+  --v5-testata:radial-gradient(circle at 94% -30%,rgba(255,255,255,.09) 0 130px,transparent 131px),radial-gradient(circle at 2% 130%,rgba(255,255,255,.07) 0 80px,transparent 81px),linear-gradient(135deg,#B23A44,#7A2230);
   --bg:#F7F5F5;--bg-card-2:#F3EFED;--tx-1:#2B2226;--tx-2:#4A3F43;--tx-3:#6F6266;--bd:#EFE9E7;--bd-2:#F3EFED;--c-soft:#F8ECED;
   --sb-bg:#FFFFFF;--sb-bd:#EFE9E7;--f-disp:'Nunito',system-ui,sans-serif;
   --sh-card:0 10px 28px rgba(70,30,40,.09);--sh-md:0 10px 28px rgba(70,30,40,.11);--sh-lg:0 14px 34px rgba(70,30,40,.14);--g4-sh:0 10px 28px rgba(70,30,40,.09);
@@ -4427,8 +4427,67 @@ body.dark .btn-sm:not(.primary):not(.success):not(.danger):not(.wa){color:#F2B0B
 .ges-bn-item.active i{background:var(--v5-sf)!important;color:#fff!important;}
 .ges-bn-plus span{background:var(--v5-sf)!important;color:#fff!important;}
 .app-header{background:var(--bg-card)!important;border:0!important;box-shadow:0 2px 12px rgba(70,30,40,.05)!important;}
+
+/* ─── correzioni dell'audit del 06/11/2026 ─── */
+/* una sola testata: il nome dell'area sta sopra il titolo, sempre visibile mentre si scorre */
+#gestionaleArea .panel-main[data-area-nome]::before{display:none!important;}
+body #gestionaleArea #gesTopBar{position:sticky!important;top:0!important;z-index:40!important;border-radius:0 0 22px 22px!important;padding:10px 20px 14px!important;margin-bottom:16px!important;}
+body #gestionaleArea #gesTopBar .ges-top-title{font-size:1.35rem!important;line-height:1.2!important;}
+body #gestionaleArea #gesTopBar .ges-top-title::before{content:attr(data-area)!important;font-size:12px!important;letter-spacing:0!important;font-weight:700!important;text-transform:none!important;}
+/* Home: testo della testata sempre leggibile, pulsanti bianchi come nell'app */
+.g3-dash-head p{color:rgba(255,255,255,.92)!important;font-size:14px!important;}
+.g3-dash-head .btn-sm,.g3-dash-head button{background:#fff!important;color:#7A2230!important;}
+.g3-dash-head button i,.g3-dash-head .btn-sm i{color:#7A2230!important;}
+/* interruttori: si vede subito se sono accesi, anche a parole */
+.mail-toggle{display:inline-flex!important;align-items:center;gap:8px;width:auto!important;height:auto!important;position:relative;cursor:pointer;flex:none;}
+.mail-toggle::before{content:'Spento';font-size:13px;font-weight:700;color:var(--tx-3);}
+.mail-toggle:has(input:checked)::before{content:'Acceso';color:#1B6E45;}
+body.dark .mail-toggle:has(input:checked)::before{color:#7BD3A4;}
+.mail-toggle input{position:absolute!important;opacity:0!important;width:1px!important;height:1px!important;}
+.mail-toggle .mail-toggle-slider{position:relative!important;display:block!important;inset:auto!important;width:46px!important;height:26px!important;flex:none;border-radius:13px!important;background:#8A7F82!important;transition:background .15s;}
+.mail-toggle .mail-toggle-slider::before{content:""!important;position:absolute!important;top:3px!important;left:3px!important;bottom:auto!important;width:20px!important;height:20px!important;border-radius:50%!important;background:#fff!important;transition:left .15s;transform:none!important;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+.mail-toggle input:checked+.mail-toggle-slider{background:#1B6E45!important;}
+.mail-toggle input:checked+.mail-toggle-slider::before{left:23px!important;}
+.mail-toggle input:focus-visible+.mail-toggle-slider{outline:3px solid var(--c-primary);outline-offset:2px;}
+.g4-sw{background:#8A7F82!important;}.g4-sw.on{background:#1B6E45!important;}
+/* menu: tutte le voci uguali, senza pallini colorati */
+#apsSidebar .sb-group-header::before,#apsSidebar .sb-group-header>span::before{display:none!important;}
+#apsSidebar .sb-group-header>span,#apsSidebar .sb-group-header .sb-label{font-size:12px!important;letter-spacing:.04em!important;font-weight:800!important;}
+/* il testo non scende mai sotto 12: sia nelle regole sia scritto a mano nelle pagine */
+small,.sb-label,.g3-av,#sbUserTimer,.g3-kpi-d,.g3v-kick,.g3-todo-n,.g3v-ch-n,.chip-stato,.g3-menu-area,#gestionaleArea th,.rub-uso,.pill,.kpi-lbl,.app-st,.fe-p,.rep4-bs,.rep4-bn,.ton,.g4-ric,.mov-saldo,.mail-stat-lbl,.siti-ng,.sm-chip,.conv-chip,.st,summary,.btn-sm,.btn-action{font-size:max(12px,1em)!important;}
+#gestionaleArea th{font-size:12px!important;letter-spacing:.02em!important;text-transform:none!important;}
+.btn-sm,.btn-action{font-size:13px!important;}
+.pill,.chip-stato,.g3-av,.kpi-lbl,.app-st,.fe-p,.rep4-bs,.rep4-bn,.g4-ric,.sm-chip,.conv-chip,.st,.rub-uso{font-size:12px!important;}
+#gestionaleArea [style*="font-size:.6"],#gestionaleArea [style*="font-size:0.6"],#gestionaleArea [style*="font-size:.7"],#gestionaleArea [style*="font-size:0.7"],#gestionaleArea [style*="font-size:9"],#gestionaleArea [style*="font-size:10"],#gestionaleArea [style*="font-size:11"],.mshell [style*="font-size:.6"],.mshell [style*="font-size:0.6"],.mshell [style*="font-size:.7"],.mshell [style*="font-size:0.7"]{font-size:12px!important;}
+/* comandi comodi da toccare */
+.btn-sm,.btn-action,.conv-chip,#gestionaleArea .sub-tab{min-height:36px!important;}
+.btn-sm{padding-top:6px!important;padding-bottom:6px!important;}
+#gesVistaTagBtn,.g4-sbchiudi,.g3-renew,.rub-espandi,.app-wa{min-height:36px!important;min-width:36px!important;}
+.rub-uso{min-height:28px!important;}.g4-ric{min-height:26px!important;}
+@media(max-width:700px){.btn-sm,.btn-action,.conv-chip,#gestionaleArea .sub-tab,.form-control,.form-select{min-height:44px!important;}}
+/* contrasti misurati sotto la soglia */
+.g3-todo-n,.g3v-ch-n,.n.s{color:#7A4A00!important;background:#FCF0DC!important;}
+.rep4-bs{color:#6F2229!important;background:#F8ECED!important;}
+.fe-p.ok{color:#1B6E45!important;background:#E2F2E9!important;}
+#gesMediaEmpty{color:var(--tx-3)!important;}
+#gestionaleArea .btn-sm.danger,.mshell .btn-sm.danger{background:#A9231C!important;color:#fff!important;border-color:transparent!important;}
+body.dark .rep4-bs{color:#F2B0B6!important;background:#3A2024!important;}
+body.dark .fe-p.ok{color:#7BD3A4!important;background:#17332A!important;}
+body.dark .g3-todo-n,body.dark .g3v-ch-n,body.dark .n.s{color:#F5D28C!important;background:#3A2B0E!important;}
+body.dark .ev-tag.r{color:#F4A29C!important;background:#3D1C1A!important;}
+body.dark #imp2Stato2.ok{color:#7BD3A4!important;}
+/* la scheda scura della prova: stessa famiglia della testata */
+#gestionaleArea{--g4-hero1:#4A1322;--g4-hero2:#7A2230;}
+/* ultimi punti della seconda misura */
+body #gestionaleArea table thead th,body #gestionaleArea .tbl th{font-size:12px!important;}
+body #gestionaleArea .btn-sm,body .mshell .btn-sm{font-size:13px!important;}
+body #gestionaleArea .g3-kpi-l,body #gestionaleArea .g3-kpi-l span,body #gestionaleArea .g3-kpi-d,body #gestionaleArea .chip-stato,body #gestionaleArea .mov-mese td,body #gestionaleArea .mov-mese b,body #gestionaleArea .cal-g .w,body #gestionaleArea .sm-tes .n,body #gestionaleArea .sm-card-top span,body #gestionaleArea .imp2-nav .g,body #gestionaleArea .imp2-lett .pie,body #gestionaleArea em,body #gestionaleArea [style*="font-size:0.5"],body #gestionaleArea [style*="font-size:.5"]{font-size:12px!important;}
+body #gestionaleArea #gesTopBar>button:first-child{background:rgba(0,0,0,.2)!important;}
+body #gestionaleArea .app-st button,body #gestionaleArea button.on.p,body #gestionaleArea button.on.a,body #gestionaleArea button.on.m,body #gestionaleArea button.p,body #gestionaleArea button.a,body #gestionaleArea button.m{min-height:36px!important;min-width:36px!important;}
+body.dark .btn-sm[style*="color"],body.dark #gesOverview .btn-sm:not(.primary):not(.success){color:#F4A29C!important;}
+body.dark{--g4-r:#F4A29C;--g4-g:#7BD3A4;}
 </style>
-</head>
+<script>window.__SOLO_GESTIONALE=1;</script><style>#dashboardScreen{display:none!important}</style></head>
 <body>
 
   <div class="app-header">
@@ -6741,11 +6800,20 @@ function _accDentro_(socioId,dati){
   if(_accFine_){ var f=_accFine_; _accFine_=null; f({dati:dati,socioId:socioId}); return; }
   db=dati; _accAttiva_(socioId);
 }
+/* v5: da questa pagina si va solo al gestionale; chi non ha l'accesso va all'app nuova */
+function _soloGestionale_(){
+  if(window.__soloGesPartito)return; window.__soloGesPartito=1;
+  if(!(window.curUser&&curUser.gesAccess)){ location.replace('app/'); return; }
+  Promise.resolve(accediAlGestionale(document.getElementById('headerGesBtn'))).then(function(){
+    if(!document.body.classList.contains('ges-mode'))location.replace('app/');
+  },function(){ location.replace('app/'); });
+}
 function _accAttiva_(socioId){
   var idx=-1; (db.utenti||[]).forEach(function(u,i){ if(u.id===socioId)idx=i; });
   if(idx<0){ document.getElementById('loginScreen').style.display='block'; _accMostra_('entra'); _accMsg_('Non trovo la tua scheda: chiedi al Direttivo.',true); return; }
   document.getElementById('sysLoader').style.display='none';
   _attivaCorista_(idx);
+  if(window.__SOLO_GESTIONALE){ _soloGestionale_(); return; }
   setTimeout(_notAuto_,1500);
 }
 function _accMsg_(t,err){ var m=document.getElementById('accMsg'); if(!m)return; m.textContent=t||''; m.className='acc-msg'+(err?' err':(t?' ok':'')); }
@@ -8584,6 +8652,7 @@ async function riaccediOtpReinvia(btn){
 
 /* Torna al portale SENZA distruggere il token — sessione resta attiva 30 min */
 function tornaAlPortaleCoristi(){
+  if(window.__SOLO_GESTIONALE){ location.href='app/'; return; }
   _gesTabLoaded_={};
   document.body.classList.remove('ges-mode');
   closeMobileSidebar&&closeMobileSidebar();
