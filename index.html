@@ -7,7 +7,7 @@
 <title>La Cordata · Portale del corista (prototipo)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* Foglio unico: ogni pagina usa solo queste regole. Scelte in LINEE_GUIDA.md */
 :root{
@@ -179,6 +179,94 @@ input[type=range]{width:100%;height:44px;accent-color:var(--bordeaux);margin:0;d
   .griglia-foto{grid-template-columns:repeat(5,1fr)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ══ Cambio radicale: fotografie, sfumature vive, menu a scomparsa, schede grandi, numeri in evidenza ══ */
+:root{--menu-h:0px;--t1:26px;--fondo:#F8F9FA;--inchiostro:#2B2233;--grigio:#6E6A78;--ombra:0 20px 27px rgba(43,34,51,.06);}
+body{font-family:'Open Sans',Inter,system-ui,sans-serif;}
+.t1,.ev-tit,.dt b{font-family:'Open Sans',Inter,system-ui,sans-serif;font-weight:700;}
+h2{font-weight:700;}
+#pagina{padding-top:66px;}
+#pagina::before{background:radial-gradient(90% 70% at 90% 10%,#E9A24A 0%,rgba(233,162,74,0) 60%),radial-gradient(80% 90% at 10% 0%,#D9534F 0%,rgba(217,83,79,0) 62%),radial-gradient(90% 90% at 60% 110%,#5C1A2E 0%,rgba(92,26,46,0) 70%),linear-gradient(135deg,#8E2E35,#6B1D3A);border-radius:0 0 28px 28px;}
+#barra{position:fixed;top:0;left:0;right:0;z-index:6;height:56px;display:flex;align-items:center;gap:6px;padding:0 8px;color:#fff;transition:background .15s,color .15s;}
+#barra.su-bianco{background:var(--scheda);color:var(--inchiostro);box-shadow:0 2px 12px rgba(43,34,51,.08);}
+#barra button{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;color:inherit;}
+#barra .marca{flex:1;font-weight:700;font-size:15px;text-align:center;}
+body.senza-menu #barra{display:none;}
+/* menu a scomparsa, come un foglio che arriva da sinistra */
+#menu{top:0;right:auto;left:0;bottom:0;width:272px;border-radius:0 22px 22px 0;display:flex;flex-direction:column;gap:2px;padding:18px 12px;transform:translateX(-105%);transition:transform .2s;z-index:20;overflow-y:auto;box-shadow:0 0 40px rgba(43,34,51,.2);}
+body.menu-aperto #menu{transform:none;}
+#velo{position:fixed;inset:0;background:rgba(43,34,51,.45);z-index:19;display:none;}
+body.menu-aperto #velo{display:block;}
+#menu .marchio{display:flex;align-items:center;gap:10px;padding:0 8px 16px;font-weight:700;}
+#menu .marchio span,#menu .marchio b,#menu .marchio div{display:block;}
+.mv{flex-direction:row;justify-content:flex-start;gap:12px;min-height:48px;padding:0 8px;font-size:14px;font-weight:600;border-radius:12px;color:var(--inchiostro);}
+.mv .ic{width:34px;height:34px;padding:8px;background:var(--scheda);border-radius:10px;box-shadow:0 4px 10px rgba(43,34,51,.1);color:var(--inchiostro);}
+.mv[aria-current="page"]{background:var(--scheda);box-shadow:0 8px 20px rgba(43,34,51,.08);color:var(--inchiostro);font-weight:700;}
+.mv[aria-current="page"] .ic{width:34px;height:34px;padding:8px;background:var(--g-bordeaux);color:#fff;border-radius:10px;}
+.mv-sez{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--grigio);padding:14px 8px 4px;}
+/* pulsanti: maiuscoletto e sfumatura */
+.pu.prim{text-transform:uppercase;letter-spacing:.03em;font-size:12.5px;font-weight:700;background:linear-gradient(310deg,#7A1F2B,#D9534F);border-radius:10px;}
+/* riquadri rapidi */
+.rapidi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:4px 0 18px;}
+.rap{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--inchiostro);position:relative;padding:4px 0;}
+.rap .ic{width:50px;height:50px;padding:14px;border-radius:16px;color:#fff;box-shadow:0 8px 16px rgba(43,34,51,.16);}
+.rap:nth-child(1) .ic{background:linear-gradient(310deg,#7A1F2B,#D9534F);}.rap:nth-child(2) .ic{background:linear-gradient(310deg,#B0620A,#F0B14F);}.rap:nth-child(3) .ic{background:linear-gradient(310deg,#0F6B3E,#3EB57C);}.rap:nth-child(4) .ic{background:linear-gradient(310deg,#1C5FA8,#58A5EA);}
+.rap em{position:absolute;top:0;right:calc(50% - 32px);min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#fff;color:#8E2E35;font:700 11px/20px 'Open Sans',sans-serif;text-align:center;box-shadow:0 2px 6px rgba(43,34,51,.25);}
+/* interruttori a pillola */
+.pillole{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none;}
+.pillole::-webkit-scrollbar{display:none;}
+.pil{flex:none;min-height:36px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:600;background:var(--scheda);color:var(--grigio);box-shadow:0 4px 10px rgba(43,34,51,.06);}
+.pil.on{background:linear-gradient(310deg,#7A1F2B,#D9534F);color:#fff;}
+.titsez{display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px;font-size:15px;font-weight:700;}
+.titsez a,.titsez button{font-size:12.5px;font-weight:700;color:var(--bordeaux-testo);}
+/* schede con immagine */
+.scorri{display:flex;gap:12px;overflow-x:auto;margin:0 -16px;padding:2px 16px 18px;scroll-snap-type:x mandatory;scrollbar-width:none;}
+.scorri::-webkit-scrollbar{display:none;}
+.carta{display:block;flex:none;width:236px;scroll-snap-align:start;background:var(--scheda);border-radius:16px;box-shadow:var(--ombra);overflow:hidden;color:var(--inchiostro);text-align:left;}
+.lista-carte .carta{width:100%;margin-bottom:12px;}
+.carta-img{display:block;height:118px;background-size:cover;background-position:center;position:relative;}
+.carta-img .tipo{position:absolute;left:10px;top:10px;background:#fff;color:#2B2233;}
+.lista-carte .carta-img{height:150px;}
+.carta-c{display:block;padding:12px 14px 14px;}
+.carta-t{display:block;font-weight:700;font-size:15px;line-height:1.3;}
+.carta-s{display:block;font-size:13px;color:var(--grigio);margin:2px 0 8px;}
+/* profilo */
+.prof{text-align:center;margin-bottom:4px;}
+.prof .tondino{width:76px;height:76px;font-size:24px;margin:0 auto 8px;box-shadow:0 8px 20px rgba(0,0,0,.2);}
+.prof h1{font-size:22px;}
+.numeri{display:grid;grid-template-columns:repeat(3,1fr);background:var(--scheda);border-radius:16px;box-shadow:var(--ombra);padding:14px 4px;margin-bottom:14px;color:var(--inchiostro);text-align:center;}
+.numeri button{display:block;text-align:center;min-height:44px;color:inherit;}
+.numeri b{display:block;font-size:18px;font-weight:700;line-height:1.2;}
+.numeri span{font-size:12px;color:var(--grigio);}
+.numeri button+button{box-shadow:-1px 0 0 var(--linea);}
+/* tablet e PC: il menu resta aperto */
+@media (min-width:768px){
+  :root{--menu-h:0px;}
+  #menu{width:240px;transform:none;border-radius:0;box-shadow:none;background:var(--fondo);padding:20px 14px;}
+  #pagina,body.con-mini #pagina{margin-left:240px;padding:70px 32px 56px;}
+  body.senza-menu #pagina{margin-left:0;padding-top:24px;}
+  #barra{left:240px;}#barra .apri{display:none;}#barra .marca{text-align:left;padding-left:24px;}
+  #velo{display:none!important;}
+  #pagina::before{border-radius:0 0 0 28px;margin-left:0;}
+  #avviso{left:calc(50% + 120px);}#mini{left:256px;}
+  .lista-carte{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.lista-carte .carta{margin:0;}
+  .scorri{margin:0;padding:2px 2px 18px;}
+}
+@media (min-width:1200px){#menu{width:264px;}#pagina,body.con-mini #pagina{margin-left:264px;}#barra{left:264px;}#avviso{left:calc(50% + 132px);}#mini{left:280px;}.lista-carte{grid-template-columns:repeat(3,1fr);}}
+.carta-img{background-size:cover,auto;background-position:center bottom,center;background-repeat:no-repeat;}
+.carta-img[data-arte="0"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%23fff' fill-opacity='.16' d='M0 200V120l60-40 50 30 70-70 70 60 50-30 100 70v60z'/%3E%3Cpath fill='%23000' fill-opacity='.14' d='M0 200v-40l90-30 70 24 90-44 70 40 80-20v70z'/%3E%3C/svg%3E"),linear-gradient(135deg,#8E2E35,#E0735A);}
+.carta-img[data-arte="1"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%23fff' fill-opacity='.16' d='M0 200V120l60-40 50 30 70-70 70 60 50-30 100 70v60z'/%3E%3Cpath fill='%23000' fill-opacity='.14' d='M0 200v-40l90-30 70 24 90-44 70 40 80-20v70z'/%3E%3C/svg%3E"),linear-gradient(135deg,#6B1D3A,#D9534F);}
+.carta-img[data-arte="2"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%23fff' fill-opacity='.16' d='M0 200V120l60-40 50 30 70-70 70 60 50-30 100 70v60z'/%3E%3Cpath fill='%23000' fill-opacity='.14' d='M0 200v-40l90-30 70 24 90-44 70 40 80-20v70z'/%3E%3C/svg%3E"),linear-gradient(135deg,#A65F08,#F0B14F);}
+.carta-img[data-arte="3"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%23fff' fill-opacity='.16' d='M0 200V120l60-40 50 30 70-70 70 60 50-30 100 70v60z'/%3E%3Cpath fill='%23000' fill-opacity='.14' d='M0 200v-40l90-30 70 24 90-44 70 40 80-20v70z'/%3E%3C/svg%3E"),linear-gradient(135deg,#1C5FA8,#58A5EA);}
+.carta-img[data-arte="4"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%23fff' fill-opacity='.16' d='M0 200V120l60-40 50 30 70-70 70 60 50-30 100 70v60z'/%3E%3Cpath fill='%23000' fill-opacity='.14' d='M0 200v-40l90-30 70 24 90-44 70 40 80-20v70z'/%3E%3C/svg%3E"),linear-gradient(135deg,#0F6B3E,#3EB57C);}
+.carta-img[data-arte="5"]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='%23fff' fill-opacity='.16' d='M0 200V120l60-40 50 30 70-70 70 60 50-30 100 70v60z'/%3E%3Cpath fill='%23000' fill-opacity='.14' d='M0 200v-40l90-30 70 24 90-44 70 40 80-20v70z'/%3E%3C/svg%3E"),linear-gradient(135deg,#5C1A2E,#B0445A);}
+.carta-prova .carta-img{height:64px!important;}
+.due{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;}.due>div{min-width:0;}
+#pagina>.colonna{max-width:560px;}#pagina.largo>.colonna{max-width:980px;}
+[data-tema="scuro"]{--fondo:#141112;--inchiostro:#F4EFEC;--grigio:#B5ACA8;--ombra:none;}
+.carta{padding:0;}
+[data-tema="scuro"] .mv .ic{color:var(--inchiostro);}
+[data-tema="scuro"] .carta-img .tipo{background:#fff;color:#2B2233;}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icona-apple-180.png"><link rel="icon" href="icona-192.png"><script>if(/[?&](accesso|apri|iscrizione|accompagnatore|contatto|azione|coro|prova|tessera)=?/.test(location.search))location.replace("vera.html"+location.search);</script></head>
 <body class="senza-menu">
@@ -227,7 +315,15 @@ input[type=range]{width:100%;height:44px;accent-color:var(--bordeaux);margin:0;d
   <button type="button" class="mv" data-vai="agenda" data-m="agenda"><svg class="ic" aria-hidden="true"><use href="#i-agenda"/></svg>Agenda</button>
   <button type="button" class="mv" data-vai="studio" data-m="studio"><svg class="ic" aria-hidden="true"><use href="#i-studio"/></svg>Studio</button>
   <button type="button" class="mv" data-vai="io" data-m="io"><svg class="ic" aria-hidden="true"><use href="#i-io"/></svg>Io</button>
+  <button type="button" class="mv" data-vai="bacheca" data-m="bacheca"><svg class="ic" aria-hidden="true"><use href="#i-bacheca"/></svg>Bacheca</button>
+  <button type="button" class="mv" data-vai="foto" data-m="foto"><svg class="ic" aria-hidden="true"><use href="#i-foto"/></svg>Foto e video</button>
+  <div class="mv-sez">Impostazioni</div>
+  <button type="button" class="mv" data-vai="notifiche" data-m="notifiche"><svg class="ic" aria-hidden="true"><use href="#i-camp"/></svg>Notifiche</button>
+  <button type="button" class="mv" data-az="tema"><svg class="ic" aria-hidden="true"><use href="#i-luna"/></svg>Tema chiaro o scuro</button>
+  <button type="button" class="mv" data-vai="esci"><svg class="ic" aria-hidden="true"><use href="#i-esci"/></svg>Esci</button>
 </nav>
+<div id="velo" data-az="chiudimenu"></div>
+<header id="barra"><button type="button" class="apri" data-az="apri" aria-label="Apri il menu"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><span class="marca" id="barraT">La Cordata</span><button type="button" data-vai="notifiche" aria-label="Notifiche"><svg class="ic" aria-hidden="true"><use href="#i-camp"/></svg></button></header>
 <main id="pagina"></main>
 <div id="mini" hidden></div>
 <div id="avviso" role="status" hidden></div>
@@ -596,7 +692,7 @@ P.avviso=function(id){
 /* ── FOTO ── */
 function finta(i,cl,alt){var g=(i*47)%360;return 'style="background:linear-gradient(135deg,hsl('+g+' 22% 62%),hsl('+((g+40)%360)+' 24% 34%))" aria-label="'+h(alt)+'"';}
 P.foto=function(){
-  return {m:'home',html:indietro('home')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 12px">Foto e video</h1><button type="button" class="pu prim" data-vai="carica">'+ic('cam')+'Carica le tue foto</button>'
+  return {m:'foto',html:indietro('home')+'<h1 class="t1" tabindex="-1" style="margin:4px 0 12px">Foto e video</h1><button type="button" class="pu prim" data-vai="carica">'+ic('cam')+'Carica le tue foto</button>'
     +album.map(function(al,x){var q='';for(var i=0;i<al.n;i++)q+='<button type="button" class="miniatura" data-vai="fotov/'+al.id+'/'+i+'" '+finta(x*7+i,'','Foto '+(i+1)+' di '+al.tit)+'></button>';return '<h2>'+h(al.tit)+'</h2><p class="pic" style="margin:-6px 0 8px">'+h(al.data)+'</p><div class="griglia-foto">'+q+'</div>';}).join('')};
 };
 P.fotov=function(aid,i){
@@ -751,20 +847,69 @@ P.esci=function(){
 };
 
 /* ═══ DISEGNO DELLA PAGINA ═══ */
+
+/* ═══ Pagine rifatte ═══ */
+var filtroAg='tutti', filtroHome='prossimi';
+
+function arte(i){return 'data-arte="'+(i%6)+'"';}
+function nArte(id){var n=0;for(var i=0;i<id.length;i++)n+=id.charCodeAt(i);return n;}
+function carta(it){
+  var t=it.tipo==='prova'?titolo(it):nomeEv(it);
+  return '<button type="button" class="carta'+(it.tipo==='prova'?' carta-prova':'')+'" data-vai="imp/'+it.id+'"><span class="carta-img" '+arte(it.tipo==='prova'?0:nArte(it.id))+'>'+tipoEt(it)+'</span><span class="carta-c"><span class="carta-t">'+h(t)+'</span><span class="carta-s">'+dataLunga(it.data)+', ore '+it.ora+' · '+h(luogo(it))+'</span>'+statoImp(it)+'</span></button>';
+}
+function titoloSez(t,vai,lab){return '<div class="titsez"><span>'+h(t)+'</span>'+(vai?'<button type="button" data-vai="'+vai+'">'+h(lab)+'</button>':'')+'</div>';}
+P.home=function(){
+  var att=lista().filter(function(x){return x.sond&&x.sond.aperto&&!x.risp;});
+  var n=avvisi.filter(function(a){return a.nuovo;}).length;
+  var prossimi=lista().filter(function(x){return x.id!==impegni[0].id&&!annullata(x);}).slice(0,6);
+  var elenco=filtroHome==='domande'?att:prossimi;
+  var rap=function(vai,ico,tit,num){return '<button type="button" class="rap" data-vai="'+vai+'">'+ic(ico)+(num?'<em>'+num+'</em>':'')+tit+'</button>';};
+  return {m:'home',largo:true,html:'<h1 class="t1" tabindex="-1">Ciao '+h(me.nome)+'</h1><p class="pic">'+VOCI[me.voce]+'</p>'
+   +'<div class="due"><div>'+eroe()+'</div><div>'
+   +'<div class="rapidi">'+rap('agenda','agenda','Agenda')+rap('studio','studio','Studio')+rap('bacheca','bacheca','Bacheca',n)+rap('foto','foto','Foto')+'</div>'
+   +'<div class="pillole"><button type="button" class="pil'+(filtroHome==='prossimi'?' on':'')+'" data-az="filtroh" data-a="prossimi">Prossimi impegni</button><button type="button" class="pil'+(filtroHome==='domande'?' on':'')+'" data-az="filtroh" data-a="domande">Da rispondere ('+att.length+')</button></div>'
+   +(elenco.length?'<div class="scorri">'+elenco.map(carta).join('')+'</div>':'<p class="pic" style="padding:10px 2px 18px">Nessuna domanda aperta: hai risposto a tutto.</p>')
+   +'</div></div>'+titoloSez('Dalla bacheca','bacheca','Vedi tutto')
+   +'<div class="lista-carte">'+avvisi.slice(0,3).map(cartaAvviso).join('')+'</div>'};
+};
+function cartaAvviso(a,i){return '<button type="button" class="carta" data-vai="avviso/'+a.id+'"><span class="carta-img" '+arte(nArte(a.id)+2)+'></span><span class="carta-c"><span class="carta-t">'+h(a.titolo)+'</span><span class="carta-s">'+h(a.da)+', '+h(a.data)+'</span>'+(a.nuovo?stato('Nuovo'):'')+'</span></button>';}
+P.agenda=function(){
+  var v=lista().filter(function(it){return filtroAg==='tutti'||(filtroAg==='prove'?it.tipo==='prova':it.tipo!=='prova');});
+  var pil=function(k,t){return '<button type="button" class="pil'+(filtroAg===k?' on':'')+'" data-az="filtroa" data-a="'+k+'">'+t+'</button>';};
+  return {m:'agenda',largo:true,html:'<h1 class="t1" tabindex="-1">Agenda</h1><p class="pic">Prove, concerti e trasferte</p>'
+   +'<div class="scheda" style="padding:10px 12px;margin-bottom:12px"><div class="pillole" style="padding:0">'+pil('tutti','Tutto')+pil('prove','Prove')+pil('eventi','Eventi')+'</div></div>'
+   +'<div class="lista-carte">'+v.map(carta).join('')+'</div>'};
+};
+P.bacheca=function(){
+  return {m:'bacheca',largo:true,html:'<h1 class="t1" tabindex="-1">Bacheca</h1><p class="pic">Gli avvisi del Direttivo e del direttore</p>'
+   +'<div class="scheda" style="padding:12px 14px;margin-bottom:12px"><p class="b">'+avvisi.filter(function(a){return a.nuovo;}).length+' avvisi nuovi</p></div>'
+   +'<div class="lista-carte">'+avvisi.map(cartaAvviso).join('')+'</div>'
+   +titoloSez('Documenti del coro')+'<div class="scheda righe">'+documenti.map(function(d){return riga({ico:'doc',tit:d,az:'pdf',arg:d});}).join('')+'</div>'};
+};
+var _ioVecchia=P.io;
+P.io=function(){
+  var o=_ioVecchia(), ini=me.nome[0]+me.cognome[0];
+  var fine=o.html.indexOf('<div class="due">');
+  return {m:'io',largo:true,html:'<div class="prof"><span class="tondino" aria-hidden="true">'+ini+'</span><h1 class="t1" tabindex="-1">'+h(me.nome+' '+me.cognome)+'</h1><p class="pic">'+VOCI[me.voce]+', socio dal '+me.socio+'</p></div>'
+   +'<div class="numeri"><button type="button" data-vai="presenze"><b>38/44</b><span>Presenze</span></button><button type="button" data-vai="quote"><b>Pagata</b><span>Quota 2026</span></button><button type="button" data-vai="tessera"><b>N. '+me.numero+'</b><span>Tessera</span></button></div>'
+   +o.html.slice(fine)};
+};
+
 function misuraFascia(){
   var pag=$('#pagina'), col=pag.firstElementChild; if(!col||document.body.classList.contains('senza-menu'))return;
   var figli=[].slice.call(col.children), fine=pag.getBoundingClientRect().top+18, dopo=null;
   for(var i=0;i<figli.length;i++){
     var k=figli[i];
-    if(i>=4||k.matches('.scheda,form,h2,.griglia-foto,.fila,.pu,.prototipo,.due')||k.querySelector('.scheda')){dopo=k;break;}
+    if(i>=4||k.matches('.scheda,.numeri,.rapidi,.lista-carte,.pillole,.titsez,form,h2,.griglia-foto,.fila,.pu,.prototipo,.due')||k.querySelector('.scheda')){dopo=k;break;}
     k.classList.add('in-fascia'); fine=k.getBoundingClientRect().bottom;
   }
   var alto=fine-pag.getBoundingClientRect().top;
-  var sopra=dopo&&(dopo.matches('.scheda')||dopo.querySelector(':scope>.scheda:first-child'));
+  var sopra=dopo&&(dopo.matches('.scheda,.numeri')||dopo.querySelector('.scheda'));
   if(dopo&&!sopra)dopo.style.marginTop='32px';
   pag.style.setProperty('--fascia',Math.round(alto+(sopra?44:18))+'px');
 }
 window.addEventListener('resize',function(){misuraFascia();});
+window.addEventListener('scroll',function(){var b=$('#barra');if(b)b.classList.toggle('su-bianco',window.scrollY>40);},{passive:true});
 function render(tieni){
   var r=(location.hash||'').replace(/^#\/?/,'')||'home';
   var libere=/^(accesso|chiedi)(\/|$)/;
@@ -779,6 +924,7 @@ function render(tieni){
   pag.innerHTML='<div class="colonna">'+o.html+'</div>';
   document.body.classList.toggle('senza-menu',!!o.senza);
   misuraFascia();
+  var tt={home:'La Cordata',agenda:'Agenda',studio:'Studio',io:'La mia pagina',bacheca:'Bacheca',foto:'Foto e video',notifiche:'Notifiche'}[o.m]||'La Cordata'; var bt=$('#barraT'); if(bt)bt.textContent=tt;
   document.body.classList.toggle('senza-menu',!!o.senza);
   document.querySelectorAll('.mv').forEach(function(b){if(b.dataset.m===o.m)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
   mini(pz[0]==='brano'&&pz[1]===pl.b);
@@ -794,6 +940,10 @@ function mini(nascondi){
 
 /* ═══ TOCCHI ═══ */
 var A={
+  apri:function(){document.body.classList.add('menu-aperto');},
+  chiudimenu:function(){document.body.classList.remove('menu-aperto');},
+  filtroh:function(k){filtroHome=k;render(true);},
+  filtroa:function(k){filtroAg=k;render(true);},
   rispondi:function(id,v){
     /* si resta sulla pagina: il pulsante scelto si colora e compare un piccolo avviso */
     var it=trova(id), era=it.risp; if(era===v)return;
@@ -817,8 +967,9 @@ var A={
 };
 document.addEventListener('click',function(e){
   var t=e.target.closest('[data-vai],[data-az]'); if(!t)return;
-  if(t.dataset.vai!==undefined){ if(t.tagName==='BUTTON'&&t.type==='submit')e.preventDefault(); var dest='#/'+t.dataset.vai; if(location.hash===dest)render(); else location.hash=dest; return; }
+  if(t.dataset.vai!==undefined){ document.body.classList.remove('menu-aperto'); if(t.tagName==='BUTTON'&&t.type==='submit')e.preventDefault(); var dest='#/'+t.dataset.vai; if(location.hash===dest)render(); else location.hash=dest; return; }
   var f=A[t.dataset.az]; if(f)f(t.dataset.a,t.dataset.b);
+  if(t.closest&&t.closest('#menu'))document.body.classList.remove('menu-aperto');
 });
 document.addEventListener('input',function(e){
   var t=e.target;
