@@ -7189,8 +7189,11 @@ function _soloGestionale_(){
   if(window.__soloGesPartito)return; window.__soloGesPartito=1;
   /* v5: con l'impronta attiva il gestionale non si apre se l'app non è stata sbloccata da poco */
   try{
-    if(localStorage.getItem('_app_impronta')&&Date.now()-Number(localStorage.getItem('_app_sbloccato_il')||0)>=300000){ location.replace('app/'); return; }
-    setInterval(function(){ if(!document.hidden)try{localStorage.setItem('_app_sbloccato_il',String(Date.now()));}catch(e){} },60000);
+    if(localStorage.getItem('_app_impronta')&&Date.now()-Number(localStorage.getItem('_app_sbloccato_il')||0)>=120000){ location.replace('app/'); return; }
+    var _visto_=function(){ try{localStorage.setItem('_app_sbloccato_il',String(Date.now()));}catch(e){} };
+    setInterval(function(){ if(!document.hidden)_visto_(); },5000);
+    /* tornando dopo più di 5 minuti con l'impronta attiva si ripassa dallo sblocco */
+    document.addEventListener('visibilitychange',function(){ if(document.hidden)return; try{ if(localStorage.getItem('_app_impronta')&&Date.now()-Number(localStorage.getItem('_app_sbloccato_il')||0)>=300000){ location.replace('app/'); return; } }catch(e){} _visto_(); });
   }catch(eI){}
   if(!(window.curUser&&curUser.gesAccess)){ location.replace('app/'); return; }
   Promise.resolve(accediAlGestionale(document.getElementById('headerGesBtn'))).then(function(){
