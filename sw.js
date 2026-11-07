@@ -1,5 +1,5 @@
 /* Il «motore» dell'app installata: apre subito, riceve le notifiche, prepara gli aggiornamenti. */
-const VERSIONE='cf510ffef734',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
+const VERSIONE='7c7121a96bb3',CACHE='coro-'+VERSIONE,ESTERNI='coro-esterni';
 const ESTERNI_OK=/^https:\/\/(cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.jsdelivr\.net)\//;
 self.addEventListener('install',()=>self.skipWaiting());   /* la nuova versione entra da sola */
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(l=>Promise.all(l.filter(k=>k.indexOf('coro-')===0&&k!==CACHE&&k!==ESTERNI).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
@@ -14,7 +14,7 @@ self.addEventListener('fetch',e=>{
 });
 self.addEventListener('push',e=>{
   let d={};try{d=e.data?e.data.json():{};}catch(x){}
-  e.waitUntil(self.registration.showNotification(d.titolo||'La Cordata',{body:d.testo||'',icon:'icona-192.png',badge:'icona-192.png',tag:d.chiave||undefined,data:{url:d.url||''}}));
+  e.waitUntil(self.registration.showNotification(d.titolo||'La Cordata',{body:d.testo||'',icon:'icona-192.png',badge:'icona-192.png',vibrate:[200,100,200],tag:d.chiave||undefined,data:{url:d.url||''}}));
 });
 self.addEventListener('notificationclick',e=>{
   e.notification.close();

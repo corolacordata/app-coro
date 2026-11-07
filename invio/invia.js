@@ -14,7 +14,7 @@ async function esegui({api,segreto,webpush,fetchFn=fetch,log=console.log}){
     const dati=JSON.stringify({chiave:m.chiave,titolo:m.titolo,testo:m.testo,url:m.url});
     let problemi=0;
     for(const t of m.a||[]){
-      try{await webpush.sendNotification(t,dati,{TTL:86400});ok++;}
+      try{await webpush.sendNotification(t,dati,{TTL:86400,urgency:'high'});ok++;}
       catch(e){
         if(e.statusCode===404||e.statusCode===410)morti.add(t.endpoint);   /* telefono che non c'è più */
         else{ko++;problemi++;}
