@@ -33,17 +33,13 @@ function _tesCarte_(D,x0,y0){
       {type:'polyline',lineColor:C.cr,lineWidth:0.7,dash:{length:2.2,space:2},points:P([[330,40],[430,128],[520,70],[640,160],[735,88]])},
       {type:'ellipse',x:x0+330/856*W,y:yb-HM+40/200*HM,r1:1.3,r2:1.3,color:C.cr},{type:'ellipse',x:x0+520/856*W,y:yb-HM+70/200*HM,r1:1.3,r2:1.3,color:C.cr},{type:'ellipse',x:x0+735/856*W,y:yb-HM+88/200*HM,r1:1.3,r2:1.3,color:C.cr},
       /* marchio: cerchio con le montagne (o il logo, se c'è) */
-      {type:'ellipse',x:x0+m(9),y:y0+m(8.6),r1:m(4),r2:m(4),lineColor:C.cr,lineWidth:0.5,color:co.logo?C.cr:C.bx2},
-      /* riquadro della foto */
-      {type:'rect',x:x0+W-m(22),y:y0+m(15),w:m(17),h:m(21.5),r:m(1.2),color:C.cr2,lineColor:C.cr,lineWidth:0.6}]);
+      {type:'ellipse',x:x0+m(9),y:y0+m(8.6),r1:m(4),r2:m(4),lineColor:C.cr,lineWidth:0.5,color:co.logo?C.cr:C.bx2}]);
   if(co.logo)out.push({image:co.logo,fit:[m(6),m(6)],absolutePosition:{x:x0+m(6),y:y0+m(5.6)}});
   else cv([{type:'polyline',lineColor:C.cr,lineWidth:0.8,points:[{x:x0+m(6.6),y:y0+m(10.4)},{x:x0+m(8.1),y:y0+m(7.6)},{x:x0+m(9.1),y:y0+m(9)},{x:x0+m(10.1),y:y0+m(6.8)},{x:x0+m(11.4),y:y0+m(10.4)}]}]);
   out.push(t(_tesNomeBreve_(co.nome),x0+m(15),y0+m(5.6),{fontSize:9.5,bold:true,color:C.cr}));
   out.push(t('CORO · APS',x0+m(15),y0+m(9.6),{fontSize:5,color:C.ro,characterSpacing:1}));
   out.push(t('ANNO SOCIALE',x0+W-m(30),y0+m(4.6),{fontSize:5,color:C.ro,characterSpacing:0.8,width:m(25),alignment:'right'}));
   out.push(t(String(D.anno),x0+W-m(30),y0+m(7.2),{fontSize:13,bold:true,color:C.cr,width:m(25),alignment:'right'}));
-  if(s.foto)out.push({image:s.foto,cover:{width:m(16),height:m(20.5),valign:'center',align:'center'},absolutePosition:{x:x0+W-m(21.5),y:y0+m(15.5)}});
-  else out.push(t('foto\ndel socio',x0+W-m(22),y0+m(23.5),{fontSize:5.5,color:C.gr2,width:m(17),alignment:'center'}));
   out.push(t(String(s.qualifica||'Socio ordinario').toUpperCase(),x0+m(5),y0+m(16.5),{fontSize:5.4,color:C.ro,characterSpacing:1,width:m(55)}));
   out.push(t((s.nome||'')+'\n'+(s.cognome||''),x0+m(5),y0+m(19.4),{fontSize:12,bold:true,color:C.cr,lineHeight:1.05,width:m(55)}));
   out.push(t('TESSERA CORO',x0+m(5),y0+H-m(10.6),{fontSize:5,color:C.ro,characterSpacing:0.8}));
@@ -123,7 +119,7 @@ function _tesDoc_(D){
     footer:function(p){ return p===2?{columns:[{text:[co.nome,co.runts?'RUNTS n. '+co.runts:'',co.email].filter(Boolean).join(' · '),fontSize:7.2,color:C.gr2},{text:'Documento di iscrizione · tessera n. '+(s.nCoro||'—')+' · '+D.anno,fontSize:7.2,color:C.gr2,alignment:'right'}],margin:[L,8,L,0]}:null; }};
 }
 
-/* la libreria dei PDF legge solo PNG e JPEG: foto e logo in altri formati (webp, svg…) si convertono qui */
+/* la libreria dei PDF legge solo PNG e JPEG: il logo in altri formati (webp, svg…) si convertono qui */
 function _tesImgPng_(src){ return new Promise(function(ok){ if(!src||/^data:image\/(png|jpe?g);/i.test(src))return ok(src||'');
   var im=new Image(); im.onload=function(){ try{ var cv=document.createElement('canvas'), k=Math.min(1,600/Math.max(im.naturalWidth||1,im.naturalHeight||1)); cv.width=Math.max(1,Math.round((im.naturalWidth||300)*k)); cv.height=Math.max(1,Math.round((im.naturalHeight||300)*k));
     cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height); ok(cv.toDataURL('image/png')); }catch(e){ ok(''); } }; im.onerror=function(){ ok(''); }; im.src=src; }); }
@@ -138,7 +134,7 @@ async function _tesQrPng_(testo){
 }
 async function _tesPdfB64_(D){
   if(!window.pdfMake)throw new Error('La libreria dei PDF non è ancora pronta: riprova tra un attimo.');
-  D.socio.foto=await _tesImgPng_(D.socio.foto); D.coro.logo=await _tesImgPng_(D.coro.logo); D.qrImg=await _tesQrPng_(D.qr);
+  D.coro.logo=await _tesImgPng_(D.coro.logo); D.qrImg=await _tesQrPng_(D.qr);
   return await new Promise(function(ok,ko){
     var t=setTimeout(function(){ ko(new Error('Il PDF non si è creato: riprova, e se succede ancora avvisa chi segue il gestionale.')); },30000);
     try{ pdfMake.createPdf(_tesDoc_(D)).getBase64(function(b){ clearTimeout(t); ok(b); }); }catch(e){ clearTimeout(t); ko(e); } });
