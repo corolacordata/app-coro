@@ -9416,6 +9416,8 @@ function chiudiMenuUtente(){ var o=document.getElementById('g3UMenu'); if(o)o.re
 /* Barre comandi su telefono: resta il pulsante principale (e i menù a tendina), gli altri pulsanti vanno sotto "⋯".
    I pulsanti non vengono ricreati, solo spostati: id e onclick restano quelli. */
 function _g3Toolbar_(root){
+  /* v5: al posto dei tre puntini c'è il pulsante Azioni (_v5Raggruppa_) */
+  if(document.getElementById('gestionaleArea'))return;
   if(!_isTel_())return;
   (root||document).querySelectorAll('.dashboard-card>div[style*="justify-content:space-between"]>div[style*="display:flex"],.tab-section>div[style*="flex-wrap:wrap"][style*="display:flex"],.g3-toolbar').forEach(function(box){
     if(box.classList.contains('g3-tb')||box.closest('.g3-more-panel'))return;
