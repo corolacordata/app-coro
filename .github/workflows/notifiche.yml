@@ -32,3 +32,15 @@ jobs:
           git diff --cached --quiet && exit 0
           git -c user.name="Coro La Cordata" -c user.email="info@corolacordata.org" commit -m "Copia cifrata aggiornata"
           git push
+      - name: Pulizia della domenica (resta solo l'ultima versione)
+        run: |
+          [ "$(date -u +%u)" = "7" ] && [ "$(date -u +%H)" = "03" ] || exit 0
+          # se intanto qualcuno ha pubblicato una versione nuova, non si tocca niente (la pulizia si rifà la domenica dopo)
+          git fetch -q origin main
+          [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] || exit 0
+          # i programmi scaricati per mandare le notifiche non vanno sul sito
+          rm -rf node_modules package.json package-lock.json
+          git checkout --orphan pulito
+          git add -A
+          git -c user.name="Coro La Cordata" -c user.email="info@corolacordata.org" commit -q -m "Pulizia: resta solo l'ultima versione"
+          git push -f origin pulito:main
